@@ -20,9 +20,11 @@ export async function etatStripe() {
     : /^pk_/.test(c) ? 'publiable (mauvaise cle)' : 'format inconnu';
   if (!c) return { cle: type };
   const tests: Record<string, string> = {};
-  for (const [nom, chemin] of [['webhooks', '/webhook_endpoints?limit=1'], ['sessions', '/checkout/sessions?limit=1']] as const) {
-    const r = await stripe<{ error?: { type?: string; code?: string } }>(chemin);
-    tests[nom] = r.ok ? 'ok' : `${r.status} ${r.data?.error?.type ?? ''} ${r.data?.error?.code ?? ''}`.trim();
+  for (const [nom, chemin] of [['webhooks', '/webhook_endpoints?limit=1'], ['sessions', '/checkout/sessions?limit=1'], ['evenements', '/events?limit=1']] as const) {
+    const r = await stripe<{ error?: { type?: string; code?: string; message?: string } }>(chemin);
+    // Seuls les noms de permissions manquantes (rak_…) sont repris du message, jamais la clé masquée.
+    const perms = (r.data?.error?.message?.match(/rak_[a-z_]+/g) ?? []).join(',');
+    tests[nom] = r.ok ? 'ok' : `${r.status} ${r.data?.error?.code ?? r.data?.error?.type ?? ''} ${perms}`.trim();
   }
   return { cle: type, longueur: c.length, ...tests };
 }
