@@ -1,4 +1,5 @@
 import { bindings } from '../bindings.server';
+import type { D1Database } from '@cloudflare/workers-types';
 import { P, variantesDe, type Ligne, type Livraison, type Totaux } from '../catalogue';
 
 /* Appels à l'API Stripe (REST, sans SDK : le Worker reste léger).
@@ -78,4 +79,38 @@ export async function creerSessionCheckout(e: EntreeSession) {
     b.set('invoice_creation[invoice_data][metadata][ref]', e.ref);
   }
   return stripe<{ id: string; url: string }>('/checkout/sessions', { method: 'POST', corps: b });
+}
+
+export const EVENEMENTS_WEBHOOK = [
+  'checkout.session.completed', 'checkout.session.async_payment_succeeded', 'checkout.session.async_payment_failed',
+  'checkout.session.expired', 'charge.refunded', 'charge.dispute.created',
+];
+
+/** Mode de la clé (test ou live) : un webhook est déclaré pour chacun. */
+const modeCle = () => (/_live_/.test(bindings().STRIPE_SECRET_KEY || '') ? 'live' : 'test');
+
+/** Déclare automatiquement l'adresse du webhook chez Stripe, une seule fois par mode et par adresse.
+   Aucun secret à recopier : le webhook vérifie chaque événement en le relisant chez Stripe. */
+export async function assurerWebhook(D: D1Database, origine: string) {
+  if (!bindings().STRIPE_SECRET_KEY) return;
+  const url = `${origine}/api/stripe/webhook`;
+  const cle = `stripe_webhook_${modeCle()}`;
+  try {
+    const deja = await D.prepare('SELECT valeur FROM reglages WHERE cle = ?').bind(cle).first<{ valeur: string }>();
+    if (deja?.valeur === url) return;
+    const liste = await stripe<{ data: { id: string; url: string; status: string }[] }>('/webhook_endpoints?limit=100');
+    if (!liste.ok) return;
+    if (!liste.data?.data.some((w) => w.url === url && w.status === 'enabled')) {
+      const b = new URLSearchParams();
+      b.set('url', url);
+      b.set('description', 'Boutique Mark & Roll');
+      b.set('api_version', STRIPE_VERSION);
+      EVENEMENTS_WEBHOOK.forEach((e, i) => b.set(`enabled_events[${i}]`, e));
+      const r = await stripe<{ id: string }>('/webhook_endpoints', { method: 'POST', corps: b });
+      if (!r.ok) return;
+    }
+    await D.prepare("INSERT INTO reglages (cle, valeur) VALUES (?, ?) ON CONFLICT(cle) DO UPDATE SET valeur = excluded.valeur, updated_at = datetime('now')").bind(cle, url).run();
+  } catch (e) {
+    console.error('Webhook Stripe', e);
+  }
 }

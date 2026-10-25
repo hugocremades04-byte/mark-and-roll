@@ -15,10 +15,7 @@ Boutique de rouleaux tampons personnalisés. Site React (TanStack Start) publié
    - `STRIPE_SECRET_KEY` : clé secrète Stripe (`sk_live_...`, ou `sk_test_...` pour tester).
    - `STRIPE_WEBHOOK_SECRET` : voir l'étape 6.
 5. **Nom de domaine** : ajouter le domaine dans Cloudflare (Ajouter un domaine, puis changer les serveurs DNS chez le registraire), puis Workers > mark-and-roll > Paramètres > Domaines et routes > Ajouter > Domaine personnalisé. Mettre ensuite l'adresse dans `src/site.json` (champ `url`).
-6. **Webhook Stripe** : Stripe > Développeurs > Webhooks > Ajouter une destination.
-   - URL : `https://<votre-domaine>/api/stripe/webhook`
-   - Événements : `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`, `charge.refunded`, `charge.dispute.created`
-   - Copier le « secret de signature » (`whsec_...`) dans le secret `STRIPE_WEBHOOK_SECRET`.
+6. **Webhook Stripe** : rien à faire. Le site déclare lui-même son adresse de webhook chez Stripe à la première commande (une fois en test, une fois en live) et relit chaque événement chez Stripe pour le vérifier. Le secret `STRIPE_WEBHOOK_SECRET` reste possible si vous préférez la vérification par signature.
 7. **Emails (Brevo, facultatif)** : secret `BREVO_API_KEY`, variables `EMAIL_EXPEDITEUR` (adresse validée dans Brevo), `EMAIL_ATELIER` (reçoit les alertes) et `BREVO_LISTE_ID` (liste newsletter).
 
 Chaque modification poussée sur GitHub republie le site automatiquement.

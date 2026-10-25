@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { bindings } from '../bindings.server';
 import { emailsNouvelleCommande } from './emails.server';
-import { creerSessionCheckout, stripe } from './stripe.server';
+import { assurerWebhook, creerSessionCheckout, stripe } from './stripe.server';
 import {
   ENCRES, P, POLICES, SEPS, taillesDe, totalLigne, totauxCommande, variantesDe,
   type Cfg, type Ligne, type Livraison, type ProduitConfig, type Roue, type Totaux,
@@ -124,6 +124,7 @@ const SCHEMA = [
     id INTEGER PRIMARY KEY AUTOINCREMENT, created_at TEXT NOT NULL DEFAULT (datetime('now')), nom TEXT NOT NULL,
     societe TEXT NOT NULL DEFAULT '', email TEXT NOT NULL, quantite TEXT NOT NULL DEFAULT '', message TEXT NOT NULL DEFAULT '')`,
   `CREATE TABLE IF NOT EXISTS abonnes (email TEXT PRIMARY KEY, created_at TEXT NOT NULL DEFAULT (datetime('now')))`,
+  `CREATE TABLE IF NOT EXISTS reglages (cle TEXT PRIMARY KEY, valeur TEXT NOT NULL, updated_at TEXT NOT NULL DEFAULT (datetime('now')))`,
 ];
 let schemaPret: Promise<unknown> | null = null;
 
@@ -153,6 +154,7 @@ export async function enregistrerCommande(e: EntreeCommande, origine: string) {
     await emailsNouvelleCommande({ ...infos, paiementEnLigne: false });
     return { ref, url: null as string | null };
   }
+  await assurerWebhook(D, origine);
   const r = await creerSessionCheckout({ num, ref, origine, email: e.client.email, livraison: e.livraison, totaux: t, totalLigne });
   const s = r.data;
   if (!r.ok || !s?.id || !s.url) {

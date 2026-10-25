@@ -1,10 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { bindings } from '@/lib/bindings.server';
 import { db } from '@/lib/serveur/commandes.server';
+import { stripe } from '@/lib/serveur/stripe.server';
 import { emailAlerteAtelier, emailPaiementRecu } from '@/lib/serveur/emails.server';
 
 /* Webhook Stripe : marque la commande payée même si le client ferme la page avant le retour.
-   Adresse à déclarer dans Stripe : https://<votre-domaine>/api/stripe/webhook
+   L'adresse est déclarée automatiquement chez Stripe à la première commande (stripe.server.ts).
+   Avec STRIPE_WEBHOOK_SECRET, la signature est vérifiée ; sans, chaque événement est relu chez Stripe.
    Événements : checkout.session.completed, checkout.session.async_payment_succeeded,
    checkout.session.async_payment_failed, checkout.session.expired, charge.refunded, charge.dispute.created. */
 
@@ -36,12 +38,24 @@ export const Route = createFileRoute('/api/stripe/webhook')({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const secret = bindings().STRIPE_WEBHOOK_SECRET;
-        if (!secret) return texte('Webhook non configuré.', 503);
+        const { STRIPE_WEBHOOK_SECRET: secret, STRIPE_SECRET_KEY: cle } = bindings();
+        if (!secret && !cle) return texte('Webhook non configuré.', 503);
         const corps = await request.text();
-        const ok = await signatureValide(corps, request.headers.get('stripe-signature') || '', secret);
-        if (!ok) return texte('Signature invalide.', 400);
-        const evt = JSON.parse(corps) as { type: string; data: { object: Session & Charge } };
+        type Evt = { id: string; type: string; data: { object: Session & Charge } };
+        let evt: Evt;
+        if (secret) {
+          // Vérification par signature (secret whsec_ réglé dans Cloudflare)
+          const ok = await signatureValide(corps, request.headers.get('stripe-signature') || '', secret);
+          if (!ok) return texte('Signature invalide.', 400);
+          evt = JSON.parse(corps) as Evt;
+        } else {
+          // Sans secret : l'événement est relu chez Stripe avec la clé API, seule cette version fait foi
+          const id = (() => { try { return (JSON.parse(corps) as { id?: string }).id || ''; } catch { return ''; } })();
+          if (!/^evt_[A-Za-z0-9]+$/.test(id)) return texte('Événement invalide.', 400);
+          const r = await stripe<Evt>(`/events/${id}`);
+          if (!r.ok || !r.data) return texte('Événement introuvable chez Stripe.', 400);
+          evt = r.data;
+        }
         const D = await db();
         if (evt.type === 'checkout.session.completed' || evt.type === 'checkout.session.async_payment_succeeded') {
           const s = evt.data.object;
