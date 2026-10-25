@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mark-and-roll",
+  "main": "dist/server/server.js",
+  "compatibility_date": "2025-05-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+
+  // Fichiers statiques servis en direct, tout le reste passe par le rendu serveur.
+  "assets": { "directory": "./dist/client", "binding": "ASSETS", "not_found_handling": "none" },
+
+  // Base de commandes et stockage des logos clients.
+  // Sans identifiant, Wrangler crée la base et le compartiment au premier déploiement.
+  // Les tables sont créées par le site lui-même au premier accès.
+  "d1_databases": [{ "binding": "DB", "database_name": "mark-and-roll" }],
+  "r2_buckets": [{ "binding": "STORAGE", "bucket_name": "mark-and-roll-logos" }]
+
+  // Secrets (jamais ici) : STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, ATELIER_CODE
+  // À régler dans Cloudflare : Workers > mark-and-roll > Paramètres > Variables et secrets.
+}
