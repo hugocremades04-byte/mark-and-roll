@@ -9,7 +9,7 @@ import { Bandeau, Entete, Panneaux, Pied, Toast } from '@/components/boutique/Ca
 
 
 /* Métadonnées du site : à compléter dans src/site.json (l'adresse définitive sert aux images de partage). */
-type Site = { url: string; titre: string; description: string; image: string };
+type Site = { url: string; titre: string; description: string; image: string; analytics?: string };
 const SITE = site as Site;
 const absolu = (chemin: string) => (SITE.url ? new URL(chemin, SITE.url).toString() : chemin);
 
@@ -91,6 +91,10 @@ function RootShell({ children }: { children: ReactNode }) {
       <body>
         {children}
         <Scripts />
+        {SITE.analytics && (
+          // Mesure d'audience Cloudflare : sans cookie, ne suit pas les visiteurs individuellement.
+          <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: SITE.analytics })} />
+        )}
       </body>
     </html>
   );
