@@ -5,6 +5,7 @@ import { useBoutique, usePanneau, usePiegeFocus } from '@/lib/boutique';
 import { FRANCO, IMG, ORDRE, P, cfgDefaut, estLarge, eur, prixMin, rouesActives, sousTotal, type CfgSimple, type Ligne } from '@/lib/catalogue';
 import { LignesPanier, Paiements, PanierVide } from './Elements';
 import { IcoCamion, IcoColis, IcoCroix, IcoDroite, IcoLoupe, IcoMenu, IcoOk, IcoPanier } from './Icones';
+import site from '@/site.json';
 
 const NAV: { lib: string; cle: string; desc: string }[] = [
   { lib: 'Rouleaux', cle: 'rouleaux', desc: 'Kit Rouleau, Grand format, textile' },
@@ -104,10 +105,11 @@ export function Pied() {
           <li><Link to="/collections/$cle" params={{ cle: 'rouleaux' }} hash="guide-tailles">Guide des tailles</Link></li>
           <li><Link to="/pros">Pros et devis</Link></li>
           <li><Link to="/cgv">Conditions générales de vente</Link></li>
+          <li><Link to="/mentions-legales">Mentions légales</Link></li>
           <li><Link to="/atelier">Espace atelier</Link></li>
         </ul></div>
         <div><h3>Nous écrire</h3><ul>
-          <li><a href="mailto:contact@markandroll.fr">contact@markandroll.fr</a></li>
+          <li><a href={`mailto:${site.contact}`}>{site.contact}</a></li>
           <li>Du lundi au vendredi, 9 h à 18 h</li>
           <li>Réponse sous 24 h ouvrées</li>
         </ul></div>

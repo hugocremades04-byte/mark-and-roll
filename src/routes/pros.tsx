@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useState, type FormEvent } from 'react';
 import { Ariane, Img } from '@/components/boutique/Elements';
 import { envoyerDevis } from '@/lib/api/boutique.functions';
+import site from '@/site.json';
 
 export const Route = createFileRoute('/pros')({
   head: () => ({
@@ -28,7 +29,7 @@ function Pros() {
       setEtat('ok');
     } catch {
       setEtat('saisie');
-      setErr({ msg: 'Envoi impossible pour le moment. Réessayez, ou écrivez-nous à contact@markandroll.fr.' });
+      setErr({ msg: `Envoi impossible pour le moment. Réessayez, ou écrivez-nous à ${site.contact}.` });
     }
   };
   const maj = (k: keyof typeof f) => (e: { target: { value: string } }) => setF((x) => ({ ...x, [k]: e.target.value }));

@@ -13,6 +13,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ProsRouteImport } from './routes/pros'
 import { Route as PanierRouteImport } from './routes/panier'
+import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
 import { Route as CommandeRouteImport } from './routes/commande'
 import { Route as CgvRouteImport } from './routes/cgv'
 import { Route as AtelierRouteImport } from './routes/atelier'
@@ -42,6 +43,11 @@ const ProsRoute = ProsRouteImport.update({
 const PanierRoute = PanierRouteImport.update({
   id: '/panier',
   path: '/panier',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MentionsLegalesRoute = MentionsLegalesRouteImport.update({
+  id: '/mentions-legales',
+  path: '/mentions-legales',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CommandeRoute = CommandeRouteImport.update({
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/atelier': typeof AtelierRoute
   '/cgv': typeof CgvRoute
   '/commande': typeof CommandeRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/panier': typeof PanierRoute
   '/pros': typeof ProsRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/atelier': typeof AtelierRoute
   '/cgv': typeof CgvRoute
   '/commande': typeof CommandeRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/panier': typeof PanierRoute
   '/pros': typeof ProsRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/atelier': typeof AtelierRoute
   '/cgv': typeof CgvRoute
   '/commande': typeof CommandeRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/panier': typeof PanierRoute
   '/pros': typeof ProsRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -151,6 +160,7 @@ export interface FileRouteTypes {
     | '/atelier'
     | '/cgv'
     | '/commande'
+    | '/mentions-legales'
     | '/panier'
     | '/pros'
     | '/robots.txt'
@@ -167,6 +177,7 @@ export interface FileRouteTypes {
     | '/atelier'
     | '/cgv'
     | '/commande'
+    | '/mentions-legales'
     | '/panier'
     | '/pros'
     | '/robots.txt'
@@ -183,6 +194,7 @@ export interface FileRouteTypes {
     | '/atelier'
     | '/cgv'
     | '/commande'
+    | '/mentions-legales'
     | '/panier'
     | '/pros'
     | '/robots.txt'
@@ -200,6 +212,7 @@ export interface RootRouteChildren {
   AtelierRoute: typeof AtelierRoute
   CgvRoute: typeof CgvRoute
   CommandeRoute: typeof CommandeRoute
+  MentionsLegalesRoute: typeof MentionsLegalesRoute
   PanierRoute: typeof PanierRoute
   ProsRoute: typeof ProsRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
@@ -239,6 +252,13 @@ declare module '@tanstack/react-router' {
       path: '/panier'
       fullPath: '/panier'
       preLoaderRoute: typeof PanierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mentions-legales': {
+      id: '/mentions-legales'
+      path: '/mentions-legales'
+      fullPath: '/mentions-legales'
+      preLoaderRoute: typeof MentionsLegalesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/commande': {
@@ -331,6 +351,7 @@ const rootRouteChildren: RootRouteChildren = {
   AtelierRoute: AtelierRoute,
   CgvRoute: CgvRoute,
   CommandeRoute: CommandeRoute,
+  MentionsLegalesRoute: MentionsLegalesRoute,
   PanierRoute: PanierRoute,
   ProsRoute: ProsRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,

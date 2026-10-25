@@ -3,5 +3,14 @@
   "titre": "Mark & Roll",
   "description": "Rouleaux tampons gravés à votre logo : votre marque sur chaque colis, tote bag et affiche, en un passage. Kits dès 39 €, Grand format pour logos et dessins.",
   "image": "/og.png",
-  "analytics": "0accd5095eab452a8661416d38937b95"
+  "analytics": "0accd5095eab452a8661416d38937b95",
+  "contact": "hugo.cremades04@gmail.com",
+  "vendeur": {
+    "nom": "Hugo Crémades",
+    "statut": "Entrepreneur individuel (micro-entreprise)",
+    "siret": "",
+    "adresse": "",
+    "telephone": "",
+    "tva": ""
+  }
 }

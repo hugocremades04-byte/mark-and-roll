@@ -153,7 +153,7 @@ function Commande() {
             <div className="paiement-info">
               <IcoCarte />
               <p>{paiementActif
-                ? 'Vous finalisez le paiement sur la page sécurisée de notre prestataire Stripe : carte bancaire, Apple Pay ou Google Pay.'
+                ? 'Vous finalisez le paiement sur la page sécurisée de notre prestataire Stripe : carte bancaire, Apple Pay, Google Pay et autres moyens selon votre appareil.'
                 : 'Aucun paiement maintenant. Vous recevez le BAT par email sous 24 h ouvrées avec un lien de paiement sécurisé ; la gravure démarre après votre accord et votre paiement.'}</p>
             </div>
             <div className="champ"><label htmlFor="c-notes">Une précision pour le graphiste ? (facultatif)</label>

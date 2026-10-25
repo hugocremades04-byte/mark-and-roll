@@ -7,7 +7,7 @@ export const Route = createFileRoute('/sitemap.xml')({
       GET: async ({ request }) => {
         const origin = new URL(request.url).origin;
         const today = new Date().toISOString().split('T')[0];
-        const chemins = ['/', '/pros', '/cgv', ...Object.keys(COLLECTIONS).map((c) => `/collections/${c}`), ...ORDRE.map((h) => `/produits/${h}`)];
+        const chemins = ['/', '/pros', '/cgv', '/mentions-legales', ...Object.keys(COLLECTIONS).map((c) => `/collections/${c}`), ...ORDRE.map((h) => `/produits/${h}`)];
         const xml = [
           '<?xml version="1.0" encoding="UTF-8"?>',
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',

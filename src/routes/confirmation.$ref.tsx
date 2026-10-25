@@ -4,6 +4,7 @@ import { IcoOk } from '@/components/boutique/Icones';
 import { commandePublique } from '@/lib/api/boutique.functions';
 import { useBoutique } from '@/lib/boutique';
 import { P, eur, totalLigne } from '@/lib/catalogue';
+import site from '@/site.json';
 
 export const Route = createFileRoute('/confirmation/$ref')({
   validateSearch: (s: Record<string, unknown>): { session_id?: string } => (typeof s.session_id === 'string' ? { session_id: s.session_id } : {}),
@@ -58,7 +59,7 @@ function Confirmation() {
       </div>
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
         <Link className="btn btn-primaire" to="/">Continuer mes achats</Link>
-        <a className="btn btn-contour" href={`mailto:contact@markandroll.fr?subject=${encodeURIComponent(`Commande ${c.num}`)}`}>Nous écrire</a>
+        <a className="btn btn-contour" href={`mailto:${site.contact}?subject=${encodeURIComponent(`Commande ${c.num}`)}`}>Nous écrire</a>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { CarteProduit, CarteRouleau, Img, Preuves, SectionTete, VideoBoucle } from '@/components/boutique/Elements';
 import { IcoChevron, IcoFleche } from '@/components/boutique/Icones';
 import { ALT, FAQ, IMG, dansCollection } from '@/lib/catalogue';
+import site from '@/site.json';
 
 export const Route = createFileRoute('/')({
   component: Accueil,
@@ -151,7 +152,7 @@ function Accueil() {
         <div className="faq-grille">
           <div>
             <h2 id="h-faq">Questions fréquentes</h2>
-            <p className="sous-titre">Une autre question ? contact@markandroll.fr, réponse sous 24 h ouvrées.</p>
+            <p className="sous-titre">Une autre question ? <a href={`mailto:${site.contact}`}>{site.contact}</a>, réponse sous 24 h ouvrées.</p>
           </div>
           <div className="accordeon">
             {FAQ.slice(0, 6).map(([q, r]) => (

@@ -56,6 +56,8 @@ export async function creerSessionCheckout(e: EntreeSession) {
   b.set('success_url', `${e.origine}/confirmation/${e.ref}?session_id={CHECKOUT_SESSION_ID}`);
   b.set('cancel_url', `${e.origine}/commande?annule=1`);
   b.set('integration_identifier', INTEGRATION_ID);
+  b.set('submit_type', 'pay');
+  b.set('custom_text[submit][message]', 'Rien n\'est gravé avant votre accord : vous recevez le BAT par email sous 24 h ouvrées.');
   // Pas de payment_method_types : Stripe propose les moyens de paiement activés dans le tableau de bord
   // (carte, Apple Pay, Google Pay, etc.).
   t.lignes.forEach((a, i) => {
