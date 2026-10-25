@@ -6,6 +6,10 @@
   "compatibility_flags": ["nodejs_compat"],
   "observability": { "enabled": true },
 
+  // Wrangler lance le build avant chaque déploiement et chaque test local :
+  // aucun réglage de build n'est nécessaire dans le tableau de bord Cloudflare.
+  "build": { "command": "npx vite build" },
+
   // Fichiers statiques servis en direct, tout le reste passe par le rendu serveur.
   "assets": { "directory": "./dist/client", "binding": "ASSETS", "not_found_handling": "none" },
 

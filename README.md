@@ -6,7 +6,7 @@ Boutique de rouleaux tampons personnalisés. Site React (TanStack Start) publié
 
 1. **Compte** : créer un compte gratuit sur dash.cloudflare.com.
 2. **Importer le dépôt** : Workers et Pages > Créer > Importer un dépôt > connecter GitHub > choisir `mark-and-roll`.
-   - Commande de build : `npm run build`
+   - Commande de build : laisser vide (Wrangler construit le site lui-même, voir `wrangler.jsonc`)
    - Commande de déploiement : `npx wrangler deploy` (valeur par défaut)
    - Dossier racine : laisser vide
 3. **Premier déploiement** : Cloudflare crée tout seul la base `mark-and-roll` et le compartiment `mark-and-roll-logos`. Les tables se créent au premier accès au site.
