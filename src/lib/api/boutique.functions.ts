@@ -3,6 +3,7 @@ import { getRequest } from '@tanstack/react-start/server';
 import { z } from 'zod';
 import { bindings } from '../bindings.server';
 import { db, enregistrerCommande, lireCommande, schemaCommande } from '../serveur/commandes.server';
+import { emailsDevis, inscriptionNewsletter } from '../serveur/emails.server';
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -37,6 +38,7 @@ export const envoyerDevis = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     await (await db()).prepare('INSERT INTO devis (nom, societe, email, quantite, message) VALUES (?, ?, ?, ?, ?)')
       .bind(data.nom, data.societe, data.email, data.quantite, data.message).run();
+    await emailsDevis(data);
     return { ok: true };
   });
 
@@ -44,5 +46,6 @@ export const inscrireNews = createServerFn({ method: 'POST' })
   .validator(z.object({ email: z.string().max(160).regex(EMAIL) }))
   .handler(async ({ data }) => {
     await (await db()).prepare('INSERT OR IGNORE INTO abonnes (email) VALUES (?)').bind(data.email.toLowerCase()).run();
+    await inscriptionNewsletter(data.email.toLowerCase(), 'BIENVENUE10');
     return { ok: true, code: 'BIENVENUE10' };
   });

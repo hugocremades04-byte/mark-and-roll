@@ -5,6 +5,8 @@
   "compatibility_date": "2025-05-01",
   "compatibility_flags": ["nodejs_compat"],
   "observability": { "enabled": true },
+  // Garde les variables réglées dans le tableau de bord à chaque déploiement.
+  "keep_vars": true,
 
   // Wrangler lance le build avant chaque déploiement et chaque test local :
   // aucun réglage de build n'est nécessaire dans le tableau de bord Cloudflare.

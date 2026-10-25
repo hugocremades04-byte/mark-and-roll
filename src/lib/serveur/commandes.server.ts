@@ -1,7 +1,9 @@
 import { z } from 'zod';
 import { bindings } from '../bindings.server';
+import { emailsNouvelleCommande } from './emails.server';
+import { creerSessionCheckout, stripe } from './stripe.server';
 import {
-  ENCRES, P, POLICES, SEPS, taillesDe, totauxCommande, variantesDe,
+  ENCRES, P, POLICES, SEPS, taillesDe, totalLigne, totauxCommande, variantesDe,
   type Cfg, type Ligne, type Livraison, type ProduitConfig, type Roue, type Totaux,
 } from '../catalogue';
 
@@ -145,33 +147,20 @@ export async function enregistrerCommande(e: EntreeCommande, origine: string) {
   const num = `MR-${1040 + ligne.id}`;
   await D.prepare('UPDATE commandes SET num = ? WHERE id = ?').bind(num, ligne.id).run();
 
+  const infos = { num, ref, origine, email: e.client.email, prenom: e.client.prenom, nom: e.client.nom, lignes: t.lignes, totaux: t, totalLigne };
   const cle = bindings().STRIPE_SECRET_KEY;
-  if (!cle) return { ref, url: null as string | null };
-  const resume = t.lignes.map((a) => `${P[a.cfg.h].nom} x${a.qty}`).join(', ').slice(0, 480);
-  const b = new URLSearchParams();
-  b.set('mode', 'payment');
-  b.set('locale', 'fr');
-  b.set('customer_email', e.client.email);
-  b.set('client_reference_id', num);
-  b.set('metadata[ref]', ref);
-  b.set('success_url', `${origine}/confirmation/${ref}?session_id={CHECKOUT_SESSION_ID}`);
-  b.set('cancel_url', `${origine}/commande?annule=1`);
-  b.set('line_items[0][quantity]', '1');
-  b.set('line_items[0][price_data][currency]', 'eur');
-  b.set('line_items[0][price_data][unit_amount]', String(Math.round(t.total * 100)));
-  b.set('line_items[0][price_data][product_data][name]', `Commande ${num}, Mark & Roll`);
-  b.set('line_items[0][price_data][product_data][description]', resume || 'Commande');
-  const r = await fetch('https://api.stripe.com/v1/checkout/sessions', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${cle}`, 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: b,
-  });
-  const s = (await r.json().catch(() => null)) as { id?: string; url?: string } | null;
+  if (!cle) {
+    await emailsNouvelleCommande({ ...infos, paiementEnLigne: false });
+    return { ref, url: null as string | null };
+  }
+  const r = await creerSessionCheckout({ num, ref, origine, email: e.client.email, livraison: e.livraison, totaux: t, totalLigne });
+  const s = r.data;
   if (!r.ok || !s?.id || !s.url) {
-    console.error('Stripe', r.status, s);
+    await emailsNouvelleCommande({ ...infos, paiementEnLigne: false });
     return { ref, url: null };
   }
   await D.prepare("UPDATE commandes SET stripe_session = ?, paiement = 'en_attente' WHERE id = ?").bind(s.id, ligne.id).run();
+  await emailsNouvelleCommande({ ...infos, paiementEnLigne: true });
   return { ref, url: s.url };
 }
 
@@ -181,8 +170,8 @@ export async function lireCommande(ref: string, session?: string) {
   if (!row) return null;
   const cle = bindings().STRIPE_SECRET_KEY;
   if (row.paiement === 'en_attente' && cle && session && session === row.stripe_session) {
-    const r = await fetch(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(session)}`, { headers: { Authorization: `Bearer ${cle}` } });
-    const s = (await r.json().catch(() => null)) as { payment_status?: string } | null;
+    const r = await stripe<{ payment_status?: string }>(`/checkout/sessions/${encodeURIComponent(session)}`);
+    const s = r.data;
     if (r.ok && s?.payment_status === 'paid') {
       await D.prepare("UPDATE commandes SET paiement = 'payee' WHERE id = ?").bind(row.id).run();
       row = { ...row, paiement: 'payee' };

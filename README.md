@@ -17,16 +17,21 @@ Boutique de rouleaux tampons personnalisés. Site React (TanStack Start) publié
 5. **Nom de domaine** : ajouter le domaine dans Cloudflare (Ajouter un domaine, puis changer les serveurs DNS chez le registraire), puis Workers > mark-and-roll > Paramètres > Domaines et routes > Ajouter > Domaine personnalisé. Mettre ensuite l'adresse dans `src/site.json` (champ `url`).
 6. **Webhook Stripe** : Stripe > Développeurs > Webhooks > Ajouter une destination.
    - URL : `https://<votre-domaine>/api/stripe/webhook`
-   - Événements : `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `charge.refunded`
+   - Événements : `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`, `charge.refunded`, `charge.dispute.created`
    - Copier le « secret de signature » (`whsec_...`) dans le secret `STRIPE_WEBHOOK_SECRET`.
+7. **Emails (Brevo, facultatif)** : secret `BREVO_API_KEY`, variables `EMAIL_EXPEDITEUR` (adresse validée dans Brevo), `EMAIL_ATELIER` (reçoit les alertes) et `BREVO_LISTE_ID` (liste newsletter).
 
 Chaque modification poussée sur GitHub republie le site automatiquement.
 
-## Paiement
+## Paiement (Stripe)
 
-- Sans `STRIPE_SECRET_KEY`, la commande est enregistrée et le client paie après validation du BAT.
-- Avec la clé, le client paie sur Stripe Checkout (carte, Apple Pay, Google Pay). La commande passe en « payée » au retour sur le site et par le webhook, même si le client ferme la page.
-- Un remboursement total dans Stripe passe la commande en « remboursée ».
+- **Clé** : créer une clé restreinte (Développeurs > Clés API > Créer une clé restreinte) avec seulement « Checkout Sessions : écriture », puis la ranger dans le secret `STRIPE_SECRET_KEY`. Une clé restreinte limite les dégâts en cas de fuite ; ne jamais mettre de clé dans le code.
+- **Tester d'abord** : utiliser une sandbox Stripe et ses clés de test, carte `4242 4242 4242 4242`.
+- **Sans clé**, la commande est enregistrée et le client paie après validation du BAT.
+- **Avec la clé**, le client paie sur Stripe Checkout. Les moyens de paiement (carte, Apple Pay, Google Pay, etc.) se règlent dans le tableau de bord Stripe, sans toucher au code. Chaque article apparaît sur le reçu, la livraison en ligne séparée, le total est recalculé par le serveur.
+- **Statuts** : la commande passe « payée » au retour et par le webhook, repasse « à régler » si le paiement échoue ou expire, « remboursée » après un remboursement total. Un litige envoie une alerte email.
+- **Factures** : variable `STRIPE_FACTURES` = `1` pour que Stripe génère et envoie une facture PDF à chaque paiement (option facturée par Stripe).
+- **TVA (Stripe Tax)** : non activée. Les prix sont TTC. À activer seulement après avoir enregistré l'immatriculation TVA dans Stripe (Tax > Lieux) ; sinon Stripe ne collecte rien. En franchise de TVA (micro-entreprise), ne pas l'activer.
 
 ## Travailler en local
 
