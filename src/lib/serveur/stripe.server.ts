@@ -30,6 +30,9 @@ export async function etatStripe() {
 }
 /** Étiquette du parcours de paiement, visible dans le tableau de bord Stripe. */
 const INTEGRATION_ID = 'mark-and-roll-checkout-qmpvrnci';
+/** Configuration des moyens de paiement « Oui » (carte, Apple Pay, Google Pay, Klarna, Link, Revolut Pay, Wero).
+   Remplaçable par la variable STRIPE_PMC sans toucher au code. */
+const PMC_LIVE = 'pmc_1UURfADkacL9PW45uB7WgIjs';
 
 export async function stripe<T>(chemin: string, init: { method?: 'GET' | 'POST'; corps?: URLSearchParams } = {}): Promise<{ ok: boolean; status: number; data: T | null }> {
   const cle = cleStripe();
@@ -100,6 +103,15 @@ export async function creerSessionCheckout(e: EntreeSession) {
     b.set('invoice_creation[enabled]', 'true');
     b.set('invoice_creation[invoice_data][description]', `Commande ${e.num}`);
     b.set('invoice_creation[invoice_data][metadata][ref]', e.ref);
+  }
+  // Moyens de paiement : la configuration choisie dans le tableau de bord Stripe (mode live uniquement).
+  // Si Stripe la refuse, on retombe sur la configuration par défaut plutôt que de bloquer la commande.
+  const pmc = modeCle() === 'live' ? (bindings().STRIPE_PMC || PMC_LIVE).trim() : '';
+  if (pmc) {
+    b.set('payment_method_configuration', pmc);
+    const r = await stripe<{ id: string; url: string }>('/checkout/sessions', { method: 'POST', corps: b });
+    if (r.ok) return r;
+    b.delete('payment_method_configuration');
   }
   return stripe<{ id: string; url: string }>('/checkout/sessions', { method: 'POST', corps: b });
 }

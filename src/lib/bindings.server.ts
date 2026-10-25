@@ -13,6 +13,7 @@ type AppEnv = {
   STRIPE_WEBHOOK_SECRET?: string;
   /** « 1 » : Stripe crée et envoie une facture PDF pour chaque paiement. */
   STRIPE_FACTURES?: string;
+  STRIPE_PMC?: string;
   ATELIER_CODE?: string;
   /** Emails Brevo (facultatif), voir src/lib/serveur/emails.server.ts. */
   BREVO_API_KEY?: string;
