@@ -18,8 +18,8 @@ export const Route = createFileRoute('/api/logos')({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { STORAGE } = bindings();
-        if (!STORAGE) return json({ erreur: 'Le stockage des fichiers n\'est pas encore disponible.' }, 503);
+        const { LOGOS } = bindings();
+        if (!LOGOS) return json({ erreur: 'Le stockage des fichiers n\'est pas encore disponible.' }, 503);
         const taille = Number(request.headers.get('content-length') || 0);
         if (taille > MAX) return json({ erreur: 'Fichier trop lourd : 4 Mo maximum.' }, 413);
         const buf = new Uint8Array(await request.arrayBuffer());
@@ -28,7 +28,7 @@ export const Route = createFileRoute('/api/logos')({
         const t = typeDe(buf);
         if (!t) return json({ erreur: 'Format non reconnu. Envoyez un SVG, PNG ou JPG.' }, 415);
         const id = crypto.randomUUID();
-        await STORAGE.put(`logos/${id}.${t.ext}`, buf, { httpMetadata: { contentType: t.mime } });
+        await LOGOS.put(`logos/${id}.${t.ext}`, buf, { metadata: { contentType: t.mime } });
         return json({ url: `/api/logos/${id}.${t.ext}` });
       },
     },

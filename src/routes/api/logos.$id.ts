@@ -7,13 +7,13 @@ export const Route = createFileRoute('/api/logos/$id')({
   server: {
     handlers: {
       GET: async ({ params }) => {
-        const { STORAGE } = bindings();
-        if (!STORAGE || !ID.test(params.id)) return new Response('Introuvable', { status: 404 });
-        const o = await STORAGE.get(`logos/${params.id}`);
-        if (!o) return new Response('Introuvable', { status: 404 });
-        return new Response(o.body as unknown as ReadableStream, {
+        const { LOGOS } = bindings();
+        if (!LOGOS || !ID.test(params.id)) return new Response('Introuvable', { status: 404 });
+        const o = await LOGOS.getWithMetadata<{ contentType?: string }>(`logos/${params.id}`, 'arrayBuffer');
+        if (!o.value) return new Response('Introuvable', { status: 404 });
+        return new Response(o.value, {
           headers: {
-            'Content-Type': o.httpMetadata?.contentType || 'application/octet-stream',
+            'Content-Type': o.metadata?.contentType || 'application/octet-stream',
             'Cache-Control': 'public, max-age=31536000, immutable',
             // Un SVG ouvert directement ne peut exécuter aucun script.
             'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'; sandbox",

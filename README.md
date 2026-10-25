@@ -1,6 +1,6 @@
 # Mark & Roll
 
-Boutique de rouleaux tampons personnalisés. Site React (TanStack Start) publié comme Worker Cloudflare, avec une base D1 pour les commandes et un stockage R2 pour les logos clients.
+Boutique de rouleaux tampons personnalisés. Site React (TanStack Start) publié comme Worker Cloudflare, avec une base D1 pour les commandes et un espace KV pour les logos clients. Tout tient dans l'offre gratuite de Cloudflare.
 
 ## Mise en ligne sur Cloudflare (une seule fois)
 
@@ -9,8 +9,7 @@ Boutique de rouleaux tampons personnalisés. Site React (TanStack Start) publié
    - Commande de build : laisser vide (Wrangler construit le site lui-même, voir `wrangler.jsonc`)
    - Commande de déploiement : `npx wrangler deploy` (valeur par défaut)
    - Dossier racine : laisser vide
-3. **Premier déploiement** : Cloudflare crée tout seul la base `mark-and-roll` et le compartiment `mark-and-roll-logos`. Les tables se créent au premier accès au site.
-   - Si le journal de build signale une erreur sur D1 ou R2 : Stockage et bases de données > D1 > Créer `mark-and-roll`, puis R2 > Créer un compartiment `mark-and-roll-logos`, et relancer le déploiement.
+3. **Premier déploiement** : Cloudflare crée tout seul la base `mark-and-roll` (D1) et l'espace des logos (KV). Les tables se créent au premier accès au site.
 4. **Secrets** : Workers > mark-and-roll > Paramètres > Variables et secrets > Ajouter, type « Secret » :
    - `ATELIER_CODE` : le mot de passe de l'espace atelier (`/atelier`), long et unique.
    - `STRIPE_SECRET_KEY` : clé secrète Stripe (`sk_live_...`, ou `sk_test_...` pour tester).
