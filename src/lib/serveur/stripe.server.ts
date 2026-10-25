@@ -7,11 +7,30 @@ import { P, variantesDe, type Ligne, type Livraison, type Totaux } from '../cata
    rangée dans le secret STRIPE_SECRET_KEY de Cloudflare. Jamais dans le code. */
 
 export const STRIPE_VERSION = '2026-09-30.endive';
+
+/** Clé Stripe nettoyée (espaces ou retours à la ligne collés par erreur). */
+export const cleStripe = () => (bindings().STRIPE_SECRET_KEY || '').trim().replace(/^["']|["']$/g, '');
+
+/** Diagnostic sans rien révéler de la clé : son type et la réponse de Stripe. */
+export async function etatStripe() {
+  const c = cleStripe();
+  const type = !c ? 'absente'
+    : /^sk_live_/.test(c) ? 'secrete_live' : /^sk_test_/.test(c) ? 'secrete_test'
+    : /^rk_live_/.test(c) ? 'restreinte_live' : /^rk_test_/.test(c) ? 'restreinte_test'
+    : /^pk_/.test(c) ? 'publiable (mauvaise cle)' : 'format inconnu';
+  if (!c) return { cle: type };
+  const tests: Record<string, string> = {};
+  for (const [nom, chemin] of [['webhooks', '/webhook_endpoints?limit=1'], ['sessions', '/checkout/sessions?limit=1']] as const) {
+    const r = await stripe<{ error?: { type?: string; code?: string } }>(chemin);
+    tests[nom] = r.ok ? 'ok' : `${r.status} ${r.data?.error?.type ?? ''} ${r.data?.error?.code ?? ''}`.trim();
+  }
+  return { cle: type, longueur: c.length, ...tests };
+}
 /** Étiquette du parcours de paiement, visible dans le tableau de bord Stripe. */
 const INTEGRATION_ID = 'mark-and-roll-checkout-qmpvrnci';
 
 export async function stripe<T>(chemin: string, init: { method?: 'GET' | 'POST'; corps?: URLSearchParams } = {}): Promise<{ ok: boolean; status: number; data: T | null }> {
-  const cle = bindings().STRIPE_SECRET_KEY;
+  const cle = cleStripe();
   if (!cle) return { ok: false, status: 0, data: null };
   const r = await fetch(`https://api.stripe.com/v1${chemin}`, {
     method: init.method || 'GET',
@@ -89,12 +108,12 @@ export const EVENEMENTS_WEBHOOK = [
 ];
 
 /** Mode de la clé (test ou live) : un webhook est déclaré pour chacun. */
-const modeCle = () => (/_live_/.test(bindings().STRIPE_SECRET_KEY || '') ? 'live' : 'test');
+const modeCle = () => (/_live_/.test(cleStripe()) ? 'live' : 'test');
 
 /** Déclare automatiquement l'adresse du webhook chez Stripe, une seule fois par mode et par adresse.
    Aucun secret à recopier : le webhook vérifie chaque événement en le relisant chez Stripe. */
 export async function assurerWebhook(D: D1Database, origine: string) {
-  if (!bindings().STRIPE_SECRET_KEY) return;
+  if (!cleStripe()) return;
   const url = `${origine}/api/stripe/webhook`;
   const cle = `stripe_webhook_${modeCle()}`;
   try {

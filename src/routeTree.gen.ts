@@ -23,6 +23,7 @@ import { Route as ConfirmationRefRouteImport } from './routes/confirmation.$ref'
 import { Route as CollectionsCleRouteImport } from './routes/collections.$cle'
 import { Route as ApiLogosRouteImport } from './routes/api/logos'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
+import { Route as ApiStripeEtatRouteImport } from './routes/api/stripe.etat'
 import { Route as ApiLogosIdRouteImport } from './routes/api/logos.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -95,6 +96,11 @@ const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
   path: '/api/stripe/webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiStripeEtatRoute = ApiStripeEtatRouteImport.update({
+  id: '/api/stripe/etat',
+  path: '/api/stripe/etat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiLogosIdRoute = ApiLogosIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -116,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/confirmation/$ref': typeof ConfirmationRefRoute
   '/produits/$handle': typeof ProduitsHandleRoute
   '/api/logos/$id': typeof ApiLogosIdRoute
+  '/api/stripe/etat': typeof ApiStripeEtatRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRoutesByTo {
@@ -133,6 +140,7 @@ export interface FileRoutesByTo {
   '/confirmation/$ref': typeof ConfirmationRefRoute
   '/produits/$handle': typeof ProduitsHandleRoute
   '/api/logos/$id': typeof ApiLogosIdRoute
+  '/api/stripe/etat': typeof ApiStripeEtatRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRoutesById {
@@ -151,6 +159,7 @@ export interface FileRoutesById {
   '/confirmation/$ref': typeof ConfirmationRefRoute
   '/produits/$handle': typeof ProduitsHandleRoute
   '/api/logos/$id': typeof ApiLogosIdRoute
+  '/api/stripe/etat': typeof ApiStripeEtatRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRouteTypes {
@@ -170,6 +179,7 @@ export interface FileRouteTypes {
     | '/confirmation/$ref'
     | '/produits/$handle'
     | '/api/logos/$id'
+    | '/api/stripe/etat'
     | '/api/stripe/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -187,6 +197,7 @@ export interface FileRouteTypes {
     | '/confirmation/$ref'
     | '/produits/$handle'
     | '/api/logos/$id'
+    | '/api/stripe/etat'
     | '/api/stripe/webhook'
   id:
     | '__root__'
@@ -204,6 +215,7 @@ export interface FileRouteTypes {
     | '/confirmation/$ref'
     | '/produits/$handle'
     | '/api/logos/$id'
+    | '/api/stripe/etat'
     | '/api/stripe/webhook'
   fileRoutesById: FileRoutesById
 }
@@ -221,6 +233,7 @@ export interface RootRouteChildren {
   CollectionsCleRoute: typeof CollectionsCleRoute
   ConfirmationRefRoute: typeof ConfirmationRefRoute
   ProduitsHandleRoute: typeof ProduitsHandleRoute
+  ApiStripeEtatRoute: typeof ApiStripeEtatRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
 }
 
@@ -324,6 +337,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiStripeWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/stripe/etat': {
+      id: '/api/stripe/etat'
+      path: '/api/stripe/etat'
+      fullPath: '/api/stripe/etat'
+      preLoaderRoute: typeof ApiStripeEtatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/logos/$id': {
       id: '/api/logos/$id'
       path: '/$id'
@@ -360,6 +380,7 @@ const rootRouteChildren: RootRouteChildren = {
   CollectionsCleRoute: CollectionsCleRoute,
   ConfirmationRefRoute: ConfirmationRefRoute,
   ProduitsHandleRoute: ProduitsHandleRoute,
+  ApiStripeEtatRoute: ApiStripeEtatRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport
