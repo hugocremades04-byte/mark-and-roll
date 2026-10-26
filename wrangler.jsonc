@@ -19,7 +19,14 @@
   // Sans identifiant, Wrangler les crée au premier déploiement.
   // Les tables sont créées par le site lui-même au premier accès.
   "d1_databases": [{ "binding": "DB", "database_name": "mark-and-roll" }],
-  "kv_namespaces": [{ "binding": "LOGOS" }]
+  "kv_namespaces": [{ "binding": "LOGOS" }],
+
+  // Nom de domaine : Cloudflare crée le DNS et le certificat HTTPS tout seul.
+  // L'adresse workers.dev reste active (webhooks Stripe déjà déclarés dessus).
+  "routes": [
+    { "pattern": "marknroll.com", "custom_domain": true },
+    { "pattern": "www.marknroll.com", "custom_domain": true }
+  ]
 
   // Secrets (jamais ici) : STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, ATELIER_CODE
   // À régler dans Cloudflare : Workers > mark-and-roll > Paramètres > Variables et secrets.
