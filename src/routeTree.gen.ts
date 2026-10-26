@@ -29,6 +29,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProduitsHandleRouteImport } from './routes/produits.$handle'
 import { Route as ConfirmationRefRouteImport } from './routes/confirmation.$ref'
 import { Route as CollectionsCleRouteImport } from './routes/collections.$cle'
+import { Route as ApiStatsRouteImport } from './routes/api/stats'
 import { Route as ApiLogosRouteImport } from './routes/api/logos'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
 import { Route as ApiStripeEtatRouteImport } from './routes/api/stripe.etat'
@@ -136,6 +137,11 @@ const CollectionsCleRoute = CollectionsCleRouteImport.update({
   path: '/collections/$cle',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiStatsRoute = ApiStatsRouteImport.update({
+  id: '/api/stats',
+  path: '/api/stats',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiLogosRoute = ApiLogosRouteImport.update({
   id: '/api/logos',
   path: '/api/logos',
@@ -176,6 +182,7 @@ export interface FileRoutesByFullPath {
   '/tampon-sac-kraft': typeof TamponSacKraftRoute
   '/tampon-tote-bag-vetement': typeof TamponToteBagVetementRoute
   '/api/logos': typeof ApiLogosRouteWithChildren
+  '/api/stats': typeof ApiStatsRoute
   '/collections/$cle': typeof CollectionsCleRoute
   '/confirmation/$ref': typeof ConfirmationRefRoute
   '/produits/$handle': typeof ProduitsHandleRoute
@@ -202,6 +209,7 @@ export interface FileRoutesByTo {
   '/tampon-sac-kraft': typeof TamponSacKraftRoute
   '/tampon-tote-bag-vetement': typeof TamponToteBagVetementRoute
   '/api/logos': typeof ApiLogosRouteWithChildren
+  '/api/stats': typeof ApiStatsRoute
   '/collections/$cle': typeof CollectionsCleRoute
   '/confirmation/$ref': typeof ConfirmationRefRoute
   '/produits/$handle': typeof ProduitsHandleRoute
@@ -229,6 +237,7 @@ export interface FileRoutesById {
   '/tampon-sac-kraft': typeof TamponSacKraftRoute
   '/tampon-tote-bag-vetement': typeof TamponToteBagVetementRoute
   '/api/logos': typeof ApiLogosRouteWithChildren
+  '/api/stats': typeof ApiStatsRoute
   '/collections/$cle': typeof CollectionsCleRoute
   '/confirmation/$ref': typeof ConfirmationRefRoute
   '/produits/$handle': typeof ProduitsHandleRoute
@@ -257,6 +266,7 @@ export interface FileRouteTypes {
     | '/tampon-sac-kraft'
     | '/tampon-tote-bag-vetement'
     | '/api/logos'
+    | '/api/stats'
     | '/collections/$cle'
     | '/confirmation/$ref'
     | '/produits/$handle'
@@ -283,6 +293,7 @@ export interface FileRouteTypes {
     | '/tampon-sac-kraft'
     | '/tampon-tote-bag-vetement'
     | '/api/logos'
+    | '/api/stats'
     | '/collections/$cle'
     | '/confirmation/$ref'
     | '/produits/$handle'
@@ -309,6 +320,7 @@ export interface FileRouteTypes {
     | '/tampon-sac-kraft'
     | '/tampon-tote-bag-vetement'
     | '/api/logos'
+    | '/api/stats'
     | '/collections/$cle'
     | '/confirmation/$ref'
     | '/produits/$handle'
@@ -336,6 +348,7 @@ export interface RootRouteChildren {
   TamponSacKraftRoute: typeof TamponSacKraftRoute
   TamponToteBagVetementRoute: typeof TamponToteBagVetementRoute
   ApiLogosRoute: typeof ApiLogosRouteWithChildren
+  ApiStatsRoute: typeof ApiStatsRoute
   CollectionsCleRoute: typeof CollectionsCleRoute
   ConfirmationRefRoute: typeof ConfirmationRefRoute
   ProduitsHandleRoute: typeof ProduitsHandleRoute
@@ -485,6 +498,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CollectionsCleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/stats': {
+      id: '/api/stats'
+      path: '/api/stats'
+      fullPath: '/api/stats'
+      preLoaderRoute: typeof ApiStatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/logos': {
       id: '/api/logos'
       path: '/api/logos'
@@ -547,6 +567,7 @@ const rootRouteChildren: RootRouteChildren = {
   TamponSacKraftRoute: TamponSacKraftRoute,
   TamponToteBagVetementRoute: TamponToteBagVetementRoute,
   ApiLogosRoute: ApiLogosRouteWithChildren,
+  ApiStatsRoute: ApiStatsRoute,
   CollectionsCleRoute: CollectionsCleRoute,
   ConfirmationRefRoute: ConfirmationRefRoute,
   ProduitsHandleRoute: ProduitsHandleRoute,

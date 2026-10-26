@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { suivre } from './stats';
 import { P, PROMOS, type Cfg, type Ligne } from './catalogue';
 
 /* État du panier, côté navigateur. Le panier reste dans ce navigateur (confort du visiteur) ;
@@ -76,6 +77,7 @@ export function BoutiqueProvider({ children }: { children: ReactNode }) {
 
   const ajouter = useCallback<Boutique['ajouter']>((c, o = {}) => {
     const cfg = copie(c);
+    if (!o.edition) suivre('panier', cfg.h);
     setPanier((l) => {
       if (o.edition) {
         const i = l.findIndex((a) => a.cle === o.edition);
@@ -96,6 +98,7 @@ export function BoutiqueProvider({ children }: { children: ReactNode }) {
     }
   }, [annoncer]);
   const ajouterPlusieurs = useCallback((cs: Cfg[]) => {
+    cs.forEach((c) => suivre('panier', c.h));
     setPanier((l) => [...l, ...cs.map((c) => ({ cle: uid('l'), cfg: copie(c), qty: c.qty }))]);
     annoncer('Sélection ajoutée au panier');
     setPanneau('panier');

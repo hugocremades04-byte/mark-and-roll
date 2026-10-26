@@ -32,7 +32,7 @@ function MentionsLegales() {
         <h2>Paiement</h2>
         <p>Les paiements en ligne sont traités par Stripe Payments Europe, Ltd., 1 Grand Canal Street Lower, Dublin 2, Irlande. Mark &amp; Roll n'a jamais accès à vos données bancaires.</p>
         <h2>Données personnelles</h2>
-        <p>Les informations saisies lors d'une commande, d'une demande de devis ou d'une inscription à la newsletter servent uniquement à traiter la demande, envoyer le BAT et livrer. Elles ne sont jamais revendues. Vous pouvez demander l'accès, la rectification ou la suppression de vos données à {site.contact}. Le site ne dépose aucun cookie publicitaire ; la mesure d'audience est anonyme et sans cookie.</p>
+        <p>Les informations saisies lors d'une commande, d'une demande de devis ou d'une inscription à la newsletter servent uniquement à traiter la demande, envoyer le BAT et livrer. Elles ne sont jamais revendues. Vous pouvez demander l'accès, la rectification ou la suppression de vos données à {site.contact}. Le site ne dépose aucun cookie publicitaire ; la mesure d'audience est anonyme et sans cookie : le site compte les visites par jour, leur source (par exemple Instagram ou Google) et les ajouts au panier, sans aucun identifiant personnel.</p>
         <h2>Propriété intellectuelle</h2>
         <p>Les textes, visuels et le logo Mark &amp; Roll sont protégés. Les logos et dessins transmis par les clients restent leur propriété et servent uniquement à leur commande.</p>
       </article>

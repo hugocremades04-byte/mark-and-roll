@@ -46,3 +46,27 @@ export const majCommande = createServerFn({ method: 'POST' })
     if (data.paiement) await (await db()).prepare('UPDATE commandes SET paiement = ? WHERE id = ?').bind(data.paiement, data.id).run();
     return { ok: true };
   });
+
+/** Statistiques de la période : compteurs agrégés (table stats) et commandes (source, paiement, total). */
+export const statsAtelier = createServerFn({ method: 'GET' })
+  .validator(z.object({ jours: z.number().int().min(1).max(366) }))
+  .handler(async ({ data }) => {
+    if (!(await estConnecte())) throw new Error('Session atelier expirée.');
+    const D = await db();
+    const jour = (d: Date) => new Intl.DateTimeFormat('fr-CA', { timeZone: 'Europe/Paris', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+    const depuis = jour(new Date(Date.now() - (data.jours - 1) * 864e5));
+    const [ev, cmd] = await Promise.all([
+      D.prepare('SELECT jour, evt, cle, source, SUM(n) AS n FROM stats WHERE jour >= ? GROUP BY jour, evt, cle, source').bind(depuis)
+        .all<{ jour: string; evt: string; cle: string; source: string; n: number }>(),
+      D.prepare("SELECT created_at, paiement, totaux, source FROM commandes WHERE created_at >= ? AND statut != 'Annulée'").bind(`${depuis} 00:00:00`)
+        .all<{ created_at: string; paiement: string; totaux: string; source: string | null }>(),
+    ]);
+    return {
+      depuis,
+      evenements: ev.results || [],
+      commandes: (cmd.results || []).map((r) => {
+        const t = JSON.parse(r.totaux) as { total: number; promo: string | null };
+        return { jour: jour(new Date(r.created_at.replace(' ', 'T') + 'Z')), payee: r.paiement === 'payee', total: t.total, promo: t.promo, source: r.source || 'direct' };
+      }),
+    };
+  });

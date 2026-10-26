@@ -66,6 +66,7 @@ export const schemaCommande = z.object({
     tel: z.string().trim().min(6).max(30),
   }),
   notes: z.string().max(1000),
+  source: z.string().max(40).optional(),
 });
 export type EntreeCommande = z.infer<typeof schemaCommande>;
 
@@ -99,6 +100,7 @@ export function verifierLigne(l: Ligne) {
 export interface CommandeRow {
   id: number; ref: string; num: string | null; created_at: string; statut: string; paiement: string;
   stripe_session: string | null; email: string; client: string; livraison: string; articles: string; totaux: string; notes: string | null;
+  source?: string | null;
 }
 export interface CommandePublique {
   ref: string; num: string; date: string; statut: string; paiement: string; livraison: Livraison;
@@ -127,13 +129,21 @@ const SCHEMA = [
     societe TEXT NOT NULL DEFAULT '', email TEXT NOT NULL, quantite TEXT NOT NULL DEFAULT '', message TEXT NOT NULL DEFAULT '')`,
   `CREATE TABLE IF NOT EXISTS abonnes (email TEXT PRIMARY KEY, created_at TEXT NOT NULL DEFAULT (datetime('now')))`,
   `CREATE TABLE IF NOT EXISTS reglages (cle TEXT PRIMARY KEY, valeur TEXT NOT NULL, updated_at TEXT NOT NULL DEFAULT (datetime('now')))`,
+  `CREATE TABLE IF NOT EXISTS stats (jour TEXT NOT NULL, evt TEXT NOT NULL, cle TEXT NOT NULL DEFAULT '', source TEXT NOT NULL DEFAULT 'direct',
+    n INTEGER NOT NULL DEFAULT 0, valeur REAL NOT NULL DEFAULT 0, PRIMARY KEY (jour, evt, cle, source))`,
 ];
+/** Colonnes ajoutées après coup : l'erreur « colonne déjà présente » est ignorée. */
+const MIGRATIONS = ['ALTER TABLE commandes ADD COLUMN source TEXT'];
 let schemaPret: Promise<unknown> | null = null;
 
 export async function db() {
   const { DB } = bindings();
   if (!DB) throw new Error('La base de données n\'est pas encore disponible. Réessayez dans quelques minutes.');
-  if (!schemaPret) schemaPret = DB.batch(SCHEMA.map((q) => DB.prepare(q))).catch((e) => { schemaPret = null; throw e; });
+  if (!schemaPret) {
+    schemaPret = DB.batch(SCHEMA.map((q) => DB.prepare(q)))
+      .then(() => Promise.all(MIGRATIONS.map((q) => DB.prepare(q).run().catch(() => null))))
+      .catch((e) => { schemaPret = null; throw e; });
+  }
   await schemaPret;
   return DB;
 }
@@ -144,8 +154,9 @@ export async function enregistrerCommande(e: EntreeCommande, origine: string) {
   const ref = crypto.randomUUID();
   const D = await db();
   const ligne = await D.prepare(
-    'INSERT INTO commandes (ref, email, client, livraison, articles, totaux, notes) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id',
-  ).bind(ref, e.client.email, JSON.stringify(e.client), e.livraison, JSON.stringify(t.lignes), JSON.stringify(t), e.notes.trim()).first<{ id: number }>();
+    'INSERT INTO commandes (ref, email, client, livraison, articles, totaux, notes, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id',
+  ).bind(ref, e.client.email, JSON.stringify(e.client), e.livraison, JSON.stringify(t.lignes), JSON.stringify(t), e.notes.trim(),
+    (e.source || 'direct').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 24) || 'direct').first<{ id: number }>();
   if (!ligne) throw new Error('La commande n\'a pas pu être enregistrée.');
   const num = `MR-${1040 + ligne.id}`;
   await D.prepare('UPDATE commandes SET num = ? WHERE id = ?').bind(num, ligne.id).run();

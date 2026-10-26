@@ -1,11 +1,12 @@
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useRef, useState, type FormEvent, type InputHTMLAttributes } from 'react';
+import { useEffect, useRef, useState, type FormEvent, type InputHTMLAttributes } from 'react';
 import { Ariane, LignePanier, PanierVide } from '@/components/boutique/Elements';
 import { IcoCadenas, IcoCarte } from '@/components/boutique/Icones';
 import { configPublique, passerCommande } from '@/lib/api/boutique.functions';
 import { useBoutique } from '@/lib/boutique';
 import { PRIX_BUMP, PRIX_ROUE_PRETE, eur, ligneBump, port, totauxCommande, type Livraison } from '@/lib/catalogue';
 import { CodePromo } from './panier';
+import { sourceCommande, suivre } from '@/lib/stats';
 
 export const Route = createFileRoute('/commande')({
   validateSearch: (s: Record<string, unknown>): { annule?: string } => (s.annule ? { annule: '1' } : {}),
@@ -33,6 +34,10 @@ function Commande() {
   const [erreur, setErreur] = useState('');
   const [envoi, setEnvoi] = useState(false);
   const form = useRef<HTMLFormElement | null>(null);
+  const vu = useRef(false);
+  useEffect(() => {
+    if (pret && panier.length && !vu.current) { vu.current = true; suivre('commande'); }
+  }, [pret, panier.length]);
 
   if (!pret) return <div className="wrap section"><p className="note">Chargement du panier…</p></div>;
   if (!panier.length) return <div className="wrap" style={{ paddingBlock: '24px 48px' }}><h1>Commande</h1><PanierVide /></div>;
@@ -66,7 +71,7 @@ function Commande() {
     setEnvoi(true);
     try {
       const r = await passerCommande({ data: {
-        lignes: panier, promo, bump: !!conf && bump, livraison: mode, notes,
+        lignes: panier, promo, bump: !!conf && bump, livraison: mode, notes, source: sourceCommande(),
         client: { ...client, email: client.email.trim(), cp: client.cp.trim() },
       } });
       if (!r.ok) { setErreur(r.erreur); setEnvoi(false); return; }

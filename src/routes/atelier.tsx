@@ -4,6 +4,9 @@ import { Ariane } from '@/components/boutique/Elements';
 import { connexionAtelier, deconnexionAtelier, etatAtelier, majCommande } from '@/lib/api/atelier.functions';
 import { useBoutique } from '@/lib/boutique';
 import { P, STATUTS, eur, fabrication } from '@/lib/catalogue';
+import { Statistiques } from '@/components/boutique/Statistiques';
+import { exclureCetAppareil } from '@/lib/stats';
+import { useEffect } from 'react';
 
 export const Route = createFileRoute('/atelier')({
   loader: () => etatAtelier(),
@@ -52,7 +55,8 @@ function Atelier() {
   const etat = Route.useLoaderData();
   const router = useRouter();
   const { afficher } = useBoutique();
-  const [onglet, setOnglet] = useState<'commandes' | 'devis' | 'inscrits'>('commandes');
+  const [onglet, setOnglet] = useState<'commandes' | 'stats' | 'devis' | 'inscrits'>('commandes');
+  useEffect(() => { if (etat.connecte) exclureCetAppareil(); }, [etat.connecte]);
   if (!etat.connecte) return <div className="wrap"><Connexion /></div>;
   const { commandes, devis, abonnes } = etat;
 
@@ -87,6 +91,7 @@ function Atelier() {
       </div>
       <div className="onglets onglets-atelier" role="tablist" aria-label="Rubriques">
         <button type="button" role="tab" aria-selected={onglet === 'commandes'} onClick={() => setOnglet('commandes')}>Commandes ({commandes.length})</button>
+        <button type="button" role="tab" aria-selected={onglet === 'stats'} onClick={() => setOnglet('stats')}>Statistiques</button>
         <button type="button" role="tab" aria-selected={onglet === 'devis'} onClick={() => setOnglet('devis')}>Devis ({devis.length})</button>
         <button type="button" role="tab" aria-selected={onglet === 'inscrits'} onClick={() => setOnglet('inscrits')}>Inscrits ({abonnes.length})</button>
       </div>
@@ -126,6 +131,7 @@ function Atelier() {
         </div>
       )}
 
+      {onglet === 'stats' && <Statistiques />}
       {onglet === 'devis' && (
         <div className="pile">
           {!devis.length && <p className="note">Aucune demande de devis pour l'instant.</p>}

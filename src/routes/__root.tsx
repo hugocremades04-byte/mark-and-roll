@@ -6,6 +6,7 @@ import siteCss from '../site.css?url';
 import site from '../site.json';
 import { BoutiqueProvider, useBoutique } from '@/lib/boutique';
 import { Bandeau, Entete, Panneaux, Pied, Toast } from '@/components/boutique/Cadre';
+import { SCRIPT_SOURCE, visite } from '@/lib/stats';
 
 
 /* Métadonnées du site : à compléter dans src/site.json (l'adresse définitive sert aux images de partage). */
@@ -85,6 +86,7 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="fr">
       <head>
+        <script dangerouslySetInnerHTML={{ __html: SCRIPT_SOURCE }} />
         <HeadContent />
       </head>
       <body>
@@ -106,6 +108,7 @@ function Annonce() {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useEffect(() => { visite(); }, []);
 
 
   return (

@@ -10,6 +10,7 @@ import {
   type Cfg, type CfgConfig, type CfgSimple, type ProduitConfig, type ProduitSimple, type Roue,
 } from '@/lib/catalogue';
 import { absolu, offreLd, seo } from '@/lib/seo';
+import { suivre } from '@/lib/stats';
 
 export const Route = createFileRoute('/produits/$handle')({
   // ?texte=MA MARQUE : lien d'aperçu envoyé en prospection, le configurateur s'ouvre avec le nom déjà tapé.
@@ -57,6 +58,7 @@ export const Route = createFileRoute('/produits/$handle')({
 
 function PageProduit() {
   const { h } = Route.useLoaderData();
+  useEffect(() => { suivre('produit', h); }, [h]);
   return <Fiche key={h} h={h} />;
 }
 
