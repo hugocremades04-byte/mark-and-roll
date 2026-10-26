@@ -27,7 +27,7 @@ export async function etatStripe() {
     const perms = (r.data?.error?.message?.match(/rak_[a-z_]+/g) ?? []).join(',');
     tests[nom] = r.ok ? 'ok' : `${r.status} ${r.data?.error?.code ?? r.data?.error?.type ?? ''} ${perms}`.trim();
   }
-  return { version: 'v-domaine-2', cle: type, longueur: c.length, ...tests };
+  return { version: 'v-domaine-3', cle: type, longueur: c.length, ...tests };
 }
 /** Étiquette du parcours de paiement, visible dans le tableau de bord Stripe. */
 const INTEGRATION_ID = 'mark-and-roll-checkout-qmpvrnci';
