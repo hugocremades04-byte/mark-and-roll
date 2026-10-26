@@ -681,3 +681,14 @@ body{margin:0}
 .stats-table th,.stats-table td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}
 .stats-table th{color:var(--muted);font-weight:600;font-size:.82rem}
 .stats-table .num{text-align:right;font-variant-numeric:tabular-nums}
+/* BAT client */
+.bat{max-width:820px;margin-inline:auto;display:grid;gap:20px;padding-block:24px 56px}
+.bat h1{font-size:clamp(1.6rem,3.2vw,2.2rem)}
+.bat-roue{display:grid;gap:8px;margin-top:10px}
+.bat-roue .apercu svg{width:100%;height:auto;border-radius:10px;display:block}
+.bat-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.bat-ok{display:flex;gap:14px;align-items:center}
+.bat-ok .ok-rond{flex:none;width:44px;height:44px;border-radius:99px;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center}
+.bat-ok .ok-rond svg{width:22px;height:22px}
+.bat-atelier{display:grid;gap:8px;padding:12px;border-radius:10px;background:var(--fond-2,#f4f4f1)}
+.bat-atelier .ligne{display:flex;flex-wrap:wrap;gap:8px;align-items:center}

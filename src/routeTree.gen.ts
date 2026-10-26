@@ -29,8 +29,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProduitsHandleRouteImport } from './routes/produits.$handle'
 import { Route as ConfirmationRefRouteImport } from './routes/confirmation.$ref'
 import { Route as CollectionsCleRouteImport } from './routes/collections.$cle'
+import { Route as BatRefRouteImport } from './routes/bat.$ref'
 import { Route as ApiStatsRouteImport } from './routes/api/stats'
 import { Route as ApiLogosRouteImport } from './routes/api/logos'
+import { Route as ApiDesinscriptionRouteImport } from './routes/api/desinscription'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
 import { Route as ApiStripeEtatRouteImport } from './routes/api/stripe.etat'
 import { Route as ApiLogosIdRouteImport } from './routes/api/logos.$id'
@@ -137,6 +139,11 @@ const CollectionsCleRoute = CollectionsCleRouteImport.update({
   path: '/collections/$cle',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BatRefRoute = BatRefRouteImport.update({
+  id: '/bat/$ref',
+  path: '/bat/$ref',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStatsRoute = ApiStatsRouteImport.update({
   id: '/api/stats',
   path: '/api/stats',
@@ -145,6 +152,11 @@ const ApiStatsRoute = ApiStatsRouteImport.update({
 const ApiLogosRoute = ApiLogosRouteImport.update({
   id: '/api/logos',
   path: '/api/logos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiDesinscriptionRoute = ApiDesinscriptionRouteImport.update({
+  id: '/api/desinscription',
+  path: '/api/desinscription',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
@@ -181,8 +193,10 @@ export interface FileRoutesByFullPath {
   '/tampon-mariage-personnalise': typeof TamponMariagePersonnaliseRoute
   '/tampon-sac-kraft': typeof TamponSacKraftRoute
   '/tampon-tote-bag-vetement': typeof TamponToteBagVetementRoute
+  '/api/desinscription': typeof ApiDesinscriptionRoute
   '/api/logos': typeof ApiLogosRouteWithChildren
   '/api/stats': typeof ApiStatsRoute
+  '/bat/$ref': typeof BatRefRoute
   '/collections/$cle': typeof CollectionsCleRoute
   '/confirmation/$ref': typeof ConfirmationRefRoute
   '/produits/$handle': typeof ProduitsHandleRoute
@@ -208,8 +222,10 @@ export interface FileRoutesByTo {
   '/tampon-mariage-personnalise': typeof TamponMariagePersonnaliseRoute
   '/tampon-sac-kraft': typeof TamponSacKraftRoute
   '/tampon-tote-bag-vetement': typeof TamponToteBagVetementRoute
+  '/api/desinscription': typeof ApiDesinscriptionRoute
   '/api/logos': typeof ApiLogosRouteWithChildren
   '/api/stats': typeof ApiStatsRoute
+  '/bat/$ref': typeof BatRefRoute
   '/collections/$cle': typeof CollectionsCleRoute
   '/confirmation/$ref': typeof ConfirmationRefRoute
   '/produits/$handle': typeof ProduitsHandleRoute
@@ -236,8 +252,10 @@ export interface FileRoutesById {
   '/tampon-mariage-personnalise': typeof TamponMariagePersonnaliseRoute
   '/tampon-sac-kraft': typeof TamponSacKraftRoute
   '/tampon-tote-bag-vetement': typeof TamponToteBagVetementRoute
+  '/api/desinscription': typeof ApiDesinscriptionRoute
   '/api/logos': typeof ApiLogosRouteWithChildren
   '/api/stats': typeof ApiStatsRoute
+  '/bat/$ref': typeof BatRefRoute
   '/collections/$cle': typeof CollectionsCleRoute
   '/confirmation/$ref': typeof ConfirmationRefRoute
   '/produits/$handle': typeof ProduitsHandleRoute
@@ -265,8 +283,10 @@ export interface FileRouteTypes {
     | '/tampon-mariage-personnalise'
     | '/tampon-sac-kraft'
     | '/tampon-tote-bag-vetement'
+    | '/api/desinscription'
     | '/api/logos'
     | '/api/stats'
+    | '/bat/$ref'
     | '/collections/$cle'
     | '/confirmation/$ref'
     | '/produits/$handle'
@@ -292,8 +312,10 @@ export interface FileRouteTypes {
     | '/tampon-mariage-personnalise'
     | '/tampon-sac-kraft'
     | '/tampon-tote-bag-vetement'
+    | '/api/desinscription'
     | '/api/logos'
     | '/api/stats'
+    | '/bat/$ref'
     | '/collections/$cle'
     | '/confirmation/$ref'
     | '/produits/$handle'
@@ -319,8 +341,10 @@ export interface FileRouteTypes {
     | '/tampon-mariage-personnalise'
     | '/tampon-sac-kraft'
     | '/tampon-tote-bag-vetement'
+    | '/api/desinscription'
     | '/api/logos'
     | '/api/stats'
+    | '/bat/$ref'
     | '/collections/$cle'
     | '/confirmation/$ref'
     | '/produits/$handle'
@@ -347,8 +371,10 @@ export interface RootRouteChildren {
   TamponMariagePersonnaliseRoute: typeof TamponMariagePersonnaliseRoute
   TamponSacKraftRoute: typeof TamponSacKraftRoute
   TamponToteBagVetementRoute: typeof TamponToteBagVetementRoute
+  ApiDesinscriptionRoute: typeof ApiDesinscriptionRoute
   ApiLogosRoute: typeof ApiLogosRouteWithChildren
   ApiStatsRoute: typeof ApiStatsRoute
+  BatRefRoute: typeof BatRefRoute
   CollectionsCleRoute: typeof CollectionsCleRoute
   ConfirmationRefRoute: typeof ConfirmationRefRoute
   ProduitsHandleRoute: typeof ProduitsHandleRoute
@@ -498,6 +524,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CollectionsCleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bat/$ref': {
+      id: '/bat/$ref'
+      path: '/bat/$ref'
+      fullPath: '/bat/$ref'
+      preLoaderRoute: typeof BatRefRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/stats': {
       id: '/api/stats'
       path: '/api/stats'
@@ -510,6 +543,13 @@ declare module '@tanstack/react-router' {
       path: '/api/logos'
       fullPath: '/api/logos'
       preLoaderRoute: typeof ApiLogosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/desinscription': {
+      id: '/api/desinscription'
+      path: '/api/desinscription'
+      fullPath: '/api/desinscription'
+      preLoaderRoute: typeof ApiDesinscriptionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/stripe/webhook': {
@@ -566,8 +606,10 @@ const rootRouteChildren: RootRouteChildren = {
   TamponMariagePersonnaliseRoute: TamponMariagePersonnaliseRoute,
   TamponSacKraftRoute: TamponSacKraftRoute,
   TamponToteBagVetementRoute: TamponToteBagVetementRoute,
+  ApiDesinscriptionRoute: ApiDesinscriptionRoute,
   ApiLogosRoute: ApiLogosRouteWithChildren,
   ApiStatsRoute: ApiStatsRoute,
+  BatRefRoute: BatRefRoute,
   CollectionsCleRoute: CollectionsCleRoute,
   ConfirmationRefRoute: ConfirmationRefRoute,
   ProduitsHandleRoute: ProduitsHandleRoute,

@@ -29,7 +29,7 @@ export async function etatStripe() {
   }
   const b = bindings();
   const emails = { cle_brevo: !!b.BREVO_API_KEY, expediteur: !!b.EMAIL_EXPEDITEUR, atelier: !!b.EMAIL_ATELIER };
-  return { version: 'v-ecom-1', cle: type, longueur: c.length, ...tests, emails };
+  return { version: 'v-ecom-2', cle: type, longueur: c.length, ...tests, emails };
 }
 /** Étiquette du parcours de paiement, visible dans le tableau de bord Stripe. */
 const INTEGRATION_ID = 'mark-and-roll-checkout-qmpvrnci';

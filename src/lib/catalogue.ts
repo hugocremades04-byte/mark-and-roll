@@ -495,7 +495,7 @@ export function fabrication(num: string, a: Ligne, idx: number): Fab[] {
   return out;
 }
 
-export const STATUTS = ['BAT à envoyer', 'BAT validé', 'En fabrication', 'Expédiée', 'Annulée'];
+export const STATUTS = ['BAT à envoyer', 'BAT envoyé', 'BAT validé', 'En fabrication', 'Expédiée', 'Annulée'];
 export const FAQ: [string, string][] = [
   ['Le texte s\'imprime-t-il à l\'endroit ?', 'Oui. La roue est gravée en miroir pour que l\'empreinte se lise normalement. L\'aperçu de la fiche produit montre le résultat imprimé.'],
   ['Kit Rouleau ou Grand format ?', 'Le Kit Rouleau imprime une bande de 13,5 mm avec un marqueur : idéal pour un nom, un slogan ou un logo simple. Le Grand format imprime une bande de 30 ou 50 mm grâce à son rouleau encreur : il garde les détails d\'un logo complexe ou d\'un dessin.'],

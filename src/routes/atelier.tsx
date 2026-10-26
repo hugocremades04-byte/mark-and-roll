@@ -1,7 +1,7 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { useState, type FormEvent } from 'react';
 import { Ariane } from '@/components/boutique/Elements';
-import { connexionAtelier, deconnexionAtelier, etatAtelier, majCommande } from '@/lib/api/atelier.functions';
+import { connexionAtelier, deconnexionAtelier, envoyerBat, etatAtelier, majCommande } from '@/lib/api/atelier.functions';
 import { useBoutique } from '@/lib/boutique';
 import { P, STATUTS, eur, fabrication } from '@/lib/catalogue';
 import { Statistiques } from '@/components/boutique/Statistiques';
@@ -69,6 +69,15 @@ function Atelier() {
       afficher('Mise à jour impossible, reconnectez-vous');
     }
   };
+  const bat = async (id: number, note: string) => {
+    try {
+      const r = await envoyerBat({ data: { id, note } });
+      await copier(r.url, afficher, r.email ? 'BAT envoyé par email, lien copié' : 'Lien du BAT copié : collez-le dans votre email au client');
+      router.invalidate();
+    } catch {
+      afficher('Envoi du BAT impossible, reconnectez-vous');
+    }
+  };
   const csv = () => {
     const l = [['numero', 'date', 'client', 'email', 'telephone', 'adresse', 'livraison', 'articles', 'total', 'code', 'paiement', 'statut'].join(';')];
     commandes.forEach((c) => l.push([
@@ -114,6 +123,7 @@ function Atelier() {
                 </div>
               </div>
               <p className="note">{c.client.email}, {c.client.tel}, {c.client.adresse}, {c.client.cp} {c.client.ville}, {c.client.pays}. Livraison {c.livraison}.{c.notes ? ` Note : « ${c.notes} »` : ''}</p>
+              <BatAtelier c={c} envoyer={bat} />
               <details open={k === 0}><summary>Fiche de fabrication</summary>
                 <div className="pile" style={{ marginTop: 12 }}>
                   {c.lignes.map((a, i) => fabrication(c.num, a, i).map((f, j) => (
@@ -153,6 +163,29 @@ function Atelier() {
               <tbody>{abonnes.map((a) => <tr key={a.email}><td>{a.email}</td><td>{dateFr(a.created_at.replace(' ', 'T') + 'Z')}</td></tr>)}</tbody></table></div>
           )}
         </div>
+      )}
+    </div>
+  );
+}
+
+type CmdAtelier = { id: number; ref: string; statut: string; bat: { envoye: string | null; reponse: string | null; commentaire: string | null; note: string | null } };
+function BatAtelier({ c, envoyer }: { c: CmdAtelier; envoyer: (id: number, note: string) => Promise<void> }) {
+  const [note, setNote] = useState(c.bat.note ?? '');
+  const [envoi, setEnvoi] = useState(false);
+  const lien = typeof window !== 'undefined' ? `${location.origin}/bat/${c.ref}` : `/bat/${c.ref}`;
+  const etat = c.bat.reponse === 'validé' ? 'Validé par le client' : c.bat.reponse === 'modification' ? 'Modification demandée' : c.bat.envoye ? 'Envoyé, en attente de réponse' : 'Pas encore envoyé';
+  return (
+    <div className="bat-atelier">
+      <p className="note"><strong>BAT :</strong> {etat}{c.bat.reponse === 'modification' && c.bat.commentaire ? ` : « ${c.bat.commentaire} »` : ''}</p>
+      {!['En fabrication', 'Expédiée', 'Annulée'].includes(c.statut) && (
+        <>
+          <input className="saisie" placeholder="Mot au client (facultatif), ex. j'ai centré le logo" value={note} maxLength={600} onChange={(e) => setNote(e.target.value)} />
+          <div className="ligne">
+            <button type="button" className="btn btn-primaire" disabled={envoi} onClick={async () => { setEnvoi(true); await envoyer(c.id, note); setEnvoi(false); }}>
+              {c.bat.envoye ? 'Renvoyer le BAT' : 'Envoyer le BAT'}</button>
+            {c.bat.envoye && <a className="lien" href={lien} target="_blank" rel="noreferrer">Voir la page client</a>}
+          </div>
+        </>
       )}
     </div>
   );

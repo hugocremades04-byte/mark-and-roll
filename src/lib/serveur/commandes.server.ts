@@ -101,10 +101,13 @@ export interface CommandeRow {
   id: number; ref: string; num: string | null; created_at: string; statut: string; paiement: string;
   stripe_session: string | null; email: string; client: string; livraison: string; articles: string; totaux: string; notes: string | null;
   source?: string | null;
+  bat_envoye_at?: string | null; bat_reponse?: string | null; bat_commentaire?: string | null; bat_note?: string | null;
+  expediee_at?: string | null; photo_demandee?: number | null;
 }
 export interface CommandePublique {
   ref: string; num: string; date: string; statut: string; paiement: string; livraison: Livraison;
   client: EntreeCommande['client']; lignes: Ligne[]; totaux: Omit<Totaux, 'lignes'>; notes: string;
+  bat: { envoye: string | null; reponse: string | null; commentaire: string | null; note: string | null };
 }
 export const versPublique = (r: CommandeRow): CommandePublique => {
   const t = JSON.parse(r.totaux) as Totaux;
@@ -112,6 +115,7 @@ export const versPublique = (r: CommandeRow): CommandePublique => {
     ref: r.ref, num: r.num || `MR-${1040 + r.id}`, date: r.created_at.replace(' ', 'T') + 'Z', statut: r.statut, paiement: r.paiement,
     livraison: r.livraison as Livraison, client: JSON.parse(r.client), lignes: JSON.parse(r.articles), notes: r.notes || '',
     totaux: { st: t.st, rp: t.rp, port: t.port, total: t.total, promo: t.promo },
+    bat: { envoye: r.bat_envoye_at ?? null, reponse: r.bat_reponse ?? null, commentaire: r.bat_commentaire ?? null, note: r.bat_note ?? null },
   };
 };
 
@@ -133,7 +137,17 @@ const SCHEMA = [
     n INTEGER NOT NULL DEFAULT 0, valeur REAL NOT NULL DEFAULT 0, PRIMARY KEY (jour, evt, cle, source))`,
 ];
 /** Colonnes ajoutées après coup : l'erreur « colonne déjà présente » est ignorée. */
-const MIGRATIONS = ['ALTER TABLE commandes ADD COLUMN source TEXT'];
+const MIGRATIONS = [
+  'ALTER TABLE commandes ADD COLUMN source TEXT',
+  'ALTER TABLE commandes ADD COLUMN bat_envoye_at TEXT',
+  'ALTER TABLE commandes ADD COLUMN bat_reponse TEXT',
+  'ALTER TABLE commandes ADD COLUMN bat_commentaire TEXT',
+  'ALTER TABLE commandes ADD COLUMN bat_note TEXT',
+  'ALTER TABLE commandes ADD COLUMN expediee_at TEXT',
+  'ALTER TABLE commandes ADD COLUMN photo_demandee INTEGER',
+  'ALTER TABLE abonnes ADD COLUMN etape INTEGER NOT NULL DEFAULT 1',
+  'ALTER TABLE abonnes ADD COLUMN desinscrit INTEGER NOT NULL DEFAULT 0',
+];
 let schemaPret: Promise<unknown> | null = null;
 
 export async function db() {
@@ -141,7 +155,7 @@ export async function db() {
   if (!DB) throw new Error('La base de données n\'est pas encore disponible. Réessayez dans quelques minutes.');
   if (!schemaPret) {
     schemaPret = DB.batch(SCHEMA.map((q) => DB.prepare(q)))
-      .then(() => Promise.all(MIGRATIONS.map((q) => DB.prepare(q).run().catch(() => null))))
+      .then(async () => { for (const q of MIGRATIONS) await DB.prepare(q).run().catch(() => null); })
       .catch((e) => { schemaPret = null; throw e; });
   }
   await schemaPret;

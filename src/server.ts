@@ -53,6 +53,15 @@ function redirectionCanonique(request: Request): Response | null {
 }
 
 export default {
+  /* Tâches du matin (relances newsletter, demande de photo) : déclencheur « triggers.crons » de wrangler.jsonc. */
+  async scheduled(_evt: unknown, _env: unknown, ctx: { waitUntil: (p: Promise<unknown>) => void }) {
+    ctx.waitUntil(
+      import("./lib/serveur/taches.server")
+        .then((m) => m.tachesQuotidiennes())
+        .then((r) => console.log("Tâches quotidiennes", JSON.stringify(r)))
+        .catch((e) => console.error("Tâches quotidiennes", e)),
+    );
+  },
   async fetch(request: Request, env: unknown, ctx: unknown) {
     const redirection = redirectionCanonique(request);
     if (redirection) return redirection;

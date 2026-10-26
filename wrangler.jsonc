@@ -5,6 +5,8 @@
   "compatibility_date": "2025-05-01",
   "compatibility_flags": ["nodejs_compat"],
   "observability": { "enabled": true },
+  // Tous les matins à 8 h UTC : relances newsletter (J+2, J+5) et demande de photo après livraison.
+  "triggers": { "crons": ["0 8 * * *"] },
   // Garde les variables réglées dans le tableau de bord à chaque déploiement.
   "keep_vars": true,
 

@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { STATUTS } from '../catalogue';
 import { connecter, deconnecter, estConnecte } from '../serveur/atelier.server';
 import { db, versPublique, type CommandeRow } from '../serveur/commandes.server';
+import { emailBat } from '../serveur/emails.server';
+import site from '../../site.json';
 
 export interface DevisRow { id: number; created_at: string; nom: string; societe: string; email: string; quantite: string; message: string }
 
@@ -41,7 +43,7 @@ export const majCommande = createServerFn({ method: 'POST' })
     if (!(await estConnecte())) throw new Error('Session atelier expirée.');
     if (data.statut) {
       if (!STATUTS.includes(data.statut)) throw new Error('Statut inconnu.');
-      await (await db()).prepare('UPDATE commandes SET statut = ? WHERE id = ?').bind(data.statut, data.id).run();
+      await (await db()).prepare("UPDATE commandes SET statut = ?, expediee_at = CASE WHEN ? = 'Expédiée' THEN COALESCE(expediee_at, datetime('now')) ELSE expediee_at END WHERE id = ?").bind(data.statut, data.statut, data.id).run();
     }
     if (data.paiement) await (await db()).prepare('UPDATE commandes SET paiement = ? WHERE id = ?').bind(data.paiement, data.id).run();
     return { ok: true };
@@ -69,4 +71,21 @@ export const statsAtelier = createServerFn({ method: 'GET' })
         return { jour: jour(new Date(r.created_at.replace(' ', 'T') + 'Z')), payee: r.paiement === 'payee', total: t.total, promo: t.promo, source: r.source || 'direct' };
       }),
     };
+  });
+
+/** Envoie le BAT au client : lien vers sa page de validation (et email si Brevo est branché). */
+export const envoyerBat = createServerFn({ method: 'POST' })
+  .validator(z.object({ id: z.number().int().positive(), note: z.string().max(600).optional() }))
+  .handler(async ({ data }) => {
+    if (!(await estConnecte())) throw new Error('Session atelier expirée.');
+    const D = await db();
+    const r = await D.prepare('SELECT * FROM commandes WHERE id = ?').bind(data.id).first<CommandeRow>();
+    if (!r) throw new Error('Commande introuvable.');
+    const note = (data.note || '').trim() || null;
+    await D.prepare("UPDATE commandes SET bat_envoye_at = datetime('now'), bat_note = ?, bat_reponse = NULL, bat_commentaire = NULL, statut = 'BAT envoyé' WHERE id = ?")
+      .bind(note, r.id).run();
+    const c = versPublique(r);
+    const url = `${new URL(site.url).origin}/bat/${r.ref}`;
+    const email = await emailBat({ email: c.client.email, prenom: c.client.prenom, nom: c.client.nom, num: c.num }, url, note);
+    return { url, email };
   });

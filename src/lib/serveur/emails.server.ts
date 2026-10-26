@@ -152,3 +152,59 @@ export async function emailRelancePaiement(c: Omit<InfoCommande, 'paiementEnLign
       { lib: 'Reprendre ma commande', url }),
   });
 }
+
+/** BAT : lien vers la page où le client valide ou demande une modification. */
+export async function emailBat(c: { email: string; prenom: string; nom: string; num: string }, url: string, note: string | null) {
+  const { de, atelier } = config();
+  if (!de) return false;
+  return brevo('/smtp/email', {
+    sender: { name: 'Mark & Roll', email: de },
+    to: [{ email: c.email, name: `${c.prenom} ${c.nom}` }],
+    replyTo: atelier ? { email: atelier } : undefined,
+    subject: `Votre BAT est prêt (${c.num})`,
+    htmlContent: gabarit(`${echap(c.prenom)}, votre BAT est prêt`,
+      `<p>Voici l'aperçu de votre gravure pour la commande <strong>${c.num}</strong>. Vérifiez le texte, la police et la couleur : rien n'est gravé avant votre accord.</p>${note ? `<p style="background:#F4F4F1;padding:12px 14px;border-radius:10px"><strong>Le mot de l'atelier :</strong> ${echap(note)}</p>` : ''}<p>Un clic pour valider, ou dites-nous ce qu'il faut changer : les retouches sont illimitées.</p>`,
+      { lib: 'Voir et valider mon BAT', url }),
+  });
+}
+
+/** Séquence de bienvenue de la newsletter : email 2 (J+2) et email 3 (J+5). */
+export async function emailBienvenue(email: string, etape: 2 | 3, origine: string, desinscription: string) {
+  const { de } = config();
+  if (!de) return false;
+  const pied = `<p style="font-size:12px;color:#5A5F69;margin-top:22px">Vous recevez cet email après votre inscription sur marknroll.com. <a href="${desinscription}" style="color:#5A5F69">Se désinscrire</a></p>`;
+  const lien = `${origine}/produits/kit-rouleau?utm_source=newsletter`;
+  const contenu = etape === 2
+    ? {
+      sujet: 'Comment marche un tampon rouleau',
+      titre: 'Votre marque sur chaque colis, en un passage',
+      corps: `<p>Le principe est simple :</p><ol><li><strong>Vous tapez votre texte ou envoyez votre logo</strong> : l'aperçu s'affiche tout de suite.</li><li><strong>Vous recevez un BAT gratuit</strong> sous 24 h ouvrées, retouches illimitées.</li><li><strong>On fabrique votre rouleau en France</strong>, et vous roulez : votre nom s'imprime en continu sur vos cartons, sachets kraft et tote bags.</li></ol><p>Votre code <strong>BIENVENUE10</strong> vous offre 10 % sur votre première commande.</p>${pied}`,
+      bouton: 'Créer mon tampon',
+    }
+    : {
+      sujet: 'Votre code BIENVENUE10 vous attend',
+      titre: '3 idées pour votre tampon',
+      corps: `<ul><li><strong>Vos colis</strong> : un passage sur le dessus du carton, et votre marque se voit dès l'ouverture.</li><li><strong>Vos sachets kraft et votre papier de soie</strong> : un emballage neutre devient le vôtre.</li><li><strong>Vos tote bags</strong> : avec l'encre textile, votre logo tient au lavage.</li></ul><p>Votre code <strong>BIENVENUE10</strong> est toujours valable : 10 % sur votre première commande, livraison offerte dès 45 €.</p>${pied}`,
+      bouton: 'Voir les tampons',
+    };
+  return brevo('/smtp/email', {
+    sender: { name: 'Mark & Roll', email: de },
+    to: [{ email }],
+    subject: contenu.sujet,
+    htmlContent: gabarit(contenu.titre, contenu.corps, { lib: contenu.bouton, url: lien }),
+  });
+}
+
+/** 5 jours après l'expédition : demande de photo du premier colis tamponné. */
+export async function emailPhoto(c: { email: string; prenom: string; nom: string; num: string }) {
+  const { de, atelier } = config();
+  if (!de) return false;
+  return brevo('/smtp/email', {
+    sender: { name: 'Mark & Roll', email: de },
+    to: [{ email: c.email, name: `${c.prenom} ${c.nom}` }],
+    replyTo: atelier ? { email: atelier } : undefined,
+    subject: 'Votre premier colis tamponné ?',
+    htmlContent: gabarit(`${echap(c.prenom)}, votre tampon est arrivé ?`,
+      `<p>Nous espérons que votre tampon de la commande <strong>${c.num}</strong> vous plaît.</p><p><strong>Envoyez-nous une photo de votre premier colis tamponné</strong>, simplement en répondant à cet email. Avec votre accord, nous la partagerons sur notre Instagram en mentionnant votre boutique : un peu de visibilité offerte.</p><p>Un souci avec le rendu ? Dites-le-nous aussi : une gravure non conforme au BAT est refaite sans frais.</p>`),
+  });
+}
