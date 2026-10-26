@@ -66,11 +66,11 @@ function Atelier() {
     }
   };
   const csv = () => {
-    const l = [['numero', 'date', 'client', 'email', 'telephone', 'adresse', 'livraison', 'articles', 'total', 'paiement', 'statut'].join(';')];
+    const l = [['numero', 'date', 'client', 'email', 'telephone', 'adresse', 'livraison', 'articles', 'total', 'code', 'paiement', 'statut'].join(';')];
     commandes.forEach((c) => l.push([
       c.num, c.date.slice(0, 10), `${c.client.prenom} ${c.client.nom}`, c.client.email, c.client.tel,
       `${c.client.adresse} ${c.client.cp} ${c.client.ville} ${c.client.pays}`, c.livraison,
-      c.lignes.map((a) => `${P[a.cfg.h]?.nom ?? a.cfg.h} x${a.qty}`).join(' + '), String(c.totaux.total).replace('.', ','), PAIEMENTS[c.paiement] ?? c.paiement, c.statut,
+      c.lignes.map((a) => `${P[a.cfg.h]?.nom ?? a.cfg.h} x${a.qty}`).join(' + '), String(c.totaux.total).replace('.', ','), c.totaux.promo ?? '', PAIEMENTS[c.paiement] ?? c.paiement, c.statut,
     ].map((v) => `"${String(v).replace(/"/g, '""')}"`).join(';')));
     copier(l.join('\n'), afficher, 'CSV copié, collez-le dans un tableur');
   };
@@ -99,7 +99,7 @@ function Atelier() {
               <div className="cmd-tete">
                 <div>
                   <h2 className="titre-resume">{c.num} <span className={`pastille ${c.paiement === 'payee' ? 'pastille-ok' : 'pastille-brand'}`}>{PAIEMENTS[c.paiement] ?? c.paiement}</span></h2>
-                  <p className="note">{dateFr(c.date)}, {c.client.prenom} {c.client.nom}, {eur(c.totaux.total)}</p>
+                  <p className="note">{dateFr(c.date)}, {c.client.prenom} {c.client.nom}, {eur(c.totaux.total)}{c.totaux.promo ? `, code ${c.totaux.promo}` : ''}</p>
                 </div>
                 <div className="cmd-reglages">
                   <label className="champ"><span className="lib">Statut</span>

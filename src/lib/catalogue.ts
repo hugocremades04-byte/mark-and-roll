@@ -412,7 +412,15 @@ export function calc(c: Cfg): Calc {
 }
 export const totalLigne = (a: Ligne) => (a.promo ? arr(a.promo * a.qty) : calc({ ...a.cfg, qty: a.qty } as Cfg).total);
 export const sousTotal = (l: Ligne[]) => arr(l.reduce((s, a) => s + totalLigne(a), 0));
-export const PROMOS: Record<string, number> = { BIENVENUE10: 0.1 };
+/** Codes promo. Un code par canal d'acquisition pour savoir d'où viennent les ventes (visible dans l'atelier). */
+export const PROMOS: Record<string, number> = {
+  BIENVENUE10: 0.1, // inscription newsletter
+  INSTA10: 0.1, // Instagram
+  TIKTOK10: 0.1, // TikTok
+  YOUTUBE10: 0.1, // YouTube Shorts
+  GROUPE10: 0.1, // groupes Facebook
+  PREMIERS15: 0.15, // prospection en message privé, premières marques
+};
 /** Livraison : 3,90 € en point relais comme à domicile, offerte dès FRANCO ; express Chronopost 14,90 € (prix coûtant). */
 export const FRANCO = 45;
 export const PORT = 3.9;
