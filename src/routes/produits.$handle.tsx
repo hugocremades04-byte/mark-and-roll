@@ -12,7 +12,11 @@ import {
 import { absolu, offreLd, seo } from '@/lib/seo';
 
 export const Route = createFileRoute('/produits/$handle')({
-  validateSearch: (s: Record<string, unknown>): { ligne?: string } => (typeof s.ligne === 'string' ? { ligne: s.ligne } : {}),
+  // ?texte=MA MARQUE : lien d'aperçu envoyé en prospection, le configurateur s'ouvre avec le nom déjà tapé.
+  validateSearch: (s: Record<string, unknown>): { ligne?: string; texte?: string } => ({
+    ...(typeof s.ligne === 'string' ? { ligne: s.ligne } : {}),
+    ...(typeof s.texte === 'string' && s.texte.trim() ? { texte: s.texte.trim().slice(0, 40) } : {}),
+  }),
   loader: ({ params }) => {
     if (!P[params.handle]) throw notFound();
     return { h: params.handle };
@@ -62,10 +66,14 @@ const MAX_LOGO = 4 * 1024 * 1024;
 function Fiche({ h }: { h: string }) {
   const p = P[h];
   const b = useBoutique();
-  const { ligne } = Route.useSearch();
+  const { ligne, texte } = Route.useSearch();
   const naviguer = useNavigate();
   const mesure = useMesure();
-  const [cfg, setCfg] = useState<Cfg>(() => cfgDefaut(h));
+  const [cfg, setCfg] = useState<Cfg>(() => {
+    const d = cfgDefaut(h);
+    if (texte && d.type === 'config') d.roues.forEach((r, i) => { if (i === 0 && r.mode === 'texte') r.texte = texte; });
+    return d;
+  });
   const [edition, setEdition] = useState<string | null>(null);
   const [erreur, setErreur] = useState('');
   const [envoi, setEnvoi] = useState(false);
