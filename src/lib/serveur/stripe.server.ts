@@ -1,4 +1,5 @@
 import { bindings } from '../bindings.server';
+import site from '../../site.json';
 import type { D1Database } from '@cloudflare/workers-types';
 import { P, variantesDe, type Ligne, type Livraison, type Totaux } from '../catalogue';
 
@@ -34,7 +35,7 @@ const INTEGRATION_ID = 'mark-and-roll-checkout-qmpvrnci';
    Remplaçable par la variable STRIPE_PMC sans toucher au code. */
 const PMC_LIVE = 'pmc_1UURfADkacL9PW45uB7WgIjs';
 
-export async function stripe<T>(chemin: string, init: { method?: 'GET' | 'POST'; corps?: URLSearchParams } = {}): Promise<{ ok: boolean; status: number; data: T | null }> {
+export async function stripe<T>(chemin: string, init: { method?: 'GET' | 'POST' | 'DELETE'; corps?: URLSearchParams } = {}): Promise<{ ok: boolean; status: number; data: T | null }> {
   const cle = cleStripe();
   if (!cle) return { ok: false, status: 0, data: null };
   const r = await fetch(`https://api.stripe.com/v1${chemin}`, {
@@ -128,12 +129,14 @@ const modeCle = () => (/_live_/.test(cleStripe()) ? 'live' : 'test');
    Aucun secret à recopier : le webhook vérifie chaque événement en le relisant chez Stripe. */
 export async function assurerWebhook(D: D1Database, origine: string) {
   if (!cleStripe()) return;
-  const url = `${origine}/api/stripe/webhook`;
+  // Toujours l'adresse officielle du site (site.json), quelle que soit l'adresse utilisée par le client.
+  const base = /localhost|127\.0\.0\.1/.test(origine) ? origine : new URL(site.url).origin;
+  const url = `${base}/api/stripe/webhook`;
   const cle = `stripe_webhook_${modeCle()}`;
   try {
     const deja = await D.prepare('SELECT valeur FROM reglages WHERE cle = ?').bind(cle).first<{ valeur: string }>();
     if (deja?.valeur === url) return;
-    const liste = await stripe<{ data: { id: string; url: string; status: string }[] }>('/webhook_endpoints?limit=100');
+    const liste = await stripe<{ data: { id: string; url: string; status: string; description?: string | null }[] }>('/webhook_endpoints?limit=100');
     if (!liste.ok) return;
     if (!liste.data?.data.some((w) => w.url === url && w.status === 'enabled')) {
       const b = new URLSearchParams();
@@ -143,6 +146,12 @@ export async function assurerWebhook(D: D1Database, origine: string) {
       EVENEMENTS_WEBHOOK.forEach((e, i) => b.set(`enabled_events[${i}]`, e));
       const r = await stripe<{ id: string }>('/webhook_endpoints', { method: 'POST', corps: b });
       if (!r.ok) return;
+    }
+    // Anciennes adresses du site (workers.dev, www) : retirées pour ne pas recevoir chaque événement en double.
+    for (const w of liste.data?.data ?? []) {
+      if (w.url !== url && w.description === 'Boutique Mark & Roll' && w.url.endsWith('/api/stripe/webhook')) {
+        await stripe(`/webhook_endpoints/${encodeURIComponent(w.id)}`, { method: 'DELETE' });
+      }
     }
     await D.prepare("INSERT INTO reglages (cle, valeur) VALUES (?, ?) ON CONFLICT(cle) DO UPDATE SET valeur = excluded.valeur, updated_at = datetime('now')").bind(cle, url).run();
   } catch (e) {

@@ -3,6 +3,7 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { applySecurityHeaders } from "./lib/security-headers.server";
+import site from "./site.json";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -38,8 +39,23 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   });
 }
 
+/* Adresse unique : www.marknroll.com et l'ancienne adresse workers.dev renvoient vers marknroll.com.
+   Les routes /api/ (webhooks Stripe, logos) et les requêtes autres que GET restent servies telles quelles. */
+const CANON = new URL(site.url);
+function redirectionCanonique(request: Request): Response | null {
+  if (request.method !== "GET" && request.method !== "HEAD") return null;
+  const u = new URL(request.url);
+  if (u.hostname === CANON.hostname || u.pathname.startsWith("/api/")) return null;
+  if (u.hostname === `www.${CANON.hostname}` || u.hostname.endsWith(".workers.dev")) {
+    return new Response(null, { status: 301, headers: { Location: `${CANON.origin}${u.pathname}${u.search}` } });
+  }
+  return null;
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    const redirection = redirectionCanonique(request);
+    if (redirection) return redirection;
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
