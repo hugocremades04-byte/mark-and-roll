@@ -6,6 +6,7 @@ import { FRANCO, IMG, ORDRE, P, cfgDefaut, estLarge, eur, prixMin, rouesActives,
 import { LignesPanier, Paiements, PanierVide } from './Elements';
 import { IcoCamion, IcoColis, IcoCroix, IcoDroite, IcoLoupe, IcoMenu, IcoOk, IcoPanier } from './Icones';
 import site from '@/site.json';
+import { PAGES_SEO } from '@/lib/pages-seo';
 
 const NAV: { lib: string; cle: string; desc: string }[] = [
   { lib: 'Rouleaux', cle: 'rouleaux', desc: 'Kit Rouleau, Grand format, textile' },
@@ -99,6 +100,9 @@ export function Pied() {
           <li><Link to="/collections/$cle" params={{ cle: 'packs' }}>Packs</Link></li>
           <li><Link to="/collections/$cle" params={{ cle: 'recharges' }}>Recharges et accessoires</Link></li>
           <li><Link to="/produits/$handle" params={{ handle: 'carte-cadeau' }}>Carte cadeau</Link></li>
+        </ul></div>
+        <div><h3>Par usage</h3><ul>
+          {PAGES_SEO.map((x) => <li key={x.chemin}><a href={x.chemin}>{x.lib}</a></li>)}
         </ul></div>
         <div><h3>Aide</h3><ul>
           <li><Link to="/" hash="faq">Questions fréquentes</Link></li>

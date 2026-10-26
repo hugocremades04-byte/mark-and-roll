@@ -9,11 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TamponToteBagVetementRouteImport } from './routes/tampon-tote-bag-vetement'
+import { Route as TamponSacKraftRouteImport } from './routes/tampon-sac-kraft'
+import { Route as TamponMariagePersonnaliseRouteImport } from './routes/tampon-mariage-personnalise'
+import { Route as TamponEncreurPersonnaliseRouteImport } from './routes/tampon-encreur-personnalise'
+import { Route as TamponCartonColisRouteImport } from './routes/tampon-carton-colis'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ProsRouteImport } from './routes/pros'
 import { Route as PanierRouteImport } from './routes/panier'
 import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
+import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
+import { Route as GuideLogoColisRouteImport } from './routes/guide-logo-colis'
+import { Route as FluxGoogleDotxmlRouteImport } from './routes/flux-google[.]xml'
 import { Route as CommandeRouteImport } from './routes/commande'
 import { Route as CgvRouteImport } from './routes/cgv'
 import { Route as AtelierRouteImport } from './routes/atelier'
@@ -26,6 +34,33 @@ import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhoo
 import { Route as ApiStripeEtatRouteImport } from './routes/api/stripe.etat'
 import { Route as ApiLogosIdRouteImport } from './routes/api/logos.$id'
 
+const TamponToteBagVetementRoute = TamponToteBagVetementRouteImport.update({
+  id: '/tampon-tote-bag-vetement',
+  path: '/tampon-tote-bag-vetement',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TamponSacKraftRoute = TamponSacKraftRouteImport.update({
+  id: '/tampon-sac-kraft',
+  path: '/tampon-sac-kraft',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TamponMariagePersonnaliseRoute =
+  TamponMariagePersonnaliseRouteImport.update({
+    id: '/tampon-mariage-personnalise',
+    path: '/tampon-mariage-personnalise',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const TamponEncreurPersonnaliseRoute =
+  TamponEncreurPersonnaliseRouteImport.update({
+    id: '/tampon-encreur-personnalise',
+    path: '/tampon-encreur-personnalise',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const TamponCartonColisRoute = TamponCartonColisRouteImport.update({
+  id: '/tampon-carton-colis',
+  path: '/tampon-carton-colis',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -49,6 +84,21 @@ const PanierRoute = PanierRouteImport.update({
 const MentionsLegalesRoute = MentionsLegalesRouteImport.update({
   id: '/mentions-legales',
   path: '/mentions-legales',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
+  id: '/llms.txt',
+  path: '/llms.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuideLogoColisRoute = GuideLogoColisRouteImport.update({
+  id: '/guide-logo-colis',
+  path: '/guide-logo-colis',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FluxGoogleDotxmlRoute = FluxGoogleDotxmlRouteImport.update({
+  id: '/flux-google.xml',
+  path: '/flux-google.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CommandeRoute = CommandeRouteImport.update({
@@ -112,11 +162,19 @@ export interface FileRoutesByFullPath {
   '/atelier': typeof AtelierRoute
   '/cgv': typeof CgvRoute
   '/commande': typeof CommandeRoute
+  '/flux-google.xml': typeof FluxGoogleDotxmlRoute
+  '/guide-logo-colis': typeof GuideLogoColisRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/panier': typeof PanierRoute
   '/pros': typeof ProsRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tampon-carton-colis': typeof TamponCartonColisRoute
+  '/tampon-encreur-personnalise': typeof TamponEncreurPersonnaliseRoute
+  '/tampon-mariage-personnalise': typeof TamponMariagePersonnaliseRoute
+  '/tampon-sac-kraft': typeof TamponSacKraftRoute
+  '/tampon-tote-bag-vetement': typeof TamponToteBagVetementRoute
   '/api/logos': typeof ApiLogosRouteWithChildren
   '/collections/$cle': typeof CollectionsCleRoute
   '/confirmation/$ref': typeof ConfirmationRefRoute
@@ -130,11 +188,19 @@ export interface FileRoutesByTo {
   '/atelier': typeof AtelierRoute
   '/cgv': typeof CgvRoute
   '/commande': typeof CommandeRoute
+  '/flux-google.xml': typeof FluxGoogleDotxmlRoute
+  '/guide-logo-colis': typeof GuideLogoColisRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/panier': typeof PanierRoute
   '/pros': typeof ProsRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tampon-carton-colis': typeof TamponCartonColisRoute
+  '/tampon-encreur-personnalise': typeof TamponEncreurPersonnaliseRoute
+  '/tampon-mariage-personnalise': typeof TamponMariagePersonnaliseRoute
+  '/tampon-sac-kraft': typeof TamponSacKraftRoute
+  '/tampon-tote-bag-vetement': typeof TamponToteBagVetementRoute
   '/api/logos': typeof ApiLogosRouteWithChildren
   '/collections/$cle': typeof CollectionsCleRoute
   '/confirmation/$ref': typeof ConfirmationRefRoute
@@ -149,11 +215,19 @@ export interface FileRoutesById {
   '/atelier': typeof AtelierRoute
   '/cgv': typeof CgvRoute
   '/commande': typeof CommandeRoute
+  '/flux-google.xml': typeof FluxGoogleDotxmlRoute
+  '/guide-logo-colis': typeof GuideLogoColisRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/panier': typeof PanierRoute
   '/pros': typeof ProsRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tampon-carton-colis': typeof TamponCartonColisRoute
+  '/tampon-encreur-personnalise': typeof TamponEncreurPersonnaliseRoute
+  '/tampon-mariage-personnalise': typeof TamponMariagePersonnaliseRoute
+  '/tampon-sac-kraft': typeof TamponSacKraftRoute
+  '/tampon-tote-bag-vetement': typeof TamponToteBagVetementRoute
   '/api/logos': typeof ApiLogosRouteWithChildren
   '/collections/$cle': typeof CollectionsCleRoute
   '/confirmation/$ref': typeof ConfirmationRefRoute
@@ -169,11 +243,19 @@ export interface FileRouteTypes {
     | '/atelier'
     | '/cgv'
     | '/commande'
+    | '/flux-google.xml'
+    | '/guide-logo-colis'
+    | '/llms.txt'
     | '/mentions-legales'
     | '/panier'
     | '/pros'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/tampon-carton-colis'
+    | '/tampon-encreur-personnalise'
+    | '/tampon-mariage-personnalise'
+    | '/tampon-sac-kraft'
+    | '/tampon-tote-bag-vetement'
     | '/api/logos'
     | '/collections/$cle'
     | '/confirmation/$ref'
@@ -187,11 +269,19 @@ export interface FileRouteTypes {
     | '/atelier'
     | '/cgv'
     | '/commande'
+    | '/flux-google.xml'
+    | '/guide-logo-colis'
+    | '/llms.txt'
     | '/mentions-legales'
     | '/panier'
     | '/pros'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/tampon-carton-colis'
+    | '/tampon-encreur-personnalise'
+    | '/tampon-mariage-personnalise'
+    | '/tampon-sac-kraft'
+    | '/tampon-tote-bag-vetement'
     | '/api/logos'
     | '/collections/$cle'
     | '/confirmation/$ref'
@@ -205,11 +295,19 @@ export interface FileRouteTypes {
     | '/atelier'
     | '/cgv'
     | '/commande'
+    | '/flux-google.xml'
+    | '/guide-logo-colis'
+    | '/llms.txt'
     | '/mentions-legales'
     | '/panier'
     | '/pros'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/tampon-carton-colis'
+    | '/tampon-encreur-personnalise'
+    | '/tampon-mariage-personnalise'
+    | '/tampon-sac-kraft'
+    | '/tampon-tote-bag-vetement'
     | '/api/logos'
     | '/collections/$cle'
     | '/confirmation/$ref'
@@ -224,11 +322,19 @@ export interface RootRouteChildren {
   AtelierRoute: typeof AtelierRoute
   CgvRoute: typeof CgvRoute
   CommandeRoute: typeof CommandeRoute
+  FluxGoogleDotxmlRoute: typeof FluxGoogleDotxmlRoute
+  GuideLogoColisRoute: typeof GuideLogoColisRoute
+  LlmsDottxtRoute: typeof LlmsDottxtRoute
   MentionsLegalesRoute: typeof MentionsLegalesRoute
   PanierRoute: typeof PanierRoute
   ProsRoute: typeof ProsRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TamponCartonColisRoute: typeof TamponCartonColisRoute
+  TamponEncreurPersonnaliseRoute: typeof TamponEncreurPersonnaliseRoute
+  TamponMariagePersonnaliseRoute: typeof TamponMariagePersonnaliseRoute
+  TamponSacKraftRoute: typeof TamponSacKraftRoute
+  TamponToteBagVetementRoute: typeof TamponToteBagVetementRoute
   ApiLogosRoute: typeof ApiLogosRouteWithChildren
   CollectionsCleRoute: typeof CollectionsCleRoute
   ConfirmationRefRoute: typeof ConfirmationRefRoute
@@ -239,6 +345,41 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tampon-tote-bag-vetement': {
+      id: '/tampon-tote-bag-vetement'
+      path: '/tampon-tote-bag-vetement'
+      fullPath: '/tampon-tote-bag-vetement'
+      preLoaderRoute: typeof TamponToteBagVetementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tampon-sac-kraft': {
+      id: '/tampon-sac-kraft'
+      path: '/tampon-sac-kraft'
+      fullPath: '/tampon-sac-kraft'
+      preLoaderRoute: typeof TamponSacKraftRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tampon-mariage-personnalise': {
+      id: '/tampon-mariage-personnalise'
+      path: '/tampon-mariage-personnalise'
+      fullPath: '/tampon-mariage-personnalise'
+      preLoaderRoute: typeof TamponMariagePersonnaliseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tampon-encreur-personnalise': {
+      id: '/tampon-encreur-personnalise'
+      path: '/tampon-encreur-personnalise'
+      fullPath: '/tampon-encreur-personnalise'
+      preLoaderRoute: typeof TamponEncreurPersonnaliseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tampon-carton-colis': {
+      id: '/tampon-carton-colis'
+      path: '/tampon-carton-colis'
+      fullPath: '/tampon-carton-colis'
+      preLoaderRoute: typeof TamponCartonColisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -272,6 +413,27 @@ declare module '@tanstack/react-router' {
       path: '/mentions-legales'
       fullPath: '/mentions-legales'
       preLoaderRoute: typeof MentionsLegalesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/llms.txt': {
+      id: '/llms.txt'
+      path: '/llms.txt'
+      fullPath: '/llms.txt'
+      preLoaderRoute: typeof LlmsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guide-logo-colis': {
+      id: '/guide-logo-colis'
+      path: '/guide-logo-colis'
+      fullPath: '/guide-logo-colis'
+      preLoaderRoute: typeof GuideLogoColisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/flux-google.xml': {
+      id: '/flux-google.xml'
+      path: '/flux-google.xml'
+      fullPath: '/flux-google.xml'
+      preLoaderRoute: typeof FluxGoogleDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/commande': {
@@ -371,11 +533,19 @@ const rootRouteChildren: RootRouteChildren = {
   AtelierRoute: AtelierRoute,
   CgvRoute: CgvRoute,
   CommandeRoute: CommandeRoute,
+  FluxGoogleDotxmlRoute: FluxGoogleDotxmlRoute,
+  GuideLogoColisRoute: GuideLogoColisRoute,
+  LlmsDottxtRoute: LlmsDottxtRoute,
   MentionsLegalesRoute: MentionsLegalesRoute,
   PanierRoute: PanierRoute,
   ProsRoute: ProsRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TamponCartonColisRoute: TamponCartonColisRoute,
+  TamponEncreurPersonnaliseRoute: TamponEncreurPersonnaliseRoute,
+  TamponMariagePersonnaliseRoute: TamponMariagePersonnaliseRoute,
+  TamponSacKraftRoute: TamponSacKraftRoute,
+  TamponToteBagVetementRoute: TamponToteBagVetementRoute,
   ApiLogosRoute: ApiLogosRouteWithChildren,
   CollectionsCleRoute: CollectionsCleRoute,
   ConfirmationRefRoute: ConfirmationRefRoute,

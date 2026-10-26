@@ -9,7 +9,7 @@ import {
   altDe, calc, cfgDefaut, encre, estLarge, eur, libTaille, prixMin, prixRoueSeule, prixRoueSup, rouesActives, taillesDe, usageFixe,
   type Cfg, type CfgConfig, type CfgSimple, type ProduitConfig, type ProduitSimple, type Roue,
 } from '@/lib/catalogue';
-import { absolu, seo } from '@/lib/seo';
+import { absolu, offreLd, seo } from '@/lib/seo';
 
 export const Route = createFileRoute('/produits/$handle')({
   validateSearch: (s: Record<string, unknown>): { ligne?: string } => (typeof s.ligne === 'string' ? { ligne: s.ligne } : {}),
@@ -27,7 +27,7 @@ export const Route = createFileRoute('/produits/$handle')({
         '@context': 'https://schema.org', '@type': 'Product', name: p.nom, description: p.seo?.desc ?? p.court, sku: params.handle, url: absolu(chemin),
         brand: { '@type': 'Brand', name: 'Mark & Roll' },
         ...(p.images[0] ? { image: absolu(IMG(p.images[0])) } : {}),
-        offers: { '@type': 'AggregateOffer', priceCurrency: 'EUR', lowPrice: prix, availability: 'https://schema.org/InStock', url: absolu(chemin) },
+        offers: offreLd(params.handle, prix, absolu(chemin)),
       },
       {
         '@context': 'https://schema.org', '@type': 'BreadcrumbList',

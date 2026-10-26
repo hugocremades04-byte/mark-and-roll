@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { COLLECTIONS, ORDRE } from '@/lib/catalogue';
 import { ORIGINE } from '@/lib/seo';
+import { PAGES_SEO } from '@/lib/pages-seo';
 
 export const Route = createFileRoute('/sitemap.xml')({
   server: {
@@ -9,7 +10,7 @@ export const Route = createFileRoute('/sitemap.xml')({
         const origin = ORIGINE;
         // Date du dernier déploiement (Google ignore une date qui change tous les jours sans raison).
         const today = __DATE_BUILD__;
-        const chemins = ['/', '/pros', '/cgv', '/mentions-legales', ...Object.keys(COLLECTIONS).map((c) => `/collections/${c}`), ...ORDRE.map((h) => `/produits/${h}`)];
+        const chemins = ['/', ...PAGES_SEO.map((p) => p.chemin), '/pros', '/cgv', '/mentions-legales', ...Object.keys(COLLECTIONS).map((c) => `/collections/${c}`), ...ORDRE.map((h) => `/produits/${h}`)];
         const xml = [
           '<?xml version="1.0" encoding="UTF-8"?>',
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',

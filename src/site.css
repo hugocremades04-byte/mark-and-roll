@@ -416,7 +416,7 @@ textarea.saisie{min-height:96px;resize:vertical}
 .pied{background:var(--dark);color:#D6D3D1;margin-top:56px}
 .pied a{color:#D6D3D1;text-decoration:none}
 .pied a:hover{color:#fff;text-decoration:underline}
-.pied-haut{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,.7fr));gap:32px;padding-block:52px 36px}
+.pied-haut{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(4,minmax(0,.7fr));gap:32px;padding-block:52px 36px}
 .pied h2{font-size:1.15rem;color:#fff;margin-bottom:10px}
 .pied h3{font-size:.95rem;color:#fff;margin-bottom:12px}
 .pied ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.95rem}
@@ -657,3 +657,17 @@ body{margin:0}
 @media (max-width:420px){.achat-actions .btn{font-size:.98rem}.qte button{width:38px}.qte input{width:32px}}
 .barre-filtres{justify-content:flex-start}
 .carte-image .carte-cadeau-visuel img,.carte-cadeau-visuel img{width:120px;height:auto;object-fit:contain;transform:none}
+/* Pages d'atterrissage SEO */
+.ms-tete{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(20px,4vw,56px);align-items:center;padding-block:8px 32px}
+.ms-tete h1{font-size:clamp(2rem,4.2vw,3.4rem);line-height:1.02;letter-spacing:-.03em;text-wrap:balance}
+.ms-tete .chapeau{color:var(--ink-2);font-size:1.08rem;margin:14px 0 22px;max-width:56ch}
+.ms-cta{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-bottom:18px}
+.ms-visuel img{display:block;width:100%;height:auto;border-radius:16px}
+.ms-grille{grid-template-columns:repeat(3,minmax(0,1fr))}
+.ms-texte{padding-block:clamp(28px,4vw,48px) 8px}
+.ms-texte section{display:grid;gap:10px}
+.ms-liens h2{font-size:1.1rem;margin-bottom:10px}
+.ms-liens ul{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px 22px}
+.ms-liens a{color:var(--ink);font-weight:600}
+@media (max-width:820px){.ms-tete{grid-template-columns:1fr}.ms-grille{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ms-faq{padding-top:clamp(32px,4vw,52px)}

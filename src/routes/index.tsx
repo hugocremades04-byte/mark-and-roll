@@ -4,16 +4,16 @@ import { CarteProduit, CarteRouleau, Img, Preuves, SectionTete, VideoBoucle } fr
 import { IcoChevron, IcoFleche } from '@/components/boutique/Icones';
 import { ALT, FAQ, IMG, dansCollection } from '@/lib/catalogue';
 import site from '@/site.json';
-import { LD_MARQUE, seo } from '@/lib/seo';
+import { LD_MARQUE, faqLd, seo } from '@/lib/seo';
 
 export const Route = createFileRoute('/')({
   head: () => ({
     ...seo({
-      titre: 'Tampon personnalisé logo en rouleau | Mark & Roll',
+      titre: 'Tampon personnalisé logo, fabriqué en France | Mark & Roll',
       description: 'Tampon rouleau gravé à votre logo : votre marque sur vos cartons, colis, tote bags et textile en un passage. BAT gratuit, fabriqué en France, kits dès 39 €.',
       chemin: '/',
     }),
-    scripts: [{ type: 'application/ld+json', children: JSON.stringify(LD_MARQUE) }],
+    scripts: [{ type: 'application/ld+json', children: JSON.stringify([...LD_MARQUE, faqLd(FAQ.slice(0, 6))]) }],
   }),
   component: Accueil,
 });
