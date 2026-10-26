@@ -28,7 +28,6 @@ function Commande() {
   const [client, setClient] = useState<Client>({ email: '', prenom: '', nom: '', adresse: '', cp: '', ville: '', pays: 'France', tel: '' });
   const [mode, setMode] = useState<Livraison>('relais');
   const [bump, setBump] = useState(false);
-  const [cgv, setCgv] = useState(false);
   const [notes, setNotes] = useState('');
   const [invalides, setInvalides] = useState<Set<string>>(new Set());
   const [erreur, setErreur] = useState('');
@@ -64,7 +63,6 @@ function Commande() {
       if (premier) form.current?.querySelector<HTMLInputElement>(`#c-${premier.id}`)?.focus();
       return;
     }
-    if (!cgv) { setErreur('Cochez l\'acceptation des conditions générales pour valider.'); form.current?.querySelector<HTMLInputElement>('#c-cgv')?.focus(); return; }
     setEnvoi(true);
     try {
       const r = await passerCommande({ data: {
@@ -114,7 +112,7 @@ function Commande() {
         <form ref={form} onSubmit={valider} noValidate>
 
           <div className="bloc-form"><h2><span className="etape-num">1</span>Contact</h2>
-            {champ('email', 'Email', { type: 'email', autoComplete: 'email', spellCheck: false, placeholder: 'vous@boutique.fr' }, 'Pour le BAT et le suivi de livraison. Pas de compte à créer.')}
+            {champ('email', 'Email', { type: 'email', autoComplete: 'email', spellCheck: false, placeholder: 'vous@boutique.fr' }, 'Pour le BAT, le suivi et un seul rappel si le paiement n\'aboutit pas. Pas de compte à créer.')}
           </div>
 
           <div className="bloc-form"><h2><span className="etape-num">2</span>Livraison</h2>
@@ -131,7 +129,7 @@ function Commande() {
               {champ('tel', 'Téléphone', { type: 'tel', autoComplete: 'tel' }, 'Pour le transporteur uniquement.')}
             </div>
             <div style={{ display: 'grid', gap: 8 }} role="radiogroup" aria-label="Mode de livraison">
-              {([['relais', 'Point relais', '2 à 4 jours après expédition, offert dès 59 €'], ['domicile', 'À domicile', '2 à 3 jours après expédition, offert dès 89 €'], ['express', 'Express 24 h', 'Le lendemain de l\'expédition']] as const).map(([m, titre, sous]) => (
+              {([['relais', 'Point relais', 'Le plus proche de votre adresse, 2 à 4 jours après expédition, offert dès 45 €'], ['domicile', 'À domicile', '2 à 3 jours après expédition, offert dès 45 €'], ['express', 'Express 24 h', 'Le lendemain de l\'expédition']] as const).map(([m, titre, sous]) => (
                 <label className="radio" key={m}>
                   <input type="radio" name="livraison" value={m} checked={mode === m} onChange={() => setMode(m)} />
                   <span><strong>{titre}</strong><small>{sous}</small></span>
@@ -158,12 +156,12 @@ function Commande() {
             </div>
             <div className="champ"><label htmlFor="c-notes">Une précision pour le graphiste ? (facultatif)</label>
               <textarea className="saisie" id="c-notes" name="notes" value={notes} maxLength={1000} onChange={(e) => setNotes(e.target.value)} placeholder="Couleur exacte du logo, sens de lecture…" /></div>
-            <label className="case-cgv"><input type="checkbox" id="c-cgv" checked={cgv} onChange={(e) => setCgv(e.target.checked)} />
-              <span>J'accepte les <Link to="/cgv" target="_blank">conditions générales de vente</Link> et je valide que ma roue sera gravée après accord du BAT.</span></label>
+            
             <p className="err" aria-live="polite">{erreur}</p>
             <button type="submit" className="btn btn-primaire btn-large" disabled={envoi}>
               {envoi ? 'Validation…' : paiementActif ? 'Payer' : 'Valider ma commande'}<span className="prix-btn">{eur(t.total)}</span>
             </button>
+            <p className="note cgv-implicite">En validant, vous acceptez les <Link to="/cgv" target="_blank">conditions générales de vente</Link>. Rien n'est gravé avant votre accord sur le BAT.</p>
             <p className="securite"><IcoCadenas />{paiementActif ? 'Paiement chiffré, BAT avant toute gravure' : 'Rien n\'est débité aujourd\'hui, BAT avant toute gravure'}</p>
           </div>
         </form>

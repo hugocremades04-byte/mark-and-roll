@@ -128,7 +128,7 @@ export const Preuves = ({ className }: { className?: string }) => (
   <ul className={`preuves${className ? ` ${className}` : ''}`}>
     <li><IcoOk />BAT gratuit sous 24&nbsp;h</li>
     <li><IcoOk />Expédié en 3 jours ouvrés</li>
-    <li><IcoOk />Livraison offerte dès 59&nbsp;€</li>
+    <li><IcoOk />Livraison offerte dès 45&nbsp;€</li>
   </ul>
 );
 

@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { bindings } from '@/lib/bindings.server';
-import { db } from '@/lib/serveur/commandes.server';
+import { db, infosCommande } from '@/lib/serveur/commandes.server';
 import { stripe } from '@/lib/serveur/stripe.server';
-import { emailAlerteAtelier, emailPaiementRecu } from '@/lib/serveur/emails.server';
+import { emailAlerteAtelier, emailRelancePaiement, emailsNouvelleCommande } from '@/lib/serveur/emails.server';
 
 /* Webhook Stripe : marque la commande payée même si le client ferme la page avant le retour.
    L'adresse est déclarée automatiquement chez Stripe à la première commande (stripe.server.ts).
@@ -31,7 +31,7 @@ async function signatureValide(corps: string, entete: string, secret: string): P
   });
 }
 
-interface Session { id: string; payment_status?: string; payment_intent?: string | null; metadata?: { ref?: string } }
+interface Session { id: string; payment_status?: string; payment_intent?: string | null; metadata?: { ref?: string }; after_expiration?: { recovery?: { url?: string | null } | null } | null }
 interface Charge { payment_intent?: string | null; refunded?: boolean; amount?: number; reason?: string }
 
 export const Route = createFileRoute('/api/stripe/webhook')({
@@ -63,7 +63,9 @@ export const Route = createFileRoute('/api/stripe/webhook')({
             const avant = await D.prepare('SELECT num, paiement, totaux FROM commandes WHERE stripe_session = ? OR ref = ?').bind(s.id, s.metadata?.ref ?? '').first<{ num: string; paiement: string; totaux: string }>();
             await D.prepare("UPDATE commandes SET paiement = 'payee', stripe_pi = ? WHERE stripe_session = ? OR ref = ?").bind(s.payment_intent ?? null, s.id, s.metadata?.ref ?? '').run();
             if (avant && avant.paiement !== 'payee') {
-              await emailPaiementRecu(avant.num, (JSON.parse(avant.totaux) as { total: number }).total, new URL(request.url).origin);
+              // Confirmation au client et alerte à l'atelier, une seule fois, au paiement confirmé
+              const c = await infosCommande('stripe_session', s.id, new URL(request.url).origin);
+              if (c) await emailsNouvelleCommande({ ...c.infos, paiementEnLigne: true });
             }
           }
         } else if (evt.type === 'checkout.session.async_payment_failed' || evt.type === 'checkout.session.expired') {
@@ -73,6 +75,11 @@ export const Route = createFileRoute('/api/stripe/webhook')({
           if (row) {
             await D.prepare("UPDATE commandes SET paiement = 'a_regler' WHERE stripe_session = ? OR ref = ?").bind(s.id, s.metadata?.ref ?? '').run();
             if (evt.type === 'checkout.session.async_payment_failed') await emailAlerteAtelier(`Paiement refusé : ${row.num}`, 'Le paiement différé a échoué. Relancez le client avec un nouveau lien de paiement.', new URL(request.url).origin);
+            const reprise = evt.type === 'checkout.session.expired' ? s.after_expiration?.recovery?.url : null;
+            if (reprise) {
+              const c = await infosCommande('stripe_session', s.id, new URL(request.url).origin);
+              if (c) await emailRelancePaiement(c.infos, reprise);
+            }
           }
         } else if (evt.type === 'charge.dispute.created') {
           const c = evt.data.object;

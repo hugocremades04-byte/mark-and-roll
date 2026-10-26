@@ -23,6 +23,7 @@ const roue = z.object({
   logoNom: z.string().max(160),
   ratio: z.number().min(0.1).max(10),
   raster: z.boolean(),
+  plusTard: z.boolean().optional(),
 });
 const cfgConfig = z.object({
   h: z.string().max(40),
@@ -74,7 +75,8 @@ function verifierRoue(r: Roue, fixe: string | null, n: number) {
   if (!POLICES.some((p) => p.id === r.police)) throw new Error(`Roue ${n} : police inconnue.`);
   if (!SEPS.some((s) => s.id === r.sep)) throw new Error(`Roue ${n} : séparateur inconnu.`);
   if (r.mode === 'texte' && !r.texte.trim()) throw new Error(`Roue ${n} : le texte est vide.`);
-  if (r.mode === 'logo' && !(r.logo && LOGO_URL.test(r.logo))) throw new Error(`Roue ${n} : le fichier du logo manque.`);
+  if (r.mode === 'logo' && r.logo && !LOGO_URL.test(r.logo)) throw new Error(`Roue ${n} : le fichier du logo n'est pas valide.`);
+  if (r.mode === 'logo' && !r.logo && !r.plusTard) throw new Error(`Roue ${n} : le fichier du logo manque.`);
 }
 export function verifierLigne(l: Ligne) {
   const c = l.cfg as Cfg, p = P[c.h];
@@ -162,7 +164,7 @@ export async function enregistrerCommande(e: EntreeCommande, origine: string) {
     return { ref, url: null };
   }
   await D.prepare("UPDATE commandes SET stripe_session = ?, paiement = 'en_attente' WHERE id = ?").bind(s.id, ligne.id).run();
-  await emailsNouvelleCommande({ ...infos, paiementEnLigne: true });
+  // Les emails partent au paiement confirmé (webhook Stripe), pas avant.
   return { ref, url: s.url };
 }
 
@@ -180,6 +182,15 @@ export async function lireCommande(ref: string, session?: string) {
     }
   }
   return versPublique(row);
+}
+
+/** Commande relue en base, au format des emails. */
+export async function infosCommande(where: string, valeur: string, origine: string) {
+  const D = await db();
+  const row = await D.prepare(`SELECT * FROM commandes WHERE ${where} = ?`).bind(valeur).first<CommandeRow>();
+  if (!row) return null;
+  const c = versPublique(row);
+  return { row, infos: { num: c.num, ref: c.ref, origine, email: c.client.email, prenom: c.client.prenom, nom: c.client.nom, lignes: c.lignes, totaux: c.totaux as Totaux, totalLigne } };
 }
 
 export const resumeLigne = (a: Ligne) => `${P[a.cfg.h].nom} x${a.qty} (${variantesDe(a).join(' ; ')})`;

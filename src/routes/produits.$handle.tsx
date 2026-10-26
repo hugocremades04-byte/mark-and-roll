@@ -124,10 +124,11 @@ function Fiche({ h }: { h: string }) {
     const rs = rouesActives(cc);
     for (let k = 0; k < rs.length; k++) {
       const r = rs[k];
-      const manque = r.mode === 'texte' ? !r.texte.trim() : !r.logo;
+      const manque = r.mode === 'texte' ? !r.texte.trim() : !r.logo && !r.plusTard;
       if (manque) {
         majCfg((c) => { c.actif = k; });
-        setErreur(r.mode === 'texte' ? `Ajoutez le texte de la roue ${k + 1} pour continuer.` : `Choisissez le fichier du logo de la roue ${k + 1}.`);
+        setErreur(r.mode === 'texte' ? `Tapez le texte à graver${rs.length > 1 ? ` sur la roue ${k + 1}` : ''} pour continuer.` : `Choisissez le fichier du logo${rs.length > 1 ? ` de la roue ${k + 1}` : ''}, ou cochez « je l'envoie par email ».`);
+        setTimeout(() => document.getElementById(r.mode === 'texte' ? 'perso-texte' : 'perso-plus-tard')?.focus(), 50);
         return false;
       }
       if (r.mode === 'logo' && r.logo && r.logo.startsWith('data:')) {
@@ -171,7 +172,7 @@ function Fiche({ h }: { h: string }) {
     });
     if (ratio < 0) { setErreur('Ce fichier ne s\'ouvre pas. Essayez un SVG, PNG ou JPG.'); return; }
     const raster = !/svg/i.test(f.type) && !/\.svg$/i.test(f.name);
-    majCfg((c) => { const r = rouesActives(c)[idx]; Object.assign(r, { logo: donnees, logoNom: f.name, raster, ratio }); });
+    majCfg((c) => { const r = rouesActives(c)[idx]; Object.assign(r, { logo: donnees, logoNom: f.name, raster, ratio, plusTard: false }); });
     setEnvoi(true);
     try {
       const rep = await fetch('/api/logos', { method: 'POST', body: f, headers: { 'Content-Type': f.type || 'application/octet-stream' } });
@@ -219,7 +220,7 @@ function Fiche({ h }: { h: string }) {
                   </div>
                   <details className="guide-mini"><summary>Quelle taille choisir ?<IcoChevron /></summary><GuideTailles seulement={pc.gamme} /></details>
                 </fieldset>
-                <Perso p={pc} c={cc} mesure={mesure} majCfg={majCfg} majRoue={majRoue} choisirLogo={choisirLogo} envoi={envoi} effacerErreur={() => setErreur('')} />
+                <Perso p={pc} c={cc} mesure={mesure} majCfg={majCfg} majRoue={majRoue} choisirLogo={choisirLogo} envoi={envoi} erreur={!!erreur} effacerErreur={() => setErreur('')} />
                 <Ajouts p={pc} c={cc} majCfg={majCfg} />
               </>
             ) : (
@@ -239,7 +240,7 @@ function Fiche({ h }: { h: string }) {
 
           <div className="garanties"><ul>
             {pc && <li><img src="/img/icones/bat.png" alt="" width={22} height={22} /><span><strong>BAT gratuit sous 24 h</strong>, retouches illimitées avant gravure</span></li>}
-            <li><img src="/img/icones/livraison.png" alt="" width={22} height={22} /><span><strong>Livraison offerte dès 59 €</strong> en point relais</span></li>
+            <li><img src="/img/icones/livraison.png" alt="" width={22} height={22} /><span><strong>Livraison offerte dès 45 €</strong>, 3,90 € sinon</span></li>
             <li><img src="/img/icones/securite.png" alt="" width={22} height={22} /><span><strong>Paiement sécurisé</strong>, fabriqué en France</span></li>
           </ul><Paiements /></div>
 
@@ -267,7 +268,7 @@ function Fiche({ h }: { h: string }) {
               </tbody></table></div></div></details>
             )}
             <details><summary>Livraison et retours<IcoChevron /></summary><div className="contenu">
-              <p>Point relais 3,90 €, offert dès 59 €. Domicile 5,90 €, offert dès 89 €. Livraison en France, Belgique et Luxembourg.</p>
+              <p>Point relais ou domicile : 3,90 €, offert dès 45 €. Express 24 h : 14,90 €. Livraison en France, Belgique et Luxembourg.</p>
               <p>Les roues gravées à votre motif ne sont ni reprises ni échangées, sauf défaut de fabrication. Les accessoires non ouverts sont remboursés sous 14 jours.</p>
             </div></details>
             <details><summary>Entretien et recharge<IcoChevron /></summary><div className="contenu">
@@ -397,10 +398,11 @@ interface PersoProps {
   majCfg: (f: (c: CfgConfig) => void) => void;
   majRoue: (f: (r: Roue) => void) => void;
   choisirLogo: (f: File | undefined) => void;
+  erreur: boolean;
   envoi: boolean;
   effacerErreur: () => void;
 }
-function Perso({ p, c, mesure, majCfg, majRoue, choisirLogo, envoi, effacerErreur }: PersoProps) {
+function Perso({ p, c, mesure, majCfg, majRoue, choisirLogo, envoi, erreur, effacerErreur }: PersoProps) {
   const rs = rouesActives(c);
   const i = Math.min(c.actif, rs.length - 1);
   const r = rs[i];
@@ -417,7 +419,7 @@ function Perso({ p, c, mesure, majCfg, majRoue, choisirLogo, envoi, effacerErreu
           {rs.map((x, k) => (
             <button key={k} type="button" role="tab" aria-selected={k === i} onClick={() => majCfg((y) => { y.actif = k; })}>
               {large ? 'Rouleau' : 'Roue'} {k + 1}{k >= c.roues.length ? ' (option)' : ''}
-              <span className="roue-etat" aria-hidden="true">{(x.mode === 'texte' ? x.texte.trim() : x.logo) ? '✓' : ''}</span>
+              <span className="roue-etat" aria-hidden="true">{(x.mode === 'texte' ? x.texte.trim() : x.logo || x.plusTard) ? '✓' : ''}</span>
             </button>
           ))}
         </div>
@@ -435,8 +437,8 @@ function Perso({ p, c, mesure, majCfg, majRoue, choisirLogo, envoi, effacerErreu
             <>
               <div className="champ">
                 <label htmlFor="perso-texte">Texte gravé</label>
-                <input className="saisie" id="perso-texte" value={r.texte} maxLength={40} autoComplete="off" spellCheck={false} placeholder="Ex. ATELIER LUNA…"
-                  aria-invalid={vide || undefined} onChange={(e) => { const v = e.target.value; effacerErreur(); majRoue((x) => { x.texte = v; }); }} />
+                <input className="saisie" id="perso-texte" value={r.texte} maxLength={40} autoComplete="off" spellCheck={false} placeholder="Tapez votre marque, ex. ATELIER LUNA"
+                  aria-invalid={(vide && erreur) || undefined} onFocus={(e) => e.currentTarget.select()} onChange={(e) => { const v = e.target.value; effacerErreur(); majRoue((x) => { x.texte = v; }); }} />
                 <span className="aide num">{r.texte.length}/40 caractères</span>
               </div>
               <div className="champ">
@@ -461,6 +463,12 @@ function Perso({ p, c, mesure, majCfg, majRoue, choisirLogo, envoi, effacerErreu
               </label>
               <span className="aide">Imprimé d'une seule couleur. Un motif foncé sur fond clair ou transparent donne le meilleur rendu{large ? ' ; traits d\'au moins 0,6 mm' : ''}.</span>
               {r.logo && r.raster && <span className="aide aide-alerte">Fichier PNG ou JPG : ajoutez la vectorisation dans les options pour un tracé net.</span>}
+              {!r.logo && (
+                <label className="case-cgv">
+                  <input type="checkbox" id="perso-plus-tard" checked={!!r.plusTard} onChange={(e) => { const v = e.target.checked; effacerErreur(); majRoue((x) => { x.plusTard = v; }); }} />
+                  <span>Je n'ai pas mon fichier sous la main : je l'envoie en répondant à l'email de confirmation. Le BAT part dès réception.</span>
+                </label>
+              )}
             </div>
           )}
           <div className="champ">

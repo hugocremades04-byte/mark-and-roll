@@ -22,7 +22,7 @@ export function Bandeau() {
   return (
     <div className="bandeau">
       <div className="wrap">
-        <span><IcoCamion epais={2} />Livraison offerte dès 59&nbsp;€</span>
+        <span><IcoCamion epais={2} />Livraison offerte dès 45&nbsp;€</span>
         <span><IcoOk epais={2} />BAT gratuit avant chaque gravure</span>
         <span><IcoColis epais={2} />Fabriqué à la commande en France</span>
       </div>
@@ -282,6 +282,6 @@ export const Atouts = () => (
     <div className="atout"><img src="/img/icones/bat.png" alt="" width={40} height={40} /><div><strong>BAT gratuit</strong><span>Rien n'est gravé sans votre accord</span></div></div>
     <div className="atout"><img src="/img/icones/encre.png" alt="" width={40} height={40} /><div><strong>Encre incluse</strong><span>Prêt à rouler dès réception</span></div></div>
     <div className="atout"><img src="/img/icones/interchangeable.png" alt="" width={40} height={40} /><div><strong>Roues interchangeables</strong><span>Se clipsent sans outil</span></div></div>
-    <div className="atout"><img src="/img/icones/livraison.png" alt="" width={40} height={40} /><div><strong>Livraison offerte</strong><span>Dès 59 € en point relais</span></div></div>
+    <div className="atout"><img src="/img/icones/livraison.png" alt="" width={40} height={40} /><div><strong>Livraison offerte</strong><span>Dès 45 €, en point relais ou à domicile</span></div></div>
   </div>
 );

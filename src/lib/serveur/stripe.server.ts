@@ -27,7 +27,9 @@ export async function etatStripe() {
     const perms = (r.data?.error?.message?.match(/rak_[a-z_]+/g) ?? []).join(',');
     tests[nom] = r.ok ? 'ok' : `${r.status} ${r.data?.error?.code ?? r.data?.error?.type ?? ''} ${perms}`.trim();
   }
-  return { version: 'v-seo-2', cle: type, longueur: c.length, ...tests };
+  const b = bindings();
+  const emails = { cle_brevo: !!b.BREVO_API_KEY, expediteur: !!b.EMAIL_EXPEDITEUR, atelier: !!b.EMAIL_ATELIER };
+  return { version: 'v-ecom-1', cle: type, longueur: c.length, ...tests, emails };
 }
 /** Étiquette du parcours de paiement, visible dans le tableau de bord Stripe. */
 const INTEGRATION_ID = 'mark-and-roll-checkout-qmpvrnci';
@@ -82,6 +84,9 @@ export async function creerSessionCheckout(e: EntreeSession) {
   b.set('cancel_url', `${e.origine}/commande?annule=1`);
   b.set('integration_identifier', INTEGRATION_ID);
   b.set('submit_type', 'pay');
+  // Session courte + lien de reprise : le client abandonne, il reçoit une relance environ 2 h après.
+  b.set('expires_at', String(Math.floor(Date.now() / 1000) + 2 * 3600));
+  b.set('after_expiration[recovery][enabled]', 'true');
   b.set('custom_text[submit][message]', 'Rien n\'est gravé avant votre accord : vous recevez le BAT par email sous 24 h ouvrées.');
   // Pas de payment_method_types : Stripe propose les moyens de paiement activés dans le tableau de bord
   // (carte, Apple Pay, Google Pay, etc.).

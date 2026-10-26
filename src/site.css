@@ -671,3 +671,4 @@ body{margin:0}
 .ms-liens a{color:var(--ink);font-weight:600}
 @media (max-width:820px){.ms-tete{grid-template-columns:1fr}.ms-grille{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .ms-faq{padding-top:clamp(32px,4vw,52px)}
+.encart-alerte{border:1.5px solid var(--brand);display:grid;gap:10px}

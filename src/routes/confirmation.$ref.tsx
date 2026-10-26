@@ -35,11 +35,19 @@ function Confirmation() {
   }, [pret, c.ref, vider]);
 
   const payee = c.paiement === 'payee';
+  const logoAttendu = c.lignes.some((a) => a.cfg.type === 'config' && [...a.cfg.roues, a.cfg.sup].some((r) => r.mode === 'logo' && !r.logo && r.plusTard));
   return (
     <div className="wrap confirmation">
       <div className="ok-rond"><IcoOk /></div>
       <h1>Merci {c.client.prenom}, votre commande est enregistrée.</h1>
       <p style={{ color: 'var(--ink-2)' }}>Commande <strong className="num">{c.num}</strong>. Nous vous écrivons à {c.client.email} avec le BAT sous 24 h ouvrées. Gardez cette page : son adresse permet de suivre votre commande.</p>
+      {logoAttendu && (
+        <div className="encart encart-alerte">
+          <h2 className="titre-resume">Il nous manque votre logo</h2>
+          <p>Envoyez-le en répondant à l'email de confirmation, ou ici : le BAT part dès réception. SVG de préférence, sinon PNG ou JPG en bonne définition.</p>
+          <a className="btn btn-primaire" href={`mailto:${site.contact}?subject=${encodeURIComponent(`Logo pour la commande ${c.num}`)}`}>Envoyer mon logo</a>
+        </div>
+      )}
       <div className="encart">
         <h2 className="titre-resume">Et maintenant ?</h2>
         <ol className="chrono">

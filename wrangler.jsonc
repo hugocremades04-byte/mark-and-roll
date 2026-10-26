@@ -24,6 +24,10 @@
   // Nom de domaine : Cloudflare crée le DNS et le certificat HTTPS tout seul.
   // www et l'adresse workers.dev (gardée active pour les anciens liens) renvoient vers marknroll.com (src/server.ts),
   // sauf /api/ (webhooks Stripe déjà déclarés sur l'ancienne adresse).
+  // Emails de commande (Brevo) : adresse d'envoi validée dans Brevo et adresse qui reçoit les alertes.
+  // La clé BREVO_API_KEY reste un secret, à régler dans Cloudflare.
+  "vars": { "EMAIL_EXPEDITEUR": "hugo.cremades04@gmail.com", "EMAIL_ATELIER": "hugo.cremades04@gmail.com" },
+
   "workers_dev": true,
   "routes": [
     { "pattern": "marknroll.com", "custom_domain": true },

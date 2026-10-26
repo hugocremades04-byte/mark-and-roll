@@ -60,6 +60,9 @@ export interface InfoCommande {
   lignes: Ligne[]; totaux: Totaux; totalLigne: (a: Ligne) => number; paiementEnLigne: boolean;
 }
 
+/** Roues dont le client enverra le logo par email après la commande. */
+const logosAttendus = (lignes: Ligne[]) => lignes.some((a) => a.cfg.type === 'config' && [...a.cfg.roues, a.cfg.sup].some((r) => r.mode === 'logo' && !r.logo && r.plusTard));
+
 /** Accusé de réception au client et alerte à l'atelier. */
 export async function emailsNouvelleCommande(c: InfoCommande) {
   const { de, atelier } = config();
@@ -72,7 +75,7 @@ export async function emailsNouvelleCommande(c: InfoCommande) {
     replyTo: atelier ? { email: atelier } : undefined,
     subject: `Commande ${c.num} reçue`,
     htmlContent: gabarit(`Merci ${echap(c.prenom)}, votre commande est enregistrée.`,
-      `<p>Commande <strong>${c.num}</strong>. ${c.paiementEnLigne ? 'Votre paiement est en cours de confirmation.' : 'Vous réglerez après validation du BAT.'}</p>
+      `<p>Commande <strong>${c.num}</strong>. ${c.paiementEnLigne ? 'Paiement reçu, merci.' : 'Vous réglerez après validation du BAT.'}</p>${logosAttendus(c.lignes) ? '<p style="background:#FFF4E5;padding:12px 14px;border-radius:10px"><strong>Il nous manque votre logo.</strong> Répondez simplement à cet email avec votre fichier (SVG de préférence, ou PNG / JPG en bonne définition) : le BAT part dès réception.</p>' : ''}
 <p><strong>Et maintenant ?</strong> Nous vous envoyons le bon à tirer (BAT) par email sous 24 h ouvrées. Rien n'est gravé sans votre accord ; dès validation, votre commande part en fabrication et est expédiée sous 3 jours ouvrés.</p>${recap}`,
       { lib: 'Suivre ma commande', url: lien }),
   });
@@ -82,22 +85,10 @@ export async function emailsNouvelleCommande(c: InfoCommande) {
       to: [{ email: atelier }],
       replyTo: { email: c.email },
       subject: `Nouvelle commande ${c.num} : ${eur(c.totaux.total)}`,
-      htmlContent: gabarit(`Nouvelle commande ${c.num}`, `<p>${echap(c.prenom)} ${echap(c.nom)} (${echap(c.email)}), ${c.paiementEnLigne ? 'paiement en ligne en cours' : 'paiement après BAT'}.</p>${recap}`,
+      htmlContent: gabarit(`Nouvelle commande ${c.num}`, `<p>${echap(c.prenom)} ${echap(c.nom)} (${echap(c.email)}), ${c.paiementEnLigne ? 'payée en ligne' : 'paiement après BAT'}.</p>${logosAttendus(c.lignes) ? '<p><strong>Logo à recevoir par email</strong> : le client a choisi de l\'envoyer après la commande.</p>' : ''}${recap}`,
         { lib: 'Ouvrir l\'atelier', url: `${c.origine}/atelier` }),
     });
   }
-}
-
-/** Alerte à l'atelier quand Stripe confirme un paiement. */
-export async function emailPaiementRecu(num: string, total: number, origine: string) {
-  const { de, atelier } = config();
-  if (!de || !atelier) return;
-  await brevo('/smtp/email', {
-    sender: { name: 'Boutique Mark & Roll', email: de },
-    to: [{ email: atelier }],
-    subject: `Paiement reçu : ${num} (${eur(total)})`,
-    htmlContent: gabarit(`Paiement reçu pour ${num}`, `<p>Stripe confirme le paiement de ${eur(total)}. Le BAT peut partir.</p>`, { lib: 'Ouvrir l\'atelier', url: `${origine}/atelier` }),
-  });
 }
 
 /** Demande de devis : alerte à l'atelier et accusé de réception. */
@@ -144,5 +135,20 @@ export async function emailAlerteAtelier(sujet: string, texte: string, origine: 
     to: [{ email: atelier }],
     subject: sujet,
     htmlContent: gabarit(echap(sujet), `<p>${echap(texte)}</p>`, { lib: 'Ouvrir l\'atelier', url: `${origine}/atelier` }),
+  });
+}
+
+/** Relance unique quand le paiement n'a pas abouti : lien Stripe pour reprendre là où le client s'est arrêté. */
+export async function emailRelancePaiement(c: Omit<InfoCommande, 'paiementEnLigne'>, url: string) {
+  const { de, atelier } = config();
+  if (!de) return;
+  await brevo('/smtp/email', {
+    sender: { name: 'Mark & Roll', email: de },
+    to: [{ email: c.email, name: `${c.prenom} ${c.nom}` }],
+    replyTo: atelier ? { email: atelier } : undefined,
+    subject: `Votre tampon vous attend (${c.num})`,
+    htmlContent: gabarit(`${echap(c.prenom)}, votre commande n'est pas encore réglée`,
+      `<p>Le paiement de la commande <strong>${c.num}</strong> n'a pas abouti. Votre personnalisation est gardée : il ne reste qu'à régler pour recevoir votre BAT sous 24 h ouvrées.</p>${tableauLignes(c.lignes, c.totaux, c.totalLigne)}<p style="font-size:13px;color:#5A5F69">Une question ou un souci de paiement ? Répondez à cet email.</p>`,
+      { lib: 'Reprendre ma commande', url }),
   });
 }

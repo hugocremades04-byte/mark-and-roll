@@ -45,7 +45,7 @@ export function ajuste(r: Roue, t: Taille, mesure: Mesure): Ajustement {
   }
   const pol = police(r.police);
   const F = estLarge(t) ? T.motif : 11;
-  const w0 = (mesure(r.texte, pol.css) * pol.cond * F) / 11;
+  const w0 = (mesure(r.texte.trim() ? r.texte : 'VOTRE MARQUE', pol.css) * pol.cond * F) / 11;
   const reps = Math.max(1, Math.round(T.tour / (w0 + 10)));
   const seg = T.tour / reps, e = Math.max(0.05, Math.min(1, (seg - 10) / Math.max(w0, 1)));
   return { reps, seg, fs: F * e, w: 0, h: 0, lettres: F * e * 0.72 };
@@ -90,7 +90,7 @@ export function Apercu({ roue: r, taille: t, mesure }: { roue: Roue; taille: Tai
         ? <image key={`l${n}`} href={r.logo} x={(xc - fit.w / 2).toFixed(2)} y={(y - fit.h / 2).toFixed(2)} width={fit.w.toFixed(2)} height={fit.h.toFixed(2)} preserveAspectRatio="xMidYMid meet" filter={`url(#${id}-m)`} />
         : <text key={`l${n}`} x={xc.toFixed(2)} y={y} textAnchor="middle" dominantBaseline="central" fontSize={4.6 * k} style={{ fontFamily: 'var(--f-body)', fontWeight: 800 }}>VOTRE LOGO</text>);
     } else {
-      motifs.push(<text key={`t${n}`} transform={`translate(${xc.toFixed(2)} ${y}) scale(${pol.cond} 1)`} textAnchor="middle" dominantBaseline="central" fontSize={fit.fs.toFixed(2)} style={{ fontFamily: pol.css }}>{r.texte}</text>);
+      motifs.push(<text key={`t${n}`} transform={`translate(${xc.toFixed(2)} ${y}) scale(${pol.cond} 1)`} textAnchor="middle" dominantBaseline="central" fontSize={fit.fs.toFixed(2)} style={{ fontFamily: pol.css }} opacity={r.texte.trim() ? 1 : 0.4}>{r.texte.trim() ? r.texte : 'VOTRE MARQUE'}</text>);
     }
   }
   const graduations = [];

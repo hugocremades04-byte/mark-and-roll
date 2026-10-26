@@ -52,7 +52,7 @@ export const PAGES_SEO: PageSeo[] = [
         h2: 'Prix et délais',
         p: [
           `Kit Rouleau ${dès('kit-rouleau')} (support, roue gravée et marqueur rempli), Grand format pour les logos détaillés ${dès('rouleau-large')}. Remise automatique dès 3 exemplaires.`,
-          'Expédition sous 3 jours ouvrés après le BAT, ou 48 h avec l\'option express. Point relais offert dès 59 € en France, Belgique et Luxembourg.',
+          'Expédition sous 3 jours ouvrés après le BAT, ou 48 h avec l\'option express. Livraison 3,90 € en point relais ou à domicile, offerte dès 45 €, en France, Belgique et Luxembourg.',
         ],
       },
     ],

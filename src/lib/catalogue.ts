@@ -17,6 +17,8 @@ export interface Roue {
   logoNom: string;
   ratio: number;
   raster: boolean;
+  /** Logo envoyé par email après la commande (le client n'avait pas son fichier). */
+  plusTard?: boolean;
 }
 export interface OptionsKit {
   roueSup: boolean;
@@ -348,7 +350,9 @@ export const aPartirDe = (h: string) => {
   return p.type === 'config' || (p.type === 'simple' && !!p.options && Object.values(p.options).some((o) => o.length > 1));
 };
 
-const TEXTES = ['VOTRE MARQUE', '@VOTRECOMPTE', 'MERCI'];
+const TEXTES = ['', '', 'MERCI'];
+/** Exemple affiché dans l'aperçu tant que le champ est vide (jamais gravé). */
+export const EXEMPLES = ['VOTRE MARQUE', '@VOTRECOMPTE', 'MERCI'];
 export function roueDefaut(usage: Usage, mode: Mode, texte: string): Roue {
   return { usage, mode, texte, police: 'anton', sep: 'etoile', encre: 'noir', logo: null, logoNom: '', ratio: 3, raster: false };
 }
@@ -361,7 +365,7 @@ export function cfgDefaut(h: string): Cfg {
   }
   const large = p.gamme === 'large';
   const roues = p.roues.map((u, i) => {
-    const r = roueDefaut(u || 'packaging', large ? 'logo' : 'texte', TEXTES[i] || 'VOTRE MARQUE');
+    const r = roueDefaut(u || 'packaging', large ? 'logo' : 'texte', TEXTES[i] ?? '');
     if (i === 1) r.encre = 'orange';
     if (i === 2) r.encre = 'rouge';
     if (!ENCRES[r.usage].some((e) => e.id === r.encre)) r.encre = 'noir';
@@ -409,8 +413,10 @@ export function calc(c: Cfg): Calc {
 export const totalLigne = (a: Ligne) => (a.promo ? arr(a.promo * a.qty) : calc({ ...a.cfg, qty: a.qty } as Cfg).total);
 export const sousTotal = (l: Ligne[]) => arr(l.reduce((s, a) => s + totalLigne(a), 0));
 export const PROMOS: Record<string, number> = { BIENVENUE10: 0.1 };
-export const port = (mode: Livraison, st: number) => (mode === 'domicile' ? (st >= 89 ? 0 : 5.9) : mode === 'express' ? 9.9 : st >= 59 ? 0 : 3.9);
-export const FRANCO = 59;
+/** Livraison : 3,90 € en point relais comme à domicile, offerte dès FRANCO ; express Chronopost 14,90 € (prix coûtant). */
+export const FRANCO = 45;
+export const PORT = 3.9;
+export const port = (mode: Livraison, st: number) => (mode === 'express' ? 14.9 : st >= FRANCO ? 0 : PORT);
 
 /* Ligne de kit standard qui permet de proposer la roue MERCI à prix réduit. */
 export const ligneBump = (l: Ligne[]) => l.find((a) => a.cfg.type === 'config' && !estLarge(a.cfg.taille) && P[a.cfg.h].type === 'config' && (P[a.cfg.h] as ProduitConfig).supports > 0) as (Ligne & { cfg: CfgConfig }) | undefined;
@@ -440,7 +446,7 @@ export function variantesDe(a: Ligne): string[] {
     return out;
   }
   out.push(`Taille : ${libTaille(c.taille)}`);
-  rouesActives(c).forEach((r, k) => out.push(`${p.gamme === 'large' ? 'Rouleau' : 'Roue'} ${k + 1} : ${r.mode === 'logo' ? `logo ${r.logoNom || ''}`.trim() : `« ${r.texte} », ${police(r.police).nom.toLowerCase()}`}, encre ${encre(r.usage, r.encre).nom.toLowerCase()}${r.usage === 'textile' ? ', textile' : ''}`));
+  rouesActives(c).forEach((r, k) => out.push(`${p.gamme === 'large' ? 'Rouleau' : 'Roue'} ${k + 1} : ${r.mode === 'logo' ? (r.plusTard && !r.logo ? 'logo envoyé par email après la commande' : `logo ${r.logoNom || ''}`.trim()) : `« ${r.texte} », ${police(r.police).nom.toLowerCase()}`}, encre ${encre(r.usage, r.encre).nom.toLowerCase()}${r.usage === 'textile' ? ', textile' : ''}`));
   if (c.opt.gravure) out.push(`Gravure ${p.gamme === 'large' ? 'manche' : 'support'} : « ${c.opt.gravureTexte} »`);
   if (c.opt.express) out.push('Express 48 h');
   if (c.opt.coffret) out.push('Coffret cadeau');
@@ -462,7 +468,7 @@ export function fabrication(num: string, a: Ligne, idx: number): Fab[] {
     const relief = r.usage === 'textile' ? 2.2 : 1.8;
     out.push({
       titre: `${large ? 'Rouleau' : 'Roue'} ${k + 1} × ${a.qty}`,
-      infos: [r.mode === 'logo' ? `Logo ${r.logoNom || 'client'}${r.raster ? ', à vectoriser' : ''}` : `Texte « ${r.texte} », police ${pol.scad}`, `Encre ${encre(r.usage, r.encre).nom.toLowerCase()}, TPU 95A, relief ${String(relief).replace('.', ',')} mm`],
+      infos: [r.mode === 'logo' ? (r.plusTard && !r.logo ? 'LOGO À RECEVOIR PAR EMAIL : relancer le client avant le BAT' : `Logo ${r.logoNom || 'client'}${r.raster ? ', à vectoriser' : ''}`) : `Texte « ${r.texte} », police ${pol.scad}`, `Encre ${encre(r.usage, r.encre).nom.toLowerCase()}, TPU 95A, relief ${String(relief).replace('.', ',')} mm`],
       cmd: large
         ? `openscad --backend=manifold -D 'piece="rouleau"' -D largeur_bande=${T.bande} -D diametre_rouleau=${T.d} ${motif} -D 'separateur="${r.sep}"' -D profondeur_relief=${relief} -o ${f}.stl rouleau_large.scad`
         : `openscad --backend=manifold -D 'piece="roue"' -D diametre_roue=${T.d} ${motif} -D 'separateur="${r.sep}"' -D profondeur_relief=${relief} -o ${f}.stl rouleau_tampon.scad`,
@@ -489,5 +495,5 @@ export const FAQ: [string, string][] = [
   ['L\'encre textile tient-elle au lavage ?', 'Après séchage, repassez 5 minutes sur l\'envers, sans vapeur. Attendez 48 heures, puis lavez à 40 °C maximum, sur l\'envers.'],
   ['Quel fichier envoyer pour mon logo ou mon dessin ?', 'Un SVG de préférence. Un PNG ou JPG haute définition fonctionne aussi. Le motif s\'imprime d\'une seule couleur ; notre graphiste peut le vectoriser pour 9 €.'],
   ['Comment recharger ?', 'Le marqueur se remplit avec nos flacons de 30 ml. Sur le Grand format, quelques gouttes d\'encre sur le rouleau encreur suffisent ; la mousse se change en 10 secondes.'],
-  ['Quels délais de livraison ?', 'BAT sous 24 h ouvrées, puis expédition sous 3 jours ouvrés après votre accord (48 h avec l\'option express). Point relais offert dès 59 €.'],
+  ['Quels délais de livraison ?', 'BAT sous 24 h ouvrées, puis expédition sous 3 jours ouvrés après votre accord (48 h avec l\'option express). Livraison 3,90 € en point relais ou à domicile, offerte dès 45 €.'],
 ];
