@@ -119,6 +119,11 @@ export async function creerSessionCheckout(e: EntreeSession) {
     if (r.ok) return r;
     b.delete('payment_method_configuration');
   }
+  const r = await stripe<{ id: string; url: string }>('/checkout/sessions', { method: 'POST', corps: b });
+  if (r.ok) return r;
+  // Dernier recours : sans durée courte ni lien de reprise, pour ne jamais bloquer un paiement.
+  b.delete('expires_at');
+  b.delete('after_expiration[recovery][enabled]');
   return stripe<{ id: string; url: string }>('/checkout/sessions', { method: 'POST', corps: b });
 }
 

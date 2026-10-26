@@ -129,7 +129,7 @@ function Commande() {
               {champ('tel', 'Téléphone', { type: 'tel', autoComplete: 'tel' }, 'Pour le transporteur uniquement.')}
             </div>
             <div style={{ display: 'grid', gap: 8 }} role="radiogroup" aria-label="Mode de livraison">
-              {([['relais', 'Point relais', 'Le plus proche de votre adresse, 2 à 4 jours après expédition, offert dès 45 €'], ['domicile', 'À domicile', '2 à 3 jours après expédition, offert dès 45 €'], ['express', 'Express 24 h', 'Le lendemain de l\'expédition']] as const).map(([m, titre, sous]) => (
+              {([['relais', 'Point relais', 'Le plus proche de votre adresse, 2 à 4 jours après expédition, offert dès 45 €'], ['domicile', 'À domicile', '2 à 3 jours après expédition, offert dès 45 €'], ['express', 'Express 24 h', 'En point relais Chronopost, le lendemain de l\'expédition']] as const).map(([m, titre, sous]) => (
                 <label className="radio" key={m}>
                   <input type="radio" name="livraison" value={m} checked={mode === m} onChange={() => setMode(m)} />
                   <span><strong>{titre}</strong><small>{sous}</small></span>
