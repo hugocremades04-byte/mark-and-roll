@@ -258,6 +258,192 @@ export const PAGES_SEO: PageSeo[] = [
       ['Un tampon fait-il professionnel sur un colis ?', 'Oui si l\'empreinte est nette et régulière. La frise continue d\'un tampon rouleau couvre toute la largeur du carton et donne un rendu proche d\'un ruban imprimé.'],
     ],
   },
+  // tampon personnalisé café / restaurant / boulangerie / food truck, logo sur gobelet, sac à emporter
+  {
+    chemin: '/tampon-restaurant-cafe',
+    lib: 'Tampon pour café et restaurant',
+    titre: 'Tampon personnalisé café, restaurant, boulangerie',
+    desc: `Votre logo sur sacs à emporter, boîtes, gobelets kraft et serviettes en papier, en un passage de rouleau. Le tampon personnalisé des cafés, restaurants, boulangeries et food trucks, ${dès('kit-rouleau')}.`,
+    h1: 'Le tampon des cafés, restaurants et boulangeries',
+    chapeau: "Sacs à emporter, boîtes à pâtisserie, gobelets kraft, serviettes en papier : achetez-les neutres, et votre logo s'imprime dessus au comptoir, au fil du service.",
+    image: 'usage-cafe',
+    alt: "Sachets de café et gobelets kraft marqués d'une frise de grains de café bleue",
+    produits: ['kit-rouleau', 'pack-boutique', 'rouleau-large'],
+    sections: [
+      {
+        h2: 'Vente à emporter : votre nom part avec le client',
+        p: [
+          "Un sac ou une boîte qui sort de chez vous se promène dans la rue, au bureau, sur les photos des clients. Marqué à votre nom, il fait connaître l'adresse sans coûter plus cher qu'un emballage neutre.",
+          'Le rouleau imprime en continu : un passage sur le côté du sac ou sur le couvercle de la boîte suffit, sans viser comme avec un tampon classique.',
+        ],
+      },
+      {
+        h2: "Pas de commande minimum chez l'imprimeur",
+        p: [
+          "Les sacs et gobelets imprimés à votre logo se commandent souvent par milliers, avec un stock à ranger et un délai à chaque réassort. Avec un rouleau, vous gardez vos emballages standards et vous les marquez au fur et à mesure.",
+          'Nouvelle carte, saison, événement : une roue gravée seule se clipse sur le même support pour un nouveau motif.',
+        ],
+      },
+      {
+        h2: 'Quelle taille pour quel emballage ?',
+        p: [
+          'Taille S (Ø30 mm) pour les petits sachets et les cartes de fidélité, M (Ø60 mm) pour les sacs à emporter et les boîtes, L (Ø80 mm) pour votre nom complet et votre adresse. Pour un logo détaillé, le Grand format imprime une bande de 30 ou 50 mm de haut.',
+          `Le Pack Boutique réunit trois roues et trois couleurs d'encre, par exemple votre logo, votre adresse et un MERCI, ${dès('pack-boutique')}.`,
+        ],
+      },
+    ],
+    faq: [
+      ['Peut-on tamponner des gobelets et des boîtes en carton ?', "Oui sur le carton mat et le papier kraft. Sur une surface plastifiée ou brillante, l'encre accroche mal : faites un essai sur un exemplaire avant de lancer le service."],
+      ["Où tamponner sur un emballage alimentaire ?", "Sur l'extérieur de l'emballage : sac, boîte, gobelet, serviette. L'encre n'est pas prévue pour toucher les aliments."],
+      ['Combien coûte un tampon personnalisé pour un café ?', `Le Kit Rouleau démarre à ${eur(prixMin('kit-rouleau'))}, marqueur rempli et BAT gratuit inclus. Le Pack Boutique, avec trois roues et trois couleurs, démarre à ${eur(prixMin('pack-boutique'))}.`],
+      ['Peut-on voir le rendu avant de commander ?', "Oui : l'aperçu s'affiche dès que vous tapez votre nom sur la fiche produit, puis vous recevez un BAT gratuit sous 24 h ouvrées. Rien n'est gravé avant votre accord."],
+    ],
+  },
+  // personnaliser colis vinted / etsy / leboncoin, tampon nom de boutique
+  {
+    chemin: '/tampon-colis-vinted-etsy',
+    lib: 'Tampon pour vendeurs Vinted et Etsy',
+    titre: 'Personnaliser ses colis Vinted et Etsy avec un tampon',
+    desc: 'Vendeur Vinted, Etsy ou Leboncoin : marquez vos colis à votre nom de boutique en un passage, même sur des cartons de récup. Tampon rouleau personnalisé, sans minimum, BAT gratuit.',
+    h1: 'Vos colis Vinted et Etsy à votre nom',
+    chapeau: "Cartons de récupération, enveloppes kraft, papier de soie : un passage de rouleau et le colis porte votre nom de boutique. L'acheteur se souvient de vous.",
+    image: 'carton-empreintes',
+    alt: 'Carton kraft marqué de trois empreintes : noire, blanche et MERCI',
+    produits: ['kit-rouleau', 'pack-duo', 'roue-gravee'],
+    sections: [
+      {
+        h2: 'Un colis reconnaissable, même dans un carton de récup',
+        p: [
+          'Beaucoup de vendeurs réutilisent des cartons. Une frise à votre nom sur le dessus transforme un carton récupéré en colis de marque, sans rien racheter.',
+          "Le Pack Duo grave deux roues pour un seul support : votre nom de boutique sur l'une, votre @instagram sur l'autre. L'acheteur sait où vous retrouver.",
+        ],
+      },
+      {
+        h2: "Un détail que l'acheteur remarque",
+        p: [
+          "Un emballage marqué à votre nom, un papier de soie tamponné, un MERCI sur le rabat : ce sont de petites attentions que les acheteurs remarquent, photographient et mentionnent dans leurs avis.",
+        ],
+      },
+      {
+        h2: 'Petit volume, petit budget',
+        p: [
+          `Pas de minimum de commande : un seul rouleau suffit, ${dès('kit-rouleau')}, marqueur rempli inclus. Le marqueur se recharge avec un flacon d'encre de 30 ml, et la roue se change pour une nouvelle saison ou une collab.`,
+        ],
+      },
+    ],
+    faq: [
+      ['Quelle taille choisir pour un nom de boutique ?', 'La taille S convient à un nom court de 10 à 12 caractères. La M et la L laissent la place à un nom plus long ou à un slogan.'],
+      ['Ça marche sur une enveloppe ou une pochette ?', "Sur le kraft et le papier, oui. Sur le plastique à bulles ou les pochettes plastifiées, l'encre accroche mal : tamponnez plutôt le papier de soie ou une carte glissée dans le colis."],
+      ['Combien de temps pour le recevoir ?', "Le BAT arrive par email sous 24 h ouvrées. La fabrication démarre dès votre accord, et vous recevez un numéro de suivi à l'expédition."],
+    ],
+  },
+  // tampon personnalisé association, événement, festival, salon, marché de créateurs
+  {
+    chemin: '/tampon-association-evenement',
+    lib: 'Tampon pour association et événement',
+    titre: 'Tampon personnalisé pour association et événement',
+    desc: `Association, festival, salon ou marché de créateurs : votre logo sur sacs, tote bags et programmes, en un passage de rouleau. Tampon personnalisé ${dès('kit-rouleau')}, devis pour les quantités.`,
+    h1: 'Un tampon à votre logo pour vos événements',
+    chapeau: "Kermesse, festival, salon, marché de créateurs, soirée d'asso : marquez sacs, tote bags et programmes à votre logo, au nombre exact de participants.",
+    image: 'totes',
+    alt: 'Pile de tote bags en coton naturel, prêts à tamponner',
+    produits: ['kit-rouleau', 'kit-textile', 'pack-textile'],
+    sections: [
+      {
+        h2: 'Marquer au nombre près, sans stock',
+        p: [
+          "Les goodies imprimés se commandent par lots et finissent souvent dans un carton au fond d'un local. Avec un rouleau gravé, vous achetez des sacs et des tote bags neutres et vous les marquez la veille, ou sur place, selon le nombre de participants.",
+        ],
+      },
+      {
+        h2: "Des tote bags à votre logo avec l'encre textile",
+        p: [
+          `Le Kit Rouleau textile s'utilise avec une encre pour tissu, lavable à 40 °C après fixation au fer. Le Pack Textile Starter ajoute 5 tote bags en coton naturel de 38 × 42 cm pour vos premiers essais, ${dès('pack-textile')}.`,
+        ],
+      },
+      {
+        h2: 'Une animation de stand toute prête',
+        p: [
+          'Sur un stand, le rouleau attire du monde : chacun marque son sac ou son tote bag au logo de l\'événement. Une animation simple, sans machine ni électricité.',
+        ],
+      },
+      {
+        h2: "Le même rouleau d'une édition à l'autre",
+        p: [
+          'Le support et la roue se gardent. Pour une nouvelle édition, une roue gravée seule se clipse sur le support avec le nouveau visuel ou la nouvelle date.',
+          'Plusieurs rouleaux ou une grosse quantité : remise automatique dès 3 kits, et devis sous 24 h sur la page Pros et devis.',
+        ],
+      },
+    ],
+    faq: [
+      ['Peut-on tamponner des tote bags en coton ?', "Oui, avec le Kit Rouleau textile et son encre pour tissu. Tamponnez le coton à plat et tendu, puis fixez au fer : l'empreinte tient au lavage à 40 °C."],
+      ['Faites-vous des devis pour les associations ?', 'Oui. La page Pros et devis permet de demander un devis pour plusieurs rouleaux ou une quantité importante, avec une réponse sous 24 h.'],
+      ["Peut-on ajouter la date de l'événement ?", "Oui, en texte ou intégrée à votre logo. Pour l'édition suivante, il suffit de commander une nouvelle roue gravée."],
+    ],
+  },
+  // packaging pas cher petite marque, idées packaging personnalisé, emballage colis petite entreprise
+  {
+    chemin: '/guide-packaging-petite-marque',
+    lib: 'Guide : packaging pas cher pour petite marque',
+    titre: 'Packaging pas cher pour petite marque : 7 idées',
+    desc: "Un packaging à votre image sans gros budget ni minimum de commande : 7 idées concrètes pour petite marque, créateur ou boutique en ligne, du carton neutre au papier de soie tamponné.",
+    h1: 'Packaging pas cher pour petite marque : 7 idées',
+    chapeau: "Une belle ouverture de colis ne demande pas des milliers de boîtes imprimées. Voici sept idées qui tiennent dans un petit budget et suivent le rythme de vos commandes.",
+    image: 'pack-boutique',
+    alt: "Pack Boutique : support avec sa roue, deux roues gravées, deux marqueurs de couleur et un flacon d'encre",
+    produits: ['kit-rouleau', 'pack-boutique', 'pack-duo'],
+    sections: [
+      { h2: '1. Partir de cartons et sachets neutres', p: ["Les emballages standards coûtent moins cher, se trouvent partout et ne demandent aucun stock dédié. La personnalisation vient ensuite, au moment d'emballer."] },
+      { h2: '2. Tamponner votre logo', p: [`Un tampon rouleau imprime votre nom en continu sur le carton, le kraft et le papier de soie. Un achat unique, ${dès('kit-rouleau')}, et aucun minimum.`] },
+      { h2: '3. Marquer le papier de soie', p: ["Un papier de soie neutre, tamponné d'une frise à votre logo sur un bord, donne l'effet d'un papier imprimé sans en commander des rames."] },
+      { h2: '4. Écrire un mot à la main', p: ['Quelques mots avec le prénom du client restent l\'attention la plus remarquée. Une carte simple, tamponnée à votre logo, suffit.'] },
+      { h2: '5. Choisir une couleur signature', p: ["Une même couleur répétée partout (encre, ficelle, sticker de fermeture) rend un colis reconnaissable. Le Pack Boutique contient trois marqueurs de couleurs différentes pour tester."] },
+      { h2: '6. Mettre votre @instagram sur le colis', p: ['Le client qui photographie son colis doit pouvoir vous mentionner. Une deuxième roue gravée à votre @instagram, comme dans le Pack Duo, s\'en charge.'] },
+      { h2: '7. Fermer simplement', p: ['Un scotch kraft ou une ficelle naturelle ferment le colis proprement, pour quelques centimes. Gardez le logo pour le carton lui-même.'] },
+      { h2: 'Quand passer au carton imprimé ?', p: ['Pour quelques dizaines de colis par mois, un tampon, du papier de soie neutre et des cartes suffisent à créer une identité. Le carton imprimé sur mesure devient intéressant quand les volumes sont élevés et réguliers, sur un seul format de boîte.'] },
+    ],
+    faq: [
+      ['Quel est le packaging le moins cher pour une petite marque ?', "Des emballages neutres achetés en petite quantité, personnalisés avec un tampon : vous payez le marquage une seule fois, quel que soit le nombre de colis."],
+      ['Comment rendre un colis plus pro sans gros budget ?', 'Un logo net et répété, une couleur signature et un mot au client. Le reste (carton, scotch, papier de soie) peut rester standard.'],
+    ],
+  },
+  // papier de soie personnalisé logo, petite quantité, sans minimum
+  {
+    chemin: '/guide-papier-de-soie-personnalise',
+    lib: 'Guide : papier de soie personnalisé',
+    titre: 'Papier de soie personnalisé logo, sans minimum',
+    desc: "Papier de soie imprimé ou tamponné à votre logo : quantités minimales, délais et l'alternative sans minimum avec un tampon rouleau. Guide pour boutiques et créateurs.",
+    h1: 'Papier de soie personnalisé : imprimé ou tamponné ?',
+    chapeau: "Le papier de soie à votre logo fait beaucoup pour l'ouverture d'un colis. Deux façons de l'obtenir : le faire imprimer, ou le tamponner vous-même au rouleau.",
+    image: 'grand-format',
+    alt: 'Le rouleau Grand format imprime une frise de citrons sur du papier kraft',
+    produits: ['kit-rouleau', 'rouleau-large', 'pack-duo'],
+    sections: [
+      {
+        h2: 'Le papier de soie imprimé',
+        p: ["Imprimé par un fabricant, il couvre toute la feuille d'un motif régulier. En contrepartie, il se commande en général par milliers de feuilles, avec un délai de production et un motif figé pour tout le lot."],
+      },
+      {
+        h2: 'Le papier de soie tamponné',
+        p: [
+          "Vous achetez un papier de soie neutre, à la couleur de votre choix, et vous passez le rouleau sur un bord ou en diagonale juste avant d'emballer. Le motif se répète sur toute la longueur du passage, comme un papier imprimé.",
+          'Aucune quantité minimale : vous marquez dix feuilles ou deux cents, selon les commandes de la semaine.',
+        ],
+      },
+      {
+        h2: 'Bien tamponner un papier fin',
+        p: ["Posez la feuille sur une surface plane et dure, roulez d'un geste régulier sans appuyer fort, et laissez sécher quelques instants avant de plier. Sur un papier très fin, un passage léger évite que l'encre ne traverse."],
+      },
+      {
+        h2: 'Quel rouleau choisir ?',
+        p: [`Pour un nom ou un logo simple, le Kit Rouleau ${dès('kit-rouleau')}. Pour un logo détaillé ou un motif décoratif plus haut, le Grand format ${dès('rouleau-large')} imprime une bande de 30 ou 50 mm.`],
+      },
+    ],
+    faq: [
+      ['Peut-on tamponner du papier de soie ?', 'Oui. Roulez légèrement sur une surface dure et laissez sécher avant de plier : le motif reste net.'],
+      ["Quelle couleur d'encre sur du papier de soie ?", "Les encres foncées (noir, bleu, vert) ressortent le mieux sur le blanc et le kraft. L'encre blanche s'utilise sur un papier de soie de couleur foncée, et l'or sur le noir."],
+    ],
+  },
 ];
 
 export const PAGE_SEO = (chemin: string) => PAGES_SEO.find((p) => p.chemin === chemin)!;

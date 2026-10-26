@@ -11,15 +11,20 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TamponToteBagVetementRouteImport } from './routes/tampon-tote-bag-vetement'
 import { Route as TamponSacKraftRouteImport } from './routes/tampon-sac-kraft'
+import { Route as TamponRestaurantCafeRouteImport } from './routes/tampon-restaurant-cafe'
 import { Route as TamponMariagePersonnaliseRouteImport } from './routes/tampon-mariage-personnalise'
 import { Route as TamponEncreurPersonnaliseRouteImport } from './routes/tampon-encreur-personnalise'
+import { Route as TamponColisVintedEtsyRouteImport } from './routes/tampon-colis-vinted-etsy'
 import { Route as TamponCartonColisRouteImport } from './routes/tampon-carton-colis'
+import { Route as TamponAssociationEvenementRouteImport } from './routes/tampon-association-evenement'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ProsRouteImport } from './routes/pros'
 import { Route as PanierRouteImport } from './routes/panier'
 import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
+import { Route as GuidePapierDeSoiePersonnaliseRouteImport } from './routes/guide-papier-de-soie-personnalise'
+import { Route as GuidePackagingPetiteMarqueRouteImport } from './routes/guide-packaging-petite-marque'
 import { Route as GuideLogoColisRouteImport } from './routes/guide-logo-colis'
 import { Route as FluxGoogleDotxmlRouteImport } from './routes/flux-google[.]xml'
 import { Route as CommandeRouteImport } from './routes/commande'
@@ -47,6 +52,11 @@ const TamponSacKraftRoute = TamponSacKraftRouteImport.update({
   path: '/tampon-sac-kraft',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TamponRestaurantCafeRoute = TamponRestaurantCafeRouteImport.update({
+  id: '/tampon-restaurant-cafe',
+  path: '/tampon-restaurant-cafe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TamponMariagePersonnaliseRoute =
   TamponMariagePersonnaliseRouteImport.update({
     id: '/tampon-mariage-personnalise',
@@ -59,11 +69,22 @@ const TamponEncreurPersonnaliseRoute =
     path: '/tampon-encreur-personnalise',
     getParentRoute: () => rootRouteImport,
   } as any)
+const TamponColisVintedEtsyRoute = TamponColisVintedEtsyRouteImport.update({
+  id: '/tampon-colis-vinted-etsy',
+  path: '/tampon-colis-vinted-etsy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TamponCartonColisRoute = TamponCartonColisRouteImport.update({
   id: '/tampon-carton-colis',
   path: '/tampon-carton-colis',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TamponAssociationEvenementRoute =
+  TamponAssociationEvenementRouteImport.update({
+    id: '/tampon-association-evenement',
+    path: '/tampon-association-evenement',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -94,6 +115,18 @@ const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
   path: '/llms.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GuidePapierDeSoiePersonnaliseRoute =
+  GuidePapierDeSoiePersonnaliseRouteImport.update({
+    id: '/guide-papier-de-soie-personnalise',
+    path: '/guide-papier-de-soie-personnalise',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const GuidePackagingPetiteMarqueRoute =
+  GuidePackagingPetiteMarqueRouteImport.update({
+    id: '/guide-packaging-petite-marque',
+    path: '/guide-packaging-petite-marque',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const GuideLogoColisRoute = GuideLogoColisRouteImport.update({
   id: '/guide-logo-colis',
   path: '/guide-logo-colis',
@@ -182,15 +215,20 @@ export interface FileRoutesByFullPath {
   '/commande': typeof CommandeRoute
   '/flux-google.xml': typeof FluxGoogleDotxmlRoute
   '/guide-logo-colis': typeof GuideLogoColisRoute
+  '/guide-packaging-petite-marque': typeof GuidePackagingPetiteMarqueRoute
+  '/guide-papier-de-soie-personnalise': typeof GuidePapierDeSoiePersonnaliseRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/panier': typeof PanierRoute
   '/pros': typeof ProsRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tampon-association-evenement': typeof TamponAssociationEvenementRoute
   '/tampon-carton-colis': typeof TamponCartonColisRoute
+  '/tampon-colis-vinted-etsy': typeof TamponColisVintedEtsyRoute
   '/tampon-encreur-personnalise': typeof TamponEncreurPersonnaliseRoute
   '/tampon-mariage-personnalise': typeof TamponMariagePersonnaliseRoute
+  '/tampon-restaurant-cafe': typeof TamponRestaurantCafeRoute
   '/tampon-sac-kraft': typeof TamponSacKraftRoute
   '/tampon-tote-bag-vetement': typeof TamponToteBagVetementRoute
   '/api/desinscription': typeof ApiDesinscriptionRoute
@@ -211,15 +249,20 @@ export interface FileRoutesByTo {
   '/commande': typeof CommandeRoute
   '/flux-google.xml': typeof FluxGoogleDotxmlRoute
   '/guide-logo-colis': typeof GuideLogoColisRoute
+  '/guide-packaging-petite-marque': typeof GuidePackagingPetiteMarqueRoute
+  '/guide-papier-de-soie-personnalise': typeof GuidePapierDeSoiePersonnaliseRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/panier': typeof PanierRoute
   '/pros': typeof ProsRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tampon-association-evenement': typeof TamponAssociationEvenementRoute
   '/tampon-carton-colis': typeof TamponCartonColisRoute
+  '/tampon-colis-vinted-etsy': typeof TamponColisVintedEtsyRoute
   '/tampon-encreur-personnalise': typeof TamponEncreurPersonnaliseRoute
   '/tampon-mariage-personnalise': typeof TamponMariagePersonnaliseRoute
+  '/tampon-restaurant-cafe': typeof TamponRestaurantCafeRoute
   '/tampon-sac-kraft': typeof TamponSacKraftRoute
   '/tampon-tote-bag-vetement': typeof TamponToteBagVetementRoute
   '/api/desinscription': typeof ApiDesinscriptionRoute
@@ -241,15 +284,20 @@ export interface FileRoutesById {
   '/commande': typeof CommandeRoute
   '/flux-google.xml': typeof FluxGoogleDotxmlRoute
   '/guide-logo-colis': typeof GuideLogoColisRoute
+  '/guide-packaging-petite-marque': typeof GuidePackagingPetiteMarqueRoute
+  '/guide-papier-de-soie-personnalise': typeof GuidePapierDeSoiePersonnaliseRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/panier': typeof PanierRoute
   '/pros': typeof ProsRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/tampon-association-evenement': typeof TamponAssociationEvenementRoute
   '/tampon-carton-colis': typeof TamponCartonColisRoute
+  '/tampon-colis-vinted-etsy': typeof TamponColisVintedEtsyRoute
   '/tampon-encreur-personnalise': typeof TamponEncreurPersonnaliseRoute
   '/tampon-mariage-personnalise': typeof TamponMariagePersonnaliseRoute
+  '/tampon-restaurant-cafe': typeof TamponRestaurantCafeRoute
   '/tampon-sac-kraft': typeof TamponSacKraftRoute
   '/tampon-tote-bag-vetement': typeof TamponToteBagVetementRoute
   '/api/desinscription': typeof ApiDesinscriptionRoute
@@ -272,15 +320,20 @@ export interface FileRouteTypes {
     | '/commande'
     | '/flux-google.xml'
     | '/guide-logo-colis'
+    | '/guide-packaging-petite-marque'
+    | '/guide-papier-de-soie-personnalise'
     | '/llms.txt'
     | '/mentions-legales'
     | '/panier'
     | '/pros'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/tampon-association-evenement'
     | '/tampon-carton-colis'
+    | '/tampon-colis-vinted-etsy'
     | '/tampon-encreur-personnalise'
     | '/tampon-mariage-personnalise'
+    | '/tampon-restaurant-cafe'
     | '/tampon-sac-kraft'
     | '/tampon-tote-bag-vetement'
     | '/api/desinscription'
@@ -301,15 +354,20 @@ export interface FileRouteTypes {
     | '/commande'
     | '/flux-google.xml'
     | '/guide-logo-colis'
+    | '/guide-packaging-petite-marque'
+    | '/guide-papier-de-soie-personnalise'
     | '/llms.txt'
     | '/mentions-legales'
     | '/panier'
     | '/pros'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/tampon-association-evenement'
     | '/tampon-carton-colis'
+    | '/tampon-colis-vinted-etsy'
     | '/tampon-encreur-personnalise'
     | '/tampon-mariage-personnalise'
+    | '/tampon-restaurant-cafe'
     | '/tampon-sac-kraft'
     | '/tampon-tote-bag-vetement'
     | '/api/desinscription'
@@ -330,15 +388,20 @@ export interface FileRouteTypes {
     | '/commande'
     | '/flux-google.xml'
     | '/guide-logo-colis'
+    | '/guide-packaging-petite-marque'
+    | '/guide-papier-de-soie-personnalise'
     | '/llms.txt'
     | '/mentions-legales'
     | '/panier'
     | '/pros'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/tampon-association-evenement'
     | '/tampon-carton-colis'
+    | '/tampon-colis-vinted-etsy'
     | '/tampon-encreur-personnalise'
     | '/tampon-mariage-personnalise'
+    | '/tampon-restaurant-cafe'
     | '/tampon-sac-kraft'
     | '/tampon-tote-bag-vetement'
     | '/api/desinscription'
@@ -360,15 +423,20 @@ export interface RootRouteChildren {
   CommandeRoute: typeof CommandeRoute
   FluxGoogleDotxmlRoute: typeof FluxGoogleDotxmlRoute
   GuideLogoColisRoute: typeof GuideLogoColisRoute
+  GuidePackagingPetiteMarqueRoute: typeof GuidePackagingPetiteMarqueRoute
+  GuidePapierDeSoiePersonnaliseRoute: typeof GuidePapierDeSoiePersonnaliseRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
   MentionsLegalesRoute: typeof MentionsLegalesRoute
   PanierRoute: typeof PanierRoute
   ProsRoute: typeof ProsRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TamponAssociationEvenementRoute: typeof TamponAssociationEvenementRoute
   TamponCartonColisRoute: typeof TamponCartonColisRoute
+  TamponColisVintedEtsyRoute: typeof TamponColisVintedEtsyRoute
   TamponEncreurPersonnaliseRoute: typeof TamponEncreurPersonnaliseRoute
   TamponMariagePersonnaliseRoute: typeof TamponMariagePersonnaliseRoute
+  TamponRestaurantCafeRoute: typeof TamponRestaurantCafeRoute
   TamponSacKraftRoute: typeof TamponSacKraftRoute
   TamponToteBagVetementRoute: typeof TamponToteBagVetementRoute
   ApiDesinscriptionRoute: typeof ApiDesinscriptionRoute
@@ -398,6 +466,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TamponSacKraftRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tampon-restaurant-cafe': {
+      id: '/tampon-restaurant-cafe'
+      path: '/tampon-restaurant-cafe'
+      fullPath: '/tampon-restaurant-cafe'
+      preLoaderRoute: typeof TamponRestaurantCafeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tampon-mariage-personnalise': {
       id: '/tampon-mariage-personnalise'
       path: '/tampon-mariage-personnalise'
@@ -412,11 +487,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TamponEncreurPersonnaliseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tampon-colis-vinted-etsy': {
+      id: '/tampon-colis-vinted-etsy'
+      path: '/tampon-colis-vinted-etsy'
+      fullPath: '/tampon-colis-vinted-etsy'
+      preLoaderRoute: typeof TamponColisVintedEtsyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tampon-carton-colis': {
       id: '/tampon-carton-colis'
       path: '/tampon-carton-colis'
       fullPath: '/tampon-carton-colis'
       preLoaderRoute: typeof TamponCartonColisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tampon-association-evenement': {
+      id: '/tampon-association-evenement'
+      path: '/tampon-association-evenement'
+      fullPath: '/tampon-association-evenement'
+      preLoaderRoute: typeof TamponAssociationEvenementRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -459,6 +548,20 @@ declare module '@tanstack/react-router' {
       path: '/llms.txt'
       fullPath: '/llms.txt'
       preLoaderRoute: typeof LlmsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guide-papier-de-soie-personnalise': {
+      id: '/guide-papier-de-soie-personnalise'
+      path: '/guide-papier-de-soie-personnalise'
+      fullPath: '/guide-papier-de-soie-personnalise'
+      preLoaderRoute: typeof GuidePapierDeSoiePersonnaliseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guide-packaging-petite-marque': {
+      id: '/guide-packaging-petite-marque'
+      path: '/guide-packaging-petite-marque'
+      fullPath: '/guide-packaging-petite-marque'
+      preLoaderRoute: typeof GuidePackagingPetiteMarqueRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/guide-logo-colis': {
@@ -595,15 +698,20 @@ const rootRouteChildren: RootRouteChildren = {
   CommandeRoute: CommandeRoute,
   FluxGoogleDotxmlRoute: FluxGoogleDotxmlRoute,
   GuideLogoColisRoute: GuideLogoColisRoute,
+  GuidePackagingPetiteMarqueRoute: GuidePackagingPetiteMarqueRoute,
+  GuidePapierDeSoiePersonnaliseRoute: GuidePapierDeSoiePersonnaliseRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
   MentionsLegalesRoute: MentionsLegalesRoute,
   PanierRoute: PanierRoute,
   ProsRoute: ProsRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TamponAssociationEvenementRoute: TamponAssociationEvenementRoute,
   TamponCartonColisRoute: TamponCartonColisRoute,
+  TamponColisVintedEtsyRoute: TamponColisVintedEtsyRoute,
   TamponEncreurPersonnaliseRoute: TamponEncreurPersonnaliseRoute,
   TamponMariagePersonnaliseRoute: TamponMariagePersonnaliseRoute,
+  TamponRestaurantCafeRoute: TamponRestaurantCafeRoute,
   TamponSacKraftRoute: TamponSacKraftRoute,
   TamponToteBagVetementRoute: TamponToteBagVetementRoute,
   ApiDesinscriptionRoute: ApiDesinscriptionRoute,
