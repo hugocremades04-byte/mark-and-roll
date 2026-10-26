@@ -31,7 +31,6 @@ function buildHead() {
       { property: 'og:site_name', content: 'Mark & Roll' },
       { name: 'twitter:card', content: ogImage ? 'summary_large_image' : 'summary' },
       ...(ogImage ? [{ property: 'og:image', content: ogImage }, { name: 'twitter:image', content: ogImage }] : []),
-      ...(SITE.url ? [{ property: 'og:url', content: SITE.url }] : []),
     ],
     links: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },

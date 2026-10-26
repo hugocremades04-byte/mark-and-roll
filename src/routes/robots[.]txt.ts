@@ -1,10 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { ORIGINE } from '@/lib/seo'
 
 export const Route = createFileRoute('/robots.txt')({
   server: {
     handlers: {
-      GET: async ({ request }) => {
-        const origin = new URL(request.url).origin
+      GET: async () => {
+        const origin = ORIGINE
         const body = [
           'User-agent: *',
           'Allow: /',

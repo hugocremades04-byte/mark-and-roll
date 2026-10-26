@@ -4,8 +4,17 @@ import { CarteProduit, CarteRouleau, Img, Preuves, SectionTete, VideoBoucle } fr
 import { IcoChevron, IcoFleche } from '@/components/boutique/Icones';
 import { ALT, FAQ, IMG, dansCollection } from '@/lib/catalogue';
 import site from '@/site.json';
+import { LD_MARQUE, seo } from '@/lib/seo';
 
 export const Route = createFileRoute('/')({
+  head: () => ({
+    ...seo({
+      titre: 'Tampon personnalisé logo en rouleau | Mark & Roll',
+      description: 'Tampon rouleau gravé à votre logo : votre marque sur vos cartons, colis, tote bags et textile en un passage. BAT gratuit, fabriqué en France, kits dès 39 €.',
+      chemin: '/',
+    }),
+    scripts: [{ type: 'application/ld+json', children: JSON.stringify(LD_MARQUE) }],
+  }),
   component: Accueil,
 });
 
@@ -87,7 +96,7 @@ function Accueil() {
       <section className="wrap heros3" aria-labelledby="h-heros">
         <div className="heros3-txt">
           <h1 id="h-heros">Votre logo sur <em>chaque colis</em>.</h1>
-          <p className="chapeau">Un rouleau gravé à votre marque : un passage, et votre logo s'imprime en continu sur vos cartons, sachets et tote bags.</p>
+          <p className="chapeau">Un tampon rouleau gravé à votre marque : un passage, et votre logo s'imprime en continu sur vos cartons, colis, sachets et tote bags.</p>
           <div className="heros3-cta" ref={ctaRef}>
             <CtaHeros />
             <Link className="lien-fleche" to="/collections/$cle" params={{ cle: 'boutique' }}>Voir tous les produits<IcoFleche /></Link>

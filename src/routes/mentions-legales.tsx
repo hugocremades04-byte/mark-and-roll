@@ -1,11 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Ariane } from '@/components/boutique/Elements';
 import site from '../site.json';
+import { seo } from '@/lib/seo';
 
 /* Mentions légales (LCEN, art. 6-III). Les informations du vendeur se règlent dans src/site.json. */
 
 export const Route = createFileRoute('/mentions-legales')({
-  head: () => ({ meta: [{ title: 'Mentions légales | Mark & Roll' }, { name: 'description', content: 'Éditeur, hébergeur et contact du site Mark & Roll.' }] }),
+  head: () => seo({ titre: 'Mentions légales | Mark & Roll', description: 'Éditeur, hébergeur et contact du site Mark & Roll, tampons rouleaux personnalisés à votre logo.', chemin: '/mentions-legales' }),
   component: MentionsLegales,
 });
 

@@ -22,8 +22,9 @@
   "kv_namespaces": [{ "binding": "LOGOS" }],
 
   // Nom de domaine : Cloudflare crée le DNS et le certificat HTTPS tout seul.
-  // www et l'adresse workers.dev renvoient vers marknroll.com (src/server.ts),
+  // www et l'adresse workers.dev (gardée active pour les anciens liens) renvoient vers marknroll.com (src/server.ts),
   // sauf /api/ (webhooks Stripe déjà déclarés sur l'ancienne adresse).
+  "workers_dev": true,
   "routes": [
     { "pattern": "marknroll.com", "custom_domain": true },
     { "pattern": "www.marknroll.com", "custom_domain": true }

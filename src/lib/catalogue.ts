@@ -120,6 +120,8 @@ interface Base {
   rayon?: 'encres' | 'roues' | 'accessoires';
   /** Trois points forts affichés sur la fiche et les grandes cartes. */
   points?: string[];
+  /** Référencement : title et meta description visés sur Google (sinon nom et texte court). */
+  seo?: { titre: string; desc: string };
 }
 export interface ProduitConfig extends Base {
   type: 'config';
@@ -143,6 +145,7 @@ export type Produit = ProduitConfig | ProduitSimple;
 export const P: Record<string, Produit> = {
   'kit-rouleau': {
     type: 'config', gamme: 'std', nom: 'Kit Rouleau personnalisé', court: 'Support, roue gravée à votre marque et marqueur rempli.',
+    seo: { titre: 'Tampon rouleau personnalisé logo pour colis', desc: 'Kit tampon rouleau gravé à votre logo ou texte : support, roue et marqueur rempli. Votre marque sur vos cartons et colis en un passage. BAT gratuit.' },
     roues: [null], supports: 1, marqueurs: true, encreur: false, roueSup: true, prix: { S: 39, M: 49, L: 59 },
     images: ['kit-packshot', 'kit-action', 'hero', 'kit-contenu', 'roue-detail', 'carton-empreintes', 'roues-tailles'], cats: ['rouleaux', 'packaging'], badge: 'Le plus vendu',
     points: ['Texte ou logo simple sur 13,5 mm de haut', 'Marqueur rempli inclus, prêt à rouler', 'Roues interchangeables sans outil'],
@@ -151,6 +154,7 @@ export const P: Record<string, Produit> = {
   },
   'rouleau-large': {
     type: 'config', gamme: 'large', nom: 'Rouleau Grand format', court: 'Bande de 30 ou 50 mm pour les logos détaillés et les dessins, encreur rechargeable intégré.',
+    seo: { titre: 'Tampon logo grand format en rouleau, 30 ou 50 mm', desc: 'Tampon rouleau grand format pour logos détaillés et dessins : bande de 30 ou 50 mm, encreur rechargeable intégré. Gravé à votre logo, BAT gratuit.' },
     roues: [null], supports: 1, marqueurs: false, encreur: true, roueSup: true, prix: { L30: 65, XL50: 79 },
     images: ['rouleau-large', 'large-3d', 'empreinte-large', 'large-rouleau-3d', 'large-eclate'], cats: ['rouleaux', 'grand-format', 'packaging'], badge: 'Nouveau',
     points: ['Logo détaillé ou dessin sur 30 ou 50 mm', 'Rouleau encreur et flacon d\'encre inclus', 'Rouleau gravé changeable en 10 secondes'],
@@ -159,6 +163,7 @@ export const P: Record<string, Produit> = {
   },
   'kit-textile': {
     type: 'config', gamme: 'std', nom: 'Kit Rouleau textile', court: 'Roue à relief profond et marqueur à encre textile, fixée au fer.',
+    seo: { titre: 'Tampon textile personnalisé logo', desc: 'Tampon rouleau textile gravé à votre logo pour tote bags, t-shirts et sacs en coton. Encre textile fixée au fer, lavable à 40 °C. BAT gratuit.' },
     roues: ['textile'], supports: 1, marqueurs: true, encreur: false, roueSup: true, prix: { S: 45, M: 55, L: 65 },
     images: ['tote', 'kit-packshot', 'roue-detail', 'kit-contenu'], cats: ['rouleaux', 'textile'],
     points: ['Relief profond pour le coton et la toile', 'Encre textile incluse, fixée au fer', 'Lavable à 40 °C'],
@@ -166,6 +171,7 @@ export const P: Record<string, Produit> = {
   },
   'pack-duo': {
     type: 'config', gamme: 'std', nom: 'Pack Duo', court: 'Deux roues sur un support : votre logo et votre @instagram.',
+    seo: { titre: 'Pack Duo : 2 tampons rouleaux, logo et @instagram', desc: 'Deux roues gravées sur un support : votre logo et votre @instagram sur chaque colis. Tampon rouleau personnalisé, BAT gratuit pour chaque roue.' },
     roues: [null, null], supports: 1, marqueurs: true, encreur: false, roueSup: false, prix: { S: 59, M: 69, L: 79 },
     valeur: (t) => KIT[t] + PRIX_ROUE + PRIX_MARQUEUR.packaging,
     images: ['pack-duo', 'kit-contenu', 'carton-empreintes'], cats: ['packs', 'packaging'], badge: 'Populaire',
@@ -173,6 +179,7 @@ export const P: Record<string, Produit> = {
   },
   'pack-boutique': {
     type: 'config', gamme: 'std', nom: 'Pack Boutique', court: 'Trois roues, trois couleurs d\'encre et une recharge.',
+    seo: { titre: 'Pack Boutique : 3 tampons rouleaux personnalisés', desc: 'Trois roues gravées à votre marque, trois couleurs d\'encre et une recharge : le pack des boutiques qui expédient tous les jours. BAT gratuit.' },
     roues: [null, null, null], supports: 1, marqueurs: true, encreur: false, roueSup: false, prix: { S: 89, M: 99, L: 109 },
     valeur: (t) => KIT[t] + 2 * PRIX_ROUE + 2 * PRIX_MARQUEUR.packaging + 9.9,
     images: ['pack-boutique', 'carton-empreintes', 'marqueurs'], cats: ['packs', 'packaging'],
@@ -180,6 +187,7 @@ export const P: Record<string, Produit> = {
   },
   'pack-textile': {
     type: 'config', gamme: 'std', nom: 'Pack Textile Starter', court: 'Le kit textile avec 5 tote bags en coton pour vos premiers essais.',
+    seo: { titre: 'Tampon pour tote bag : kit textile et 5 tote bags', desc: 'Le tampon textile gravé à votre logo avec 5 tote bags en coton pour vos premiers essais. Encre textile lavable à 40 °C après fixation au fer.' },
     roues: ['textile'], supports: 1, marqueurs: true, encreur: false, roueSup: false, prix: { S: 65, M: 75, L: 85 },
     valeur: (t) => KIT_TEXTILE[t] + 14.9 + 12.9,
     images: ['pack-textile', 'tote', 'kit-packshot'], cats: ['packs', 'textile'],
@@ -187,6 +195,7 @@ export const P: Record<string, Produit> = {
   },
   'pack-complet': {
     type: 'config', gamme: 'std', nom: 'Pack Marque complète', court: 'Un support pour les cartons, un pour le textile.',
+    seo: { titre: 'Tampon personnalisé carton et textile, pack complet', desc: 'Un tampon rouleau pour vos cartons et colis, un pour vos tote bags et t-shirts, gravés à votre logo. BAT gratuit pour chaque roue.' },
     roues: ['packaging', 'textile'], supports: 2, marqueurs: true, encreur: false, roueSup: false, prix: { S: 75, M: 92, L: 109 },
     valeur: (t) => KIT[t] + KIT_TEXTILE[t],
     images: ['pack-complet', 'carton-empreintes', 'tote'], cats: ['packs', 'packaging', 'textile'],
@@ -194,6 +203,7 @@ export const P: Record<string, Produit> = {
   },
   'roue-gravee': {
     type: 'config', gamme: 'std', nom: 'Roue gravée seule', court: 'Un nouveau motif pour votre support : saison, collab, promo.',
+    seo: { titre: 'Roue gravée personnalisée pour tampon rouleau', desc: 'Un nouveau motif pour votre tampon rouleau Mark & Roll : saison, collab, promo. Gravée à votre texte ou logo, BAT gratuit.' },
     roues: [null], supports: 0, marqueurs: false, encreur: false, roueSup: false, prix: { S: 19, M: 19, L: 19 },
     images: ['roue-detail', 'roues-tailles'], cats: ['recharges'], rayon: 'roues',
     inclut: ['1 roue gravée à votre motif', 'Se clipse sans outil sur un support de même taille'],
@@ -253,11 +263,11 @@ export const P: Record<string, Produit> = {
 
 export const LIB_OPT: Record<string, string> = { motif: 'Motif', taille: 'Taille', couleur: 'Couleur', montant: 'Montant' };
 
-export const COLLECTIONS: Record<string, { titre: string; court: string; desc: string }> = {
-  boutique: { titre: 'Toute la boutique', court: 'Tout', desc: 'Rouleaux personnalisés, packs et recharges. Tout est fabriqué à la commande en France.' },
-  rouleaux: { titre: 'Rouleaux personnalisés', court: 'Rouleaux', desc: 'Choisissez votre rouleau, ajoutez votre texte ou votre logo, validez le BAT gratuit. Encre incluse.' },
-  packs: { titre: 'Packs', court: 'Packs', desc: 'Plusieurs roues ou plusieurs supports, moins cher qu\'à l\'unité. Le BAT reste gratuit pour chaque roue.' },
-  recharges: { titre: 'Recharges et accessoires', court: 'Recharges', desc: 'Encres, marqueurs, roues de rechange et accessoires pour votre rouleau.' },
+export const COLLECTIONS: Record<string, { titre: string; court: string; desc: string; h1: string; seo: { titre: string; desc: string } }> = {
+  boutique: { titre: 'Toute la boutique', court: 'Tout', desc: 'Rouleaux personnalisés, packs et recharges. Tout est fabriqué à la commande en France.', h1: 'Tampons personnalisés à votre logo', seo: { titre: 'Tampons personnalisés logo, packs et encres', desc: 'Tous nos tampons rouleaux personnalisés à votre logo, packs et recharges d\'encre. Fabriqué à la commande en France, BAT gratuit avant gravure.' } },
+  rouleaux: { titre: 'Rouleaux personnalisés', court: 'Rouleaux', desc: 'Choisissez votre rouleau, ajoutez votre texte ou votre logo, validez le BAT gratuit. Encre incluse.', h1: 'Tampons rouleaux personnalisés', seo: { titre: 'Tampon rouleau personnalisé : tailles et prix', desc: 'Comparez nos tampons rouleaux personnalisés, du logo court au grand format 50 mm. Ajoutez votre texte ou logo, BAT gratuit, encre incluse.' } },
+  packs: { titre: 'Packs', court: 'Packs', desc: 'Plusieurs roues ou plusieurs supports, moins cher qu\'à l\'unité. Le BAT reste gratuit pour chaque roue.', h1: 'Packs de tampons personnalisés', seo: { titre: 'Packs de tampons personnalisés logo', desc: 'Plusieurs roues gravées ou plusieurs supports, moins cher qu\'à l\'unité : logo, @instagram, textile. BAT gratuit pour chaque roue.' } },
+  recharges: { titre: 'Recharges et accessoires', court: 'Recharges', desc: 'Encres, marqueurs, roues de rechange et accessoires pour votre rouleau.', h1: 'Encres et recharges pour tampon rouleau', seo: { titre: 'Encre et recharges pour tampon rouleau', desc: 'Encres acryliques et textiles, marqueurs, roues de rechange et tote bags pour votre tampon rouleau Mark & Roll.' } },
 };
 /** Anciennes adresses de catégories, redirigées vers les nouvelles. */
 export const ALIAS_COLLECTIONS: Record<string, string> = {

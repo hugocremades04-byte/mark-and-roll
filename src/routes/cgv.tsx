@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { Ariane } from '@/components/boutique/Elements';
 import site from '@/site.json';
+import { seo } from '@/lib/seo';
 
 export const Route = createFileRoute('/cgv')({
-  head: () => ({ meta: [{ title: 'Conditions générales de vente | Mark & Roll' }, { name: 'description', content: 'Conditions de vente des rouleaux tampons personnalisés Mark & Roll.' }] }),
+  head: () => seo({ titre: 'Conditions générales de vente | Mark & Roll', description: 'Conditions de vente des tampons rouleaux personnalisés Mark & Roll : commande, BAT, fabrication, livraison, rétractation.', chemin: '/cgv' }),
   component: Cgv,
 });
 

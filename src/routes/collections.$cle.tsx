@@ -1,6 +1,7 @@
 import { Link, createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { Ariane, CarteProduit, CarteRouleau, GuideTailles, Preuves } from '@/components/boutique/Elements';
 import { ALIAS_COLLECTIONS, COLLECTIONS, P, RAYONS, dansCollection } from '@/lib/catalogue';
+import { seo } from '@/lib/seo';
 
 export const Route = createFileRoute('/collections/$cle')({
   loader: ({ params }) => {
@@ -11,7 +12,7 @@ export const Route = createFileRoute('/collections/$cle')({
   },
   head: ({ params }) => {
     const C = COLLECTIONS[params.cle];
-    return C ? { meta: [{ title: `${C.titre} | Mark & Roll` }, { name: 'description', content: C.desc }] } : {};
+    return C ? seo({ titre: `${C.seo.titre} | Mark & Roll`, description: C.seo.desc, chemin: `/collections/${params.cle}` }) : {};
   },
   component: Collection,
 });
@@ -55,7 +56,7 @@ function Collection() {
     <div className="wrap">
       <Ariane items={[{ lib: 'Accueil', to: '/' }, { lib: C.titre }]} />
       <div className="collection-tete">
-        <h1>{C.titre}</h1>
+        <h1>{C.h1}</h1>
         <p>{C.desc}</p>
       </div>
       <nav className="filtres barre-filtres" aria-label="Rayons">

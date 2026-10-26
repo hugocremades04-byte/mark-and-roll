@@ -3,13 +3,13 @@ import { useState, type FormEvent } from 'react';
 import { Ariane, Img } from '@/components/boutique/Elements';
 import { envoyerDevis } from '@/lib/api/boutique.functions';
 import site from '@/site.json';
+import { seo } from '@/lib/seo';
 
 export const Route = createFileRoute('/pros')({
-  head: () => ({
-    meta: [
-      { title: 'Pros et devis | Mark & Roll' },
-      { name: 'description', content: 'Rouleaux tampons à votre marque pour e-commerçants, agences, salons et événements. Remise automatique dès 3 kits, devis sous 24 h.' },
-    ],
+  head: () => seo({
+    titre: 'Tampon logo entreprise : devis pros et événements | Mark & Roll',
+    description: 'Tampons rouleaux à votre logo pour e-commerçants, agences, salons et événements. Remise automatique dès 3 kits, devis sous 24 h.',
+    chemin: '/pros',
   }),
   component: Pros,
 });

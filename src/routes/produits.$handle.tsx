@@ -9,6 +9,7 @@ import {
   altDe, calc, cfgDefaut, encre, estLarge, eur, libTaille, prixMin, prixRoueSeule, prixRoueSup, rouesActives, taillesDe, usageFixe,
   type Cfg, type CfgConfig, type CfgSimple, type ProduitConfig, type ProduitSimple, type Roue,
 } from '@/lib/catalogue';
+import { absolu, seo } from '@/lib/seo';
 
 export const Route = createFileRoute('/produits/$handle')({
   validateSearch: (s: Record<string, unknown>): { ligne?: string } => (typeof s.ligne === 'string' ? { ligne: s.ligne } : {}),
@@ -19,20 +20,31 @@ export const Route = createFileRoute('/produits/$handle')({
   head: ({ params }) => {
     const p = P[params.handle];
     if (!p) return {};
-    const ld = {
-      '@context': 'https://schema.org', '@type': 'Product', name: p.nom, description: p.court,
-      brand: { '@type': 'Brand', name: 'Mark & Roll' },
-      ...(p.images[0] ? { image: IMG(p.images[0]) } : {}),
-      offers: { '@type': 'AggregateOffer', priceCurrency: 'EUR', lowPrice: prixMin(params.handle), availability: 'https://schema.org/InStock' },
-    };
+    const chemin = `/produits/${params.handle}`;
+    const prix = prixMin(params.handle);
+    const ld = [
+      {
+        '@context': 'https://schema.org', '@type': 'Product', name: p.nom, description: p.seo?.desc ?? p.court, sku: params.handle, url: absolu(chemin),
+        brand: { '@type': 'Brand', name: 'Mark & Roll' },
+        ...(p.images[0] ? { image: absolu(IMG(p.images[0])) } : {}),
+        offers: { '@type': 'AggregateOffer', priceCurrency: 'EUR', lowPrice: prix, availability: 'https://schema.org/InStock', url: absolu(chemin) },
+      },
+      {
+        '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: absolu('/') },
+          { '@type': 'ListItem', position: 2, name: COLLECTIONS[p.cats[0]]?.titre ?? 'Boutique', item: absolu(`/collections/${COLLECTIONS[p.cats[0]] ? p.cats[0] : 'boutique'}`) },
+          { '@type': 'ListItem', position: 3, name: p.nom, item: absolu(chemin) },
+        ],
+      },
+    ];
     return {
-      meta: [
-        { title: `${p.nom} | Mark & Roll` },
-        { name: 'description', content: p.court },
-        { property: 'og:title', content: `${p.nom} | Mark & Roll` },
-        { property: 'og:description', content: p.court },
-        ...(p.images[0] ? [{ property: 'og:image', content: IMG(p.images[0]) }] : []),
-      ],
+      ...seo({
+        titre: `${p.seo?.titre ?? p.nom} | Mark & Roll`,
+        description: p.seo?.desc ?? `${p.court} Dès ${eur(prix)}, tampons rouleaux personnalisés Mark & Roll.`,
+        chemin,
+        image: p.images[0] ? IMG(p.images[0]) : undefined,
+      }),
       scripts: [{ type: 'application/ld+json', children: JSON.stringify(ld) }],
     };
   },
