@@ -102,7 +102,10 @@ export function Pied() {
           <li><Link to="/produits/$handle" params={{ handle: 'carte-cadeau' }}>Carte cadeau</Link></li>
         </ul></div>
         <div><h3>Par usage</h3><ul>
-          {PAGES_SEO.filter((x) => !x.chemin.startsWith('/guide-')).map((x) => <li key={x.chemin}><a href={x.chemin}>{x.lib}</a></li>)}
+          {PAGES_SEO.filter((x) => !x.chemin.startsWith('/guide-') && !x.metier).map((x) => <li key={x.chemin}><a href={x.chemin}>{x.lib}</a></li>)}
+        </ul>
+        <h3 className="pied-sous">Par métier</h3><ul>
+          {PAGES_SEO.filter((x) => x.metier).map((x) => <li key={x.chemin}><a href={x.chemin}>{x.metier}</a></li>)}
         </ul></div>
         <div><h3>Aide</h3><ul>
           <li><Link to="/" hash="faq">Questions fréquentes</Link></li>

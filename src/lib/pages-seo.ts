@@ -19,6 +19,8 @@ export interface PageSeo {
   produits: string[];
   sections: { h2: string; p: string[] }[];
   faq: [string, string][];
+  /** Page par métier : listée à part dans le pied de page. */
+  metier?: string;
 }
 
 export const PAGES_SEO: PageSeo[] = [
@@ -442,6 +444,203 @@ export const PAGES_SEO: PageSeo[] = [
     faq: [
       ['Peut-on tamponner du papier de soie ?', 'Oui. Roulez légèrement sur une surface dure et laissez sécher avant de plier : le motif reste net.'],
       ["Quelle couleur d'encre sur du papier de soie ?", "Les encres foncées (noir, bleu, vert) ressortent le mieux sur le blanc et le kraft. L'encre blanche s'utilise sur un papier de soie de couleur foncée, et l'or sur le noir."],
+    ],
+  },
+  // packaging bijoux personnalisé, pochette bijoux logo, emballage bijoux créatrice
+  {
+    chemin: '/packaging-bijoux-personnalise',
+    metier: 'Bijoux',
+    lib: 'Packaging bijoux personnalisé',
+    titre: 'Packaging bijoux personnalisé à votre logo, sans minimum',
+    desc: `Créatrice de bijoux : votre nom sur vos pochettes kraft, boîtes, cartes et papier de soie, en un passage de rouleau. Tampon personnalisé ${dès('kit-rouleau')}, BAT gratuit, fabriqué en France.`,
+    h1: 'Le packaging de vos bijoux, à votre nom',
+    chapeau: "Pochettes kraft, petites boîtes, cartes de présentation, papier de soie : un passage de rouleau et chaque commande porte le nom de votre atelier, même en petite série.",
+    image: 'pack-duo',
+    alt: 'Kit avec une deuxième roue MERCI',
+    produits: ['kit-rouleau', 'pack-duo', 'roue-prete'],
+    sections: [
+      {
+        h2: 'Petits formats, petite roue',
+        p: [
+          "Les emballages de bijoux sont petits : la taille S (Ø30 mm) imprime un nom court de 10 à 12 caractères, juste à la bonne échelle pour une pochette, une carte ou le couvercle d'une boîte. La M laisse la place à un nom plus long ou à un slogan.",
+          'La frise se répète sur toute la longueur du passage : un geste sur le bord du papier de soie, et la pièce est emballée à votre nom.',
+        ],
+      },
+      {
+        h2: 'Une deuxième roue pour le message',
+        p: [
+          "Le Pack Duo grave deux roues pour un seul support : le nom de votre atelier sur l'une, votre @instagram ou un MERCI sur l'autre. La cliente sait où vous retrouver quand elle photographie son colis.",
+          'Pour un mot déjà prêt, les roues MERCI et FAIT MAIN se clipsent sur le même support.',
+        ],
+      },
+      {
+        h2: 'Vos couleurs, pas celles d\'un imprimeur',
+        p: [
+          "Noir, blanc, or, bleu, vert, rouge ou orange : l'encre se choisit à la commande et se recharge avec un flacon de 30 ml. L'or ressort bien sur le kraft et le papier noir.",
+        ],
+      },
+    ],
+    faq: [
+      ['Quelle taille de tampon pour des pochettes à bijoux ?', 'La taille S (Ø30 mm) pour un nom court sur de petites pochettes et des cartes. La M (Ø60 mm) si votre nom est plus long ou si vous marquez aussi vos cartons d\'envoi.'],
+      ['Peut-on tamponner une pochette en velours ou en coton ?', "Le coton oui, avec le Kit Rouleau textile et son encre pour tissu. Le velours, à poils, donne une empreinte irrégulière : réservez le tampon au papier et au carton."],
+      ['Le rendu est-il assez fin pour un logo de bijouterie ?', "Un logo simple ou un nom en police Élégante passe très bien. Pour un logo détaillé, le Grand format grave un motif de 26 ou 46 mm de haut. Vous validez le BAT avant toute gravure."],
+    ],
+  },
+  // emballage bougie personnalisé, packaging bougie artisanale, boîte bougie logo
+  {
+    chemin: '/emballage-bougie-personnalise',
+    metier: 'Bougies',
+    lib: 'Emballage bougie personnalisé',
+    titre: 'Emballage bougie personnalisé : boîtes et papier à votre logo',
+    desc: `Bougies artisanales : votre logo sur les boîtes, le papier kraft, le papier de soie et les cartons d'envoi, en un passage de rouleau. Tampon personnalisé ${dès('kit-rouleau')}, sans minimum.`,
+    h1: 'Vos bougies emballées à votre nom',
+    chapeau: "Boîtes en carton, papier kraft, papier de soie, cartons d'expédition : achetez-les neutres et marquez-les à votre logo au moment d'emballer, au rythme de vos coulées.",
+    image: 'empreinte-large',
+    alt: "Frise d'abeilles et de fleurs imprimée au rouleau Grand format sur un carton",
+    produits: ['kit-rouleau', 'rouleau-large', 'pack-boutique'],
+    sections: [
+      {
+        h2: 'Sur le carton et le papier, pas sur le verre',
+        p: [
+          "Le rouleau imprime sur les matières qui boivent l'encre : boîte en carton, papier kraft, papier de soie, carte. Sur le verre du contenant ou sur la cire, l'encre n'accroche pas : gardez une étiquette pour le pot, et le tampon pour tout ce qui l'entoure.",
+        ],
+      },
+      {
+        h2: 'Une collection, une roue',
+        p: [
+          "Collection d'hiver, parfum en édition limitée, collab : une roue gravée seule se clipse sur votre support pour un nouveau motif, sans racheter de boîtes imprimées.",
+          `Le Pack Boutique réunit trois roues et trois couleurs d'encre, par exemple votre logo, le nom de la collection et un MERCI, ${dès('pack-boutique')}.`,
+        ],
+      },
+      {
+        h2: 'Un motif décoratif en Grand format',
+        p: [
+          `Pour habiller tout le papier d'une frise (abeilles, fleurs, flammes, votre illustration), le Grand format imprime une bande de 30 ou 50 mm de haut, ${dès('rouleau-large')}.`,
+        ],
+      },
+    ],
+    faq: [
+      ['Peut-on tamponner directement sur un pot de bougie ?', "Non : sur le verre, la céramique émaillée ou la cire, l'encre n'accroche pas. Le tampon sert pour les boîtes, le papier, les cartes et les cartons d'envoi."],
+      ['Quelle couleur pour une boîte kraft ?', "Le noir et le bleu ressortent le plus. L'or donne un effet plus précieux, le blanc s'utilise sur une boîte noire ou foncée."],
+      ['Y a-t-il un minimum de commande ?', 'Non. Un seul kit suffit, et la remise s\'applique automatiquement dès 3 kits.'],
+    ],
+  },
+  // emballage savon personnalisé, packaging savon artisanal, bande papier savon logo
+  {
+    chemin: '/emballage-savon-personnalise',
+    metier: 'Savons et cosmétiques',
+    lib: 'Emballage savon personnalisé',
+    titre: 'Emballage savon personnalisé : bande papier et kraft à votre logo',
+    desc: `Savonnerie artisanale : votre logo sur la bande de papier, le kraft, les boîtes et les cartons d'envoi, en un passage de rouleau. Tampon personnalisé ${dès('kit-rouleau')}, BAT gratuit.`,
+    h1: 'Vos savons emballés à votre nom',
+    chapeau: "Bande de papier autour du savon, papier kraft, boîte, sachet : un passage de rouleau et l'emballage porte votre nom. Sans commande minimale chez un imprimeur.",
+    image: 'rouleau-large',
+    alt: 'Rouleau Grand format qui imprime une frise de branches de citronnier sur du papier kraft',
+    produits: ['kit-rouleau', 'rouleau-large', 'pack-boutique'],
+    sections: [
+      {
+        h2: 'La bande de papier, marquée en un geste',
+        p: [
+          "Une bande de papier kraft ou recyclé autour du savon, et un passage de rouleau sur toute sa longueur : votre nom se répète tout autour. Vous préparez vos bandes à l'avance, ou au moment d'emballer.",
+          "On tamponne l'emballage, jamais le savon : l'encre n'est pas prévue pour toucher la peau ni pour le savon lui-même.",
+        ],
+      },
+      {
+        h2: 'Un même support, plusieurs gammes',
+        p: [
+          'Une roue par gamme (visage, corps, cheveux) ou par parfum : elles se clipsent sans outil sur le même support. Trois couleurs d\'encre dans le Pack Boutique pour distinguer vos gammes au premier coup d\'œil.',
+        ],
+      },
+      {
+        h2: 'Quelle taille ?',
+        p: [
+          "Taille S (Ø30 mm) pour une bande étroite ou une étiquette, M (Ø60 mm) pour le nom et un slogan, L (Ø80 mm) pour votre nom complet et votre site. Pour une frise décorative sur tout le papier, le Grand format.",
+        ],
+      },
+    ],
+    faq: [
+      ['Peut-on tamponner directement sur un savon ?', "Non. Le tampon sert pour l'emballage : papier, carton, boîte, sachet. L'encre n'est pas prévue pour le contact avec la peau."],
+      ['Ça tient sur du papier recyclé ?', "Oui, le papier recyclé et le kraft absorbent bien l'encre. Laissez sécher quelques instants avant de plier la bande."],
+      ['Combien coûte un tampon pour savonnerie ?', `Le Kit Rouleau démarre à ${eur(prixMin('kit-rouleau'))}, marqueur rempli et BAT gratuit inclus. Le Pack Boutique, avec trois roues et trois couleurs, démarre à ${eur(prixMin('pack-boutique'))}.`],
+    ],
+  },
+  // emballage céramique colis, expédier céramique, tampon fragile fait main
+  {
+    chemin: '/emballage-ceramique-colis',
+    metier: 'Céramique',
+    lib: 'Emballage céramique à votre nom',
+    titre: 'Emballer et expédier vos céramiques avec votre logo',
+    desc: `Céramiste : votre nom, FAIT MAIN et FRAGILE sur vos cartons, votre papier kraft et votre papier de soie, en un passage de rouleau. Tampon personnalisé ${dès('kit-rouleau')}, sans minimum.`,
+    h1: 'Vos céramiques expédiées à votre nom',
+    chapeau: "Des pièces uniques méritent un colis qui le dit. Votre nom sur le carton, FRAGILE sur le dessus, FAIT MAIN sur le papier de soie : trois passages de rouleau, et c'est emballé.",
+    image: 'roue-prete',
+    alt: 'Trois roues prêtes à rouler gravées MERCI, FAIT MAIN et FRAGILE',
+    produits: ['kit-rouleau', 'pack-duo', 'roue-prete'],
+    sections: [
+      {
+        h2: 'Le carton de récup devient un colis d\'atelier',
+        p: [
+          "Les céramistes réutilisent souvent cartons et papier froissé pour caler les pièces. Une frise à votre nom sur le dessus du carton suffit à transformer un emballage de récupération en colis reconnaissable.",
+        ],
+      },
+      {
+        h2: 'FRAGILE et FAIT MAIN, déjà gravés',
+        p: [
+          "Les roues prêtes FRAGILE et FAIT MAIN se clipsent sur le même support que votre roue personnalisée. Un passage FRAGILE sur deux faces du carton, et le transporteur ne peut pas le rater.",
+          "Le Pack Duo grave deux roues pour un seul support, par exemple le nom de l'atelier et votre @instagram.",
+        ],
+      },
+      {
+        h2: 'Sur le papier, pas sur l\'émail',
+        p: [
+          "L'encre accroche sur le carton, le kraft et le papier de soie. Sur une pièce émaillée ou cuite, elle ne tient pas : pour signer vos pièces, gardez votre tampon à argile. Le rouleau, lui, s'occupe de tout l'emballage.",
+        ],
+      },
+    ],
+    faq: [
+      ['Peut-on utiliser le rouleau sur l\'argile crue ?', "Ce n'est pas son usage : la roue est gravée pour l'encre, sur papier et carton. Pour marquer l'argile, un tampon à céramique reste l'outil adapté."],
+      ['Quelle taille pour marquer un carton d\'envoi ?', 'La M (Ø60 mm) pour votre nom et un slogan, la L (Ø80 mm) pour votre nom complet et votre site. Sur un grand carton, la frise continue couvre toute la largeur en un passage.'],
+      ['Peut-on voir le rendu avant de commander ?', "Oui : l'aperçu s'affiche dès que vous tapez votre nom sur la fiche produit, puis vous recevez un BAT gratuit sous 24 h ouvrées."],
+    ],
+  },
+  // sachet café personnalisé, emballage thé logo, sachet kraft torréfacteur, épicerie fine
+  {
+    chemin: '/sachet-cafe-the-personnalise',
+    metier: 'Café, thé et épicerie fine',
+    lib: 'Sachet café et thé personnalisé',
+    titre: 'Sachet café et thé personnalisé à votre logo, sans minimum',
+    desc: `Torréfacteur, maison de thé, biscuiterie, chocolatier : votre logo sur sachets kraft, boîtes et cartons d'envoi, en un passage de rouleau. Tampon personnalisé ${dès('kit-rouleau')}.`,
+    h1: 'Vos sachets de café et de thé, à votre nom',
+    chapeau: "Sachets kraft neutres, boîtes, étiquettes, cartons d'expédition : marquez-les à votre logo au fil des torréfactions, sans commander des milliers de sachets imprimés.",
+    image: 'usage-cafe',
+    alt: "Sachets de café et gobelets kraft marqués d'une frise de grains de café bleue",
+    produits: ['kit-rouleau', 'rouleau-large', 'pack-boutique'],
+    sections: [
+      {
+        h2: 'Des sachets neutres, une marque reconnaissable',
+        p: [
+          "Les sachets imprimés à votre logo se commandent par milliers, pour un seul format et un seul design. Avec un rouleau, vous gardez des sachets kraft standards et vous les marquez par lots, au rythme de vos ventes.",
+          "Un passage sur la face du sachet, un autre sur le carton d'envoi : vos clients reconnaissent votre maison dès la boîte aux lettres.",
+        ],
+      },
+      {
+        h2: 'Une roue par origine ou par gamme',
+        p: [
+          "Éthiopie, Brésil, décaféiné, thé vert, édition de Noël : une roue gravée seule se clipse sur votre support pour chaque nouveauté. Le Pack Boutique réunit trois roues et trois couleurs d'encre pour démarrer.",
+        ],
+      },
+      {
+        h2: 'Sur le kraft mat, pas sur le plastique',
+        p: [
+          "L'encre accroche sur le kraft mat, le papier et le carton. Sur un sachet plastifié brillant ou une fenêtre transparente, elle accroche mal : faites un essai sur un sachet avant de marquer tout un lot.",
+          "On tamponne l'extérieur de l'emballage : l'encre n'est pas prévue pour toucher les aliments.",
+        ],
+      },
+    ],
+    faq: [
+      ['Peut-on tamponner un sachet de café à valve ?', "Oui sur la face en kraft mat, en évitant la valve. Sur un sachet doublé de plastique brillant, l'encre accroche mal : faites un essai d'abord."],
+      ['Quelle taille pour un sachet de 250 g ?', 'La M (Ø60 mm) imprime votre nom et un slogan sur la largeur d\'un sachet. La S convient aux petits sachets d\'échantillon.'],
+      ['Combien coûte un tampon pour sachets ?', `Le Kit Rouleau démarre à ${eur(prixMin('kit-rouleau'))}, marqueur rempli et BAT gratuit inclus. Remise automatique dès 3 kits.`],
     ],
   },
 ];

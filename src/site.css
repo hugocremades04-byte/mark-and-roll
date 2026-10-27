@@ -692,3 +692,4 @@ body{margin:0}
 .bat-ok .ok-rond svg{width:22px;height:22px}
 .bat-atelier{display:grid;gap:8px;padding:12px;border-radius:10px;background:var(--fond-2,#f4f4f1)}
 .bat-atelier .ligne{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pied-sous{margin-top:22px}

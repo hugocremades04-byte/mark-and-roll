@@ -18,15 +18,20 @@ import { Route as TamponColisVintedEtsyRouteImport } from './routes/tampon-colis
 import { Route as TamponCartonColisRouteImport } from './routes/tampon-carton-colis'
 import { Route as TamponAssociationEvenementRouteImport } from './routes/tampon-association-evenement'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SachetCafeThePersonnaliseRouteImport } from './routes/sachet-cafe-the-personnalise'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ProsRouteImport } from './routes/pros'
 import { Route as PanierRouteImport } from './routes/panier'
+import { Route as PackagingBijouxPersonnaliseRouteImport } from './routes/packaging-bijoux-personnalise'
 import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as GuidePapierDeSoiePersonnaliseRouteImport } from './routes/guide-papier-de-soie-personnalise'
 import { Route as GuidePackagingPetiteMarqueRouteImport } from './routes/guide-packaging-petite-marque'
 import { Route as GuideLogoColisRouteImport } from './routes/guide-logo-colis'
 import { Route as FluxGoogleDotxmlRouteImport } from './routes/flux-google[.]xml'
+import { Route as EmballageSavonPersonnaliseRouteImport } from './routes/emballage-savon-personnalise'
+import { Route as EmballageCeramiqueColisRouteImport } from './routes/emballage-ceramique-colis'
+import { Route as EmballageBougiePersonnaliseRouteImport } from './routes/emballage-bougie-personnalise'
 import { Route as CommandeRouteImport } from './routes/commande'
 import { Route as CgvRouteImport } from './routes/cgv'
 import { Route as AtelierRouteImport } from './routes/atelier'
@@ -90,6 +95,12 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SachetCafeThePersonnaliseRoute =
+  SachetCafeThePersonnaliseRouteImport.update({
+    id: '/sachet-cafe-the-personnalise',
+    path: '/sachet-cafe-the-personnalise',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   id: '/robots.txt',
   path: '/robots.txt',
@@ -105,6 +116,12 @@ const PanierRoute = PanierRouteImport.update({
   path: '/panier',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PackagingBijouxPersonnaliseRoute =
+  PackagingBijouxPersonnaliseRouteImport.update({
+    id: '/packaging-bijoux-personnalise',
+    path: '/packaging-bijoux-personnalise',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const MentionsLegalesRoute = MentionsLegalesRouteImport.update({
   id: '/mentions-legales',
   path: '/mentions-legales',
@@ -137,6 +154,23 @@ const FluxGoogleDotxmlRoute = FluxGoogleDotxmlRouteImport.update({
   path: '/flux-google.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EmballageSavonPersonnaliseRoute =
+  EmballageSavonPersonnaliseRouteImport.update({
+    id: '/emballage-savon-personnalise',
+    path: '/emballage-savon-personnalise',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const EmballageCeramiqueColisRoute = EmballageCeramiqueColisRouteImport.update({
+  id: '/emballage-ceramique-colis',
+  path: '/emballage-ceramique-colis',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmballageBougiePersonnaliseRoute =
+  EmballageBougiePersonnaliseRouteImport.update({
+    id: '/emballage-bougie-personnalise',
+    path: '/emballage-bougie-personnalise',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const CommandeRoute = CommandeRouteImport.update({
   id: '/commande',
   path: '/commande',
@@ -213,15 +247,20 @@ export interface FileRoutesByFullPath {
   '/atelier': typeof AtelierRoute
   '/cgv': typeof CgvRoute
   '/commande': typeof CommandeRoute
+  '/emballage-bougie-personnalise': typeof EmballageBougiePersonnaliseRoute
+  '/emballage-ceramique-colis': typeof EmballageCeramiqueColisRoute
+  '/emballage-savon-personnalise': typeof EmballageSavonPersonnaliseRoute
   '/flux-google.xml': typeof FluxGoogleDotxmlRoute
   '/guide-logo-colis': typeof GuideLogoColisRoute
   '/guide-packaging-petite-marque': typeof GuidePackagingPetiteMarqueRoute
   '/guide-papier-de-soie-personnalise': typeof GuidePapierDeSoiePersonnaliseRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/mentions-legales': typeof MentionsLegalesRoute
+  '/packaging-bijoux-personnalise': typeof PackagingBijouxPersonnaliseRoute
   '/panier': typeof PanierRoute
   '/pros': typeof ProsRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/sachet-cafe-the-personnalise': typeof SachetCafeThePersonnaliseRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tampon-association-evenement': typeof TamponAssociationEvenementRoute
   '/tampon-carton-colis': typeof TamponCartonColisRoute
@@ -247,15 +286,20 @@ export interface FileRoutesByTo {
   '/atelier': typeof AtelierRoute
   '/cgv': typeof CgvRoute
   '/commande': typeof CommandeRoute
+  '/emballage-bougie-personnalise': typeof EmballageBougiePersonnaliseRoute
+  '/emballage-ceramique-colis': typeof EmballageCeramiqueColisRoute
+  '/emballage-savon-personnalise': typeof EmballageSavonPersonnaliseRoute
   '/flux-google.xml': typeof FluxGoogleDotxmlRoute
   '/guide-logo-colis': typeof GuideLogoColisRoute
   '/guide-packaging-petite-marque': typeof GuidePackagingPetiteMarqueRoute
   '/guide-papier-de-soie-personnalise': typeof GuidePapierDeSoiePersonnaliseRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/mentions-legales': typeof MentionsLegalesRoute
+  '/packaging-bijoux-personnalise': typeof PackagingBijouxPersonnaliseRoute
   '/panier': typeof PanierRoute
   '/pros': typeof ProsRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/sachet-cafe-the-personnalise': typeof SachetCafeThePersonnaliseRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tampon-association-evenement': typeof TamponAssociationEvenementRoute
   '/tampon-carton-colis': typeof TamponCartonColisRoute
@@ -282,15 +326,20 @@ export interface FileRoutesById {
   '/atelier': typeof AtelierRoute
   '/cgv': typeof CgvRoute
   '/commande': typeof CommandeRoute
+  '/emballage-bougie-personnalise': typeof EmballageBougiePersonnaliseRoute
+  '/emballage-ceramique-colis': typeof EmballageCeramiqueColisRoute
+  '/emballage-savon-personnalise': typeof EmballageSavonPersonnaliseRoute
   '/flux-google.xml': typeof FluxGoogleDotxmlRoute
   '/guide-logo-colis': typeof GuideLogoColisRoute
   '/guide-packaging-petite-marque': typeof GuidePackagingPetiteMarqueRoute
   '/guide-papier-de-soie-personnalise': typeof GuidePapierDeSoiePersonnaliseRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/mentions-legales': typeof MentionsLegalesRoute
+  '/packaging-bijoux-personnalise': typeof PackagingBijouxPersonnaliseRoute
   '/panier': typeof PanierRoute
   '/pros': typeof ProsRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/sachet-cafe-the-personnalise': typeof SachetCafeThePersonnaliseRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tampon-association-evenement': typeof TamponAssociationEvenementRoute
   '/tampon-carton-colis': typeof TamponCartonColisRoute
@@ -318,15 +367,20 @@ export interface FileRouteTypes {
     | '/atelier'
     | '/cgv'
     | '/commande'
+    | '/emballage-bougie-personnalise'
+    | '/emballage-ceramique-colis'
+    | '/emballage-savon-personnalise'
     | '/flux-google.xml'
     | '/guide-logo-colis'
     | '/guide-packaging-petite-marque'
     | '/guide-papier-de-soie-personnalise'
     | '/llms.txt'
     | '/mentions-legales'
+    | '/packaging-bijoux-personnalise'
     | '/panier'
     | '/pros'
     | '/robots.txt'
+    | '/sachet-cafe-the-personnalise'
     | '/sitemap.xml'
     | '/tampon-association-evenement'
     | '/tampon-carton-colis'
@@ -352,15 +406,20 @@ export interface FileRouteTypes {
     | '/atelier'
     | '/cgv'
     | '/commande'
+    | '/emballage-bougie-personnalise'
+    | '/emballage-ceramique-colis'
+    | '/emballage-savon-personnalise'
     | '/flux-google.xml'
     | '/guide-logo-colis'
     | '/guide-packaging-petite-marque'
     | '/guide-papier-de-soie-personnalise'
     | '/llms.txt'
     | '/mentions-legales'
+    | '/packaging-bijoux-personnalise'
     | '/panier'
     | '/pros'
     | '/robots.txt'
+    | '/sachet-cafe-the-personnalise'
     | '/sitemap.xml'
     | '/tampon-association-evenement'
     | '/tampon-carton-colis'
@@ -386,15 +445,20 @@ export interface FileRouteTypes {
     | '/atelier'
     | '/cgv'
     | '/commande'
+    | '/emballage-bougie-personnalise'
+    | '/emballage-ceramique-colis'
+    | '/emballage-savon-personnalise'
     | '/flux-google.xml'
     | '/guide-logo-colis'
     | '/guide-packaging-petite-marque'
     | '/guide-papier-de-soie-personnalise'
     | '/llms.txt'
     | '/mentions-legales'
+    | '/packaging-bijoux-personnalise'
     | '/panier'
     | '/pros'
     | '/robots.txt'
+    | '/sachet-cafe-the-personnalise'
     | '/sitemap.xml'
     | '/tampon-association-evenement'
     | '/tampon-carton-colis'
@@ -421,15 +485,20 @@ export interface RootRouteChildren {
   AtelierRoute: typeof AtelierRoute
   CgvRoute: typeof CgvRoute
   CommandeRoute: typeof CommandeRoute
+  EmballageBougiePersonnaliseRoute: typeof EmballageBougiePersonnaliseRoute
+  EmballageCeramiqueColisRoute: typeof EmballageCeramiqueColisRoute
+  EmballageSavonPersonnaliseRoute: typeof EmballageSavonPersonnaliseRoute
   FluxGoogleDotxmlRoute: typeof FluxGoogleDotxmlRoute
   GuideLogoColisRoute: typeof GuideLogoColisRoute
   GuidePackagingPetiteMarqueRoute: typeof GuidePackagingPetiteMarqueRoute
   GuidePapierDeSoiePersonnaliseRoute: typeof GuidePapierDeSoiePersonnaliseRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
   MentionsLegalesRoute: typeof MentionsLegalesRoute
+  PackagingBijouxPersonnaliseRoute: typeof PackagingBijouxPersonnaliseRoute
   PanierRoute: typeof PanierRoute
   ProsRoute: typeof ProsRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SachetCafeThePersonnaliseRoute: typeof SachetCafeThePersonnaliseRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TamponAssociationEvenementRoute: typeof TamponAssociationEvenementRoute
   TamponCartonColisRoute: typeof TamponCartonColisRoute
@@ -515,6 +584,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sachet-cafe-the-personnalise': {
+      id: '/sachet-cafe-the-personnalise'
+      path: '/sachet-cafe-the-personnalise'
+      fullPath: '/sachet-cafe-the-personnalise'
+      preLoaderRoute: typeof SachetCafeThePersonnaliseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/robots.txt': {
       id: '/robots.txt'
       path: '/robots.txt'
@@ -534,6 +610,13 @@ declare module '@tanstack/react-router' {
       path: '/panier'
       fullPath: '/panier'
       preLoaderRoute: typeof PanierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/packaging-bijoux-personnalise': {
+      id: '/packaging-bijoux-personnalise'
+      path: '/packaging-bijoux-personnalise'
+      fullPath: '/packaging-bijoux-personnalise'
+      preLoaderRoute: typeof PackagingBijouxPersonnaliseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mentions-legales': {
@@ -576,6 +659,27 @@ declare module '@tanstack/react-router' {
       path: '/flux-google.xml'
       fullPath: '/flux-google.xml'
       preLoaderRoute: typeof FluxGoogleDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/emballage-savon-personnalise': {
+      id: '/emballage-savon-personnalise'
+      path: '/emballage-savon-personnalise'
+      fullPath: '/emballage-savon-personnalise'
+      preLoaderRoute: typeof EmballageSavonPersonnaliseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/emballage-ceramique-colis': {
+      id: '/emballage-ceramique-colis'
+      path: '/emballage-ceramique-colis'
+      fullPath: '/emballage-ceramique-colis'
+      preLoaderRoute: typeof EmballageCeramiqueColisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/emballage-bougie-personnalise': {
+      id: '/emballage-bougie-personnalise'
+      path: '/emballage-bougie-personnalise'
+      fullPath: '/emballage-bougie-personnalise'
+      preLoaderRoute: typeof EmballageBougiePersonnaliseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/commande': {
@@ -696,15 +800,20 @@ const rootRouteChildren: RootRouteChildren = {
   AtelierRoute: AtelierRoute,
   CgvRoute: CgvRoute,
   CommandeRoute: CommandeRoute,
+  EmballageBougiePersonnaliseRoute: EmballageBougiePersonnaliseRoute,
+  EmballageCeramiqueColisRoute: EmballageCeramiqueColisRoute,
+  EmballageSavonPersonnaliseRoute: EmballageSavonPersonnaliseRoute,
   FluxGoogleDotxmlRoute: FluxGoogleDotxmlRoute,
   GuideLogoColisRoute: GuideLogoColisRoute,
   GuidePackagingPetiteMarqueRoute: GuidePackagingPetiteMarqueRoute,
   GuidePapierDeSoiePersonnaliseRoute: GuidePapierDeSoiePersonnaliseRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
   MentionsLegalesRoute: MentionsLegalesRoute,
+  PackagingBijouxPersonnaliseRoute: PackagingBijouxPersonnaliseRoute,
   PanierRoute: PanierRoute,
   ProsRoute: ProsRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
+  SachetCafeThePersonnaliseRoute: SachetCafeThePersonnaliseRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TamponAssociationEvenementRoute: TamponAssociationEvenementRoute,
   TamponCartonColisRoute: TamponCartonColisRoute,
