@@ -29,7 +29,7 @@ export const PAGES_SEO: PageSeo[] = [
     chemin: '/tampon-encreur-personnalise',
     lib: 'Tampon encreur personnalisé',
     titre: 'Tampon encreur personnalisé à votre logo, fabriqué en France',
-    desc: `Tampon encreur personnalisé en rouleau : votre logo ou texte imprimé en continu, encre incluse, BAT gratuit. Fabriqué en France ${dès('kit-rouleau')}, express 48 h.`,
+    desc: `Tampon encreur personnalisé en rouleau : votre logo ou texte imprimé en continu, encre incluse, BAT gratuit. Fabriqué en France, ${dès('kit-rouleau')}.`,
     h1: 'Tampon encreur personnalisé, en rouleau',
     chapeau: `Un tampon encreur classique imprime une fois par coup. Le nôtre roule : votre logo ou votre texte se répète sans s'arrêter, sur toute la longueur du carton. Encre incluse, BAT gratuit, ${dès('kit-rouleau')}.`,
     image: 'heros-action',
@@ -54,13 +54,13 @@ export const PAGES_SEO: PageSeo[] = [
         h2: 'Prix et délais',
         p: [
           `Kit Rouleau ${dès('kit-rouleau')} (support, roue gravée et marqueur rempli), Grand format pour les logos détaillés ${dès('rouleau-large')}. Remise automatique dès 3 exemplaires.`,
-          'Expédition sous 3 jours ouvrés après le BAT, ou 48 h avec l\'option express. Livraison 3,90 € en point relais ou à domicile, offerte dès 45 €, en France, Belgique et Luxembourg.',
+          'Expédition sous 7 jours ouvrés après le BAT. Livraison 3,90 € en point relais ou à domicile, offerte dès 45 €, en France, Belgique et Luxembourg.',
         ],
       },
     ],
     faq: [
       ['Combien coûte un tampon encreur personnalisé chez Mark & Roll ?', `Le Kit Rouleau personnalisé démarre à ${eur(prixMin('kit-rouleau'))} avec le marqueur rempli et le BAT gratuit. Le Grand format, pour les logos détaillés, démarre à ${eur(prixMin('rouleau-large'))}.`],
-      ['Est-ce que je peux le recevoir rapidement ?', 'Oui. Le BAT arrive sous 24 h ouvrées. Après votre accord, l\'option express fait partir le tampon sous 48 h au lieu de 3 jours ouvrés.'],
+      ['Combien de temps pour le recevoir ?', 'Le BAT arrive sous 24 h ouvrées. Après votre accord, le tampon est fabriqué et expédié sous 7 jours ouvrés. Avec la livraison express Chronopost, il arrive le lendemain de l\'expédition.'],
       ['Peut-on mettre un logo, pas seulement du texte ?', 'Oui. Envoyez un SVG de préférence, ou un PNG ou JPG haute définition. Le motif s\'imprime d\'une seule couleur ; notre graphiste peut vectoriser votre fichier pour 9 €.'],
       ['Le tampon est-il rechargeable ?', 'Oui. Le marqueur se remplit avec nos flacons d\'encre de 30 ml, et la roue gravée se change sans outil pour passer à un autre motif.'],
     ],
@@ -205,7 +205,7 @@ export const PAGES_SEO: PageSeo[] = [
       {
         h2: 'Prévoir les délais',
         p: [
-          'BAT sous 24 h ouvrées, puis expédition sous 3 jours ouvrés après votre accord (48 h en express). Commandez au moins deux semaines avant le jour J pour avoir le temps de tout marquer.',
+          'BAT sous 24 h ouvrées, puis expédition sous 7 jours ouvrés après votre accord. Commandez au moins trois semaines avant le jour J pour avoir le temps de tout marquer.',
         ],
       },
     ],

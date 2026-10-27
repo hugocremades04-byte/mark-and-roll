@@ -57,7 +57,8 @@ export function BoutiqueProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const l = lire<Ligne[]>(CLE_PANIER, []);
-    setPanier(Array.isArray(l) ? l.filter((a) => a && a.cfg && P[a.cfg.h] && a.cfg.type === P[a.cfg.h].type && a.qty > 0) : []);
+    // L'option express n'existe plus : on la retire des paniers enregistrés avant son retrait.
+    setPanier(Array.isArray(l) ? l.filter((a) => a && a.cfg && P[a.cfg.h] && a.cfg.type === P[a.cfg.h].type && a.qty > 0).map((a) => (a.cfg.type === 'config' && a.cfg.opt?.express ? { ...a, cfg: { ...a.cfg, opt: { ...a.cfg.opt, express: false } } } : a)) : []);
     const pr = lire<string | null>(CLE_PROMO, null);
     setPromoEtat(pr && PROMOS[pr] ? pr : null);
     setPret(true);

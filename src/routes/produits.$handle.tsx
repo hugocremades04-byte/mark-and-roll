@@ -212,7 +212,7 @@ function Fiche({ h }: { h: string }) {
             <div className="achat-prix"><strong>{eur(res.unit)}</strong>{val ? <s className="num">{eur(val)}</s> : null}<span className="note">{pc && (pc.marqueurs || pc.encreur) ? 'TTC, encre incluse' : 'TTC'}</span></div>
             <p className="achat-court">{p.court}</p>
             {p.points && <ul className="points-ok points-fiche">{p.points.map((x) => <li key={x}><IcoOk />{x}</li>)}</ul>}
-            <p className="stock"><i aria-hidden="true" />{pc ? 'Fabriqué à la commande, expédié sous 3 jours ouvrés après le BAT' : 'En stock, expédié sous 24 h'}</p>
+            <p className="stock"><i aria-hidden="true" />{pc ? 'Fabriqué à la commande, expédié sous 7 jours ouvrés après le BAT' : 'Expédié sous 7 jours ouvrés'}</p>
           </div>
 
           <form onSubmit={ajouter} noValidate className="form-achat">
@@ -278,7 +278,7 @@ function Fiche({ h }: { h: string }) {
               </tbody></table></div></div></details>
             )}
             <details><summary>Livraison et retours<IcoChevron /></summary><div className="contenu">
-              <p>Point relais ou domicile : 3,90 €, offert dès 45 €. Express 24 h : 14,90 €. Livraison en France, Belgique et Luxembourg.</p>
+              <p>Expédition sous 7 jours ouvrés après le BAT. Point relais ou domicile : 3,90 €, offert dès 45 €. Express Chronopost, livré le lendemain de l'expédition : 14,90 €. Livraison en France, Belgique et Luxembourg.</p>
               <p>Les roues gravées à votre motif ne sont ni reprises ni échangées, sauf défaut de fabrication. Les accessoires non ouverts sont remboursés sous 14 jours.</p>
             </div></details>
             <details><summary>Entretien et recharge<IcoChevron /></summary><div className="contenu">
@@ -530,14 +530,14 @@ function Perso({ p, c, mesure, majCfg, majRoue, choisirLogo, envoi, erreur, effa
 function Ajouts({ p, c, majCfg }: { p: ProduitConfig; c: CfgConfig; majCfg: (f: (c: CfgConfig) => void) => void }) {
   const raster = rouesActives(c).some((r) => r.mode === 'logo' && r.raster);
   const large = p.gamme === 'large';
-  const ligne = (k: 'roueSup' | 'gravure' | 'vecto' | 'express' | 'coffret', titre: string, sous: string, prix: ReactNode) => (
+  const ligne = (k: 'roueSup' | 'gravure' | 'vecto' | 'coffret', titre: string, sous: string, prix: ReactNode) => (
     <label className="ajout" key={k}>
       <input type="checkbox" checked={c.opt[k]} onChange={(e) => { const v = e.target.checked; majCfg((x) => { x.opt[k] = v; if (k === 'roueSup' && v) x.actif = rouesActives(x).length - 1; if (k === 'roueSup' && !v) x.actif = Math.min(x.actif, x.roues.length - 1); }); }} />
       <span><strong>{titre}</strong><small>{sous}</small></span>
       <span className="p">{prix}</span>
     </label>
   );
-  const autres = c.opt.gravure || c.opt.express || c.opt.coffret;
+  const autres = c.opt.gravure || c.opt.coffret;
   return (
     <fieldset className="option etape-bloc">
       <legend><span className="etape-titre"><span className="etape-n">4</span>Options</span><span>facultatif</span></legend>
@@ -545,7 +545,7 @@ function Ajouts({ p, c, majCfg }: { p: ProduitConfig; c: CfgConfig; majCfg: (f: 
         {p.roueSup && ligne('roueSup', large ? 'Ajouter un 2e rouleau gravé' : 'Ajouter une 2e roue gravée', large ? 'Un second dessin, une saison, une collab' : 'Votre @instagram, un merci, une promo', <>+{eur(prixRoueSup(c.taille))}<s>{eur(prixRoueSeule(c.taille))}</s></>)}
         {raster && ligne('vecto', 'Vectorisation du logo', 'Notre graphiste redessine votre fichier', '+9,00 €')}
         <details className="plus-options" open={autres || undefined}>
-          <summary>Gravure du {large ? 'manche' : 'support'}, express, coffret cadeau<IcoChevron /></summary>
+          <summary>Gravure du {large ? 'manche' : 'support'}, coffret cadeau<IcoChevron /></summary>
           <div className="ajouts">
             {p.supports > 0 && ligne('gravure', `Graver votre marque sur le ${large ? 'manche' : 'support'}`, 'Gravure discrète, 20 caractères', `+${eur(5 * p.supports)}`)}
             {p.supports > 0 && c.opt.gravure && (
@@ -555,7 +555,6 @@ function Ajouts({ p, c, majCfg }: { p: ProduitConfig; c: CfgConfig; majCfg: (f: 
                   onChange={(e) => { const v = e.target.value; majCfg((x) => { x.opt.gravureTexte = v; }); }} />
               </div>
             )}
-            {ligne('express', 'Fabrication express', 'Expédié sous 48 h après le BAT', '+7,00 €')}
             {ligne('coffret', 'Coffret cadeau', 'Boîte et carte manuscrite', '+4,00 €')}
           </div>
         </details>

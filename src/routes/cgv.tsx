@@ -22,7 +22,7 @@ function Cgv() {
         <h2>3. Prix et paiement</h2>
         <p>Les prix sont indiqués en euros toutes taxes comprises{site.vendeur.tva === 'franchise' ? ' (TVA non applicable, article 293 B du CGI)' : ''}, hors frais de livraison précisés avant la validation. Le paiement s'effectue en ligne via notre prestataire sécurisé Stripe (carte bancaire, Apple Pay, Google Pay et autres moyens proposés sur la page de paiement), au moment de la commande ou à réception du lien de paiement joint au BAT.</p>
         <h2>4. Livraison</h2>
-        <p>Les produits personnalisés sont expédiés sous 3 jours ouvrés après validation du BAT et paiement (48 h avec l'option express) ; les articles en stock sous 24 h ouvrées. Livraison en France, Belgique et Luxembourg, en point relais ou à domicile. Un numéro de suivi est communiqué à l'expédition.</p>
+        <p>Les produits sont expédiés sous 7 jours ouvrés : après validation du BAT et paiement pour les produits personnalisés, après paiement pour les autres articles. Livraison en France, Belgique et Luxembourg, en point relais ou à domicile. Un numéro de suivi est communiqué à l'expédition.</p>
         <h2>5. Droit de rétractation</h2>
         <p>Conformément à l'article L221-28 du Code de la consommation, le droit de rétractation ne s'applique pas aux biens confectionnés selon les spécifications du consommateur ou nettement personnalisés : roues, rouleaux et supports gravés. Pour les articles non personnalisés (encres, marqueurs, accessoires), le client dispose de 14 jours à compter de la réception pour se rétracter, en renvoyant l'article non ouvert ; le remboursement intervient sous 14 jours après réception du retour.</p>
         <h2>6. Garanties</h2>

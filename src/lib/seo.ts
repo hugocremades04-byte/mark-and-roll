@@ -52,7 +52,7 @@ export function offreLd(h: string, prix: number, url: string) {
       '@type': 'OfferShippingDetails',
       shippingRate: { '@type': 'MonetaryAmount', value: port('relais', prix).toFixed(2), currency: 'EUR' },
       shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'FR' },
-      deliveryTime: { '@type': 'ShippingDeliveryTime', handlingTime: perso ? delai(2, 4) : delai(0, 1), transitTime: delai(2, 4) },
+      deliveryTime: { '@type': 'ShippingDeliveryTime', handlingTime: perso ? delai(2, 7) : delai(1, 7), transitTime: delai(2, 4) },
     },
     hasMerchantReturnPolicy: perso
       ? { '@type': 'MerchantReturnPolicy', applicableCountry: 'FR', returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted' }

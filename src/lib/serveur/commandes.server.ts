@@ -35,7 +35,8 @@ const cfgConfig = z.object({
   sup: roue,
   opt: z.object({
     roueSup: z.boolean(), gravure: z.boolean(), gravureTexte: z.string().max(20),
-    express: z.boolean(), coffret: z.boolean(), vecto: z.boolean(),
+    // Option express retirée : toujours false pour les nouvelles commandes, même depuis un ancien panier.
+    express: z.boolean().transform(() => false), coffret: z.boolean(), vecto: z.boolean(),
   }),
 });
 const cfgSimple = z.object({

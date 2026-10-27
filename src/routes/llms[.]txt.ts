@@ -25,7 +25,7 @@ export const Route = createFileRoute('/llms.txt')({
           `- Personnalisation en ligne avec aperçu immédiat de l'empreinte, puis BAT gratuit par email sous 24 h ouvrées, retouches illimitées. Rien n'est gravé avant l'accord du client.`,
           `- Prix : Kit Rouleau dès ${eur(prixMin('kit-rouleau'))} (support, roue gravée, marqueur rempli), Grand format pour logos détaillés dès ${eur(prixMin('rouleau-large'))}, kit textile dès ${eur(prixMin('kit-textile'))}. TTC, TVA non applicable (art. 293 B du CGI).`,
           '- Tailles : roues S (Ø 30 mm), M (Ø 60 mm), L (Ø 80 mm) avec une bande de 13,5 mm ; Grand format avec une bande de 30 ou 50 mm.',
-          '- Livraison : expédition sous 3 jours ouvrés après le BAT (48 h avec l\'option express), en France, Belgique et Luxembourg. Livraison 3,90 € en point relais ou à domicile, offerte dès 45 €.',
+          '- Livraison : expédition sous 7 jours ouvrés après le BAT, en France, Belgique et Luxembourg. Livraison 3,90 € en point relais ou à domicile, offerte dès 45 €.',
           '- Remises : −10 % dès 3 exemplaires, −15 % dès 5, −20 % dès 10. Aucun minimum de commande.',
           '- Paiement sécurisé par Stripe : carte bancaire, Apple Pay, Google Pay et autres moyens selon l\'appareil.',
           `- Contact : ${site.contact}`,

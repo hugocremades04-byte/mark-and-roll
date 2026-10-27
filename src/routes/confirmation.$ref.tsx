@@ -53,7 +53,7 @@ function Confirmation() {
         <ol className="chrono">
           <li className="fait"><span className="etape-num">1</span><div><strong>Commande reçue</strong><p className="note">Vos réglages et fichiers sont transmis à l'atelier.</p></div></li>
           <li className={payee ? 'fait' : ''}><span className="etape-num">2</span><div><strong>{payee ? 'Paiement reçu' : c.paiement === 'en_attente' ? 'Paiement en cours de confirmation' : 'BAT et lien de paiement par email'}</strong><p className="note">{payee ? 'Merci, votre règlement est confirmé.' : 'Vous validez le BAT ou demandez une retouche, puis vous réglez en ligne.'}</p></div></li>
-          <li className={c.statut === 'En fabrication' || c.statut === 'Expédiée' ? 'fait' : ''}><span className="etape-num">3</span><div><strong>Fabrication et expédition</strong><p className="note">Sous 3 jours ouvrés après votre accord, avec un numéro de suivi.</p></div></li>
+          <li className={c.statut === 'En fabrication' || c.statut === 'Expédiée' ? 'fait' : ''}><span className="etape-num">3</span><div><strong>Fabrication et expédition</strong><p className="note">Sous 7 jours ouvrés après votre accord, avec un numéro de suivi.</p></div></li>
         </ol>
         <p className="note">Statut actuel : <strong>{c.statut}</strong></p>
       </div>

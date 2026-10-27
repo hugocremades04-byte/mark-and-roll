@@ -217,7 +217,7 @@ export const P: Record<string, Produit> = {
     inclut: ['1 rouleau gravé à votre motif', 'Se monte sans outil sur un manche Grand format de même largeur'],
   },
   'roue-prete': {
-    type: 'simple', nom: 'Roue prête à rouler', court: 'Motifs classiques déjà gravés, expédiés sous 24 h.',
+    type: 'simple', nom: 'Roue prête à rouler', court: 'Motifs classiques déjà gravés, expédiés sous 7 jours ouvrés.',
     images: ['roue-prete', 'carton-empreintes'], cats: ['recharges', 'packaging'], rayon: 'roues',
     options: { motif: DESIGNS, taille: TAILLES_STD.map((t) => ({ id: t, nom: `${t} (Ø${TAILLES[t].d} mm)` })) },
     prix: (v) => PRIX_ROUE_PRETE[v.taille || 'S'] ?? 12,
@@ -403,6 +403,7 @@ export function calc(c: Cfg): Calc {
   if (p.supports && c.opt.gravure) { u += 5 * p.supports; lignes.push(['Gravure du support', 5 * p.supports]); }
   const nr = rouesActives(c).filter((r) => r.mode === 'logo' && r.raster).length;
   if (c.opt.vecto && nr) { u += 9 * nr; lignes.push(['Vectorisation du logo', 9 * nr]); }
+  // Ancienne option « fabrication express », retirée : gardée pour recalculer à l'identique les commandes passées avec.
   if (c.opt.express) { u += 7; lignes.push(['Fabrication express 48 h', 7]); }
   if (c.opt.coffret) { u += 4; lignes.push(['Coffret cadeau', 4]); }
   u = arr(u);
@@ -503,5 +504,5 @@ export const FAQ: [string, string][] = [
   ['L\'encre textile tient-elle au lavage ?', 'Après séchage, repassez 5 minutes sur l\'envers, sans vapeur. Attendez 48 heures, puis lavez à 40 °C maximum, sur l\'envers.'],
   ['Quel fichier envoyer pour mon logo ou mon dessin ?', 'Un SVG de préférence. Un PNG ou JPG haute définition fonctionne aussi. Le motif s\'imprime d\'une seule couleur ; notre graphiste peut le vectoriser pour 9 €.'],
   ['Comment recharger ?', 'Le marqueur se remplit avec nos flacons de 30 ml. Sur le Grand format, quelques gouttes d\'encre sur le rouleau encreur suffisent ; la mousse se change en 10 secondes.'],
-  ['Quels délais de livraison ?', 'BAT sous 24 h ouvrées, puis expédition sous 3 jours ouvrés après votre accord (48 h avec l\'option express). Livraison 3,90 € en point relais ou à domicile, offerte dès 45 €.'],
+  ['Quels délais de livraison ?', 'BAT sous 24 h ouvrées, puis expédition sous 7 jours ouvrés après votre accord. Livraison 3,90 € en point relais ou à domicile, offerte dès 45 €, ou en express Chronopost le lendemain de l\'expédition.'],
 ];

@@ -76,7 +76,7 @@ export async function emailsNouvelleCommande(c: InfoCommande) {
     subject: `Commande ${c.num} reçue`,
     htmlContent: gabarit(`Merci ${echap(c.prenom)}, votre commande est enregistrée.`,
       `<p>Commande <strong>${c.num}</strong>. ${c.paiementEnLigne ? 'Paiement reçu, merci.' : 'Vous réglerez après validation du BAT.'}</p>${logosAttendus(c.lignes) ? '<p style="background:#FFF4E5;padding:12px 14px;border-radius:10px"><strong>Il nous manque votre logo.</strong> Répondez simplement à cet email avec votre fichier (SVG de préférence, ou PNG / JPG en bonne définition) : le BAT part dès réception.</p>' : ''}
-<p><strong>Et maintenant ?</strong> Nous vous envoyons le bon à tirer (BAT) par email sous 24 h ouvrées. Rien n'est gravé sans votre accord ; dès validation, votre commande part en fabrication et est expédiée sous 3 jours ouvrés.</p>${recap}`,
+<p><strong>Et maintenant ?</strong> Nous vous envoyons le bon à tirer (BAT) par email sous 24 h ouvrées. Rien n'est gravé sans votre accord ; dès validation, votre commande part en fabrication et est expédiée sous 7 jours ouvrés.</p>${recap}`,
       { lib: 'Suivre ma commande', url: lien }),
   });
   if (atelier) {

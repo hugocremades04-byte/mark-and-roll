@@ -22,7 +22,7 @@ const PHOTO_ROULEAU: Record<string, string> = { 'kit-rouleau': 'kit-action', 'ro
 const ETAPES = [
   { img: 'etape-composer', titre: 'Composez', texte: 'Votre texte ou votre logo, la police, la couleur. L\'aperçu montre l\'empreinte réelle.' },
   { img: 'etape-bat', titre: 'Validez le BAT', texte: 'Bon à tirer gratuit par email sous 24 h. Rien n\'est gravé sans votre accord.' },
-  { img: 'etape-rouler', titre: 'Roulez', texte: 'Expédié sous 3 jours ouvrés, encre incluse. Premier colis marqué le jour même.' },
+  { img: 'etape-rouler', titre: 'Roulez', texte: 'Expédié sous 7 jours ouvrés, encre incluse. Premier colis marqué le jour même.' },
 ];
 const CHAPITRES = [
   { t: 0, titre: 'Trois pièces, zéro réglage', texte: 'La roue gravée se clipse sur le support, le marqueur l\'encre en continu.' },
