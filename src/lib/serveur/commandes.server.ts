@@ -133,6 +133,8 @@ const SCHEMA = [
     societe TEXT NOT NULL DEFAULT '', email TEXT NOT NULL, quantite TEXT NOT NULL DEFAULT '', message TEXT NOT NULL DEFAULT '')`,
   `CREATE TABLE IF NOT EXISTS abonnes (email TEXT PRIMARY KEY, created_at TEXT NOT NULL DEFAULT (datetime('now')))`,
   `CREATE TABLE IF NOT EXISTS reglages (cle TEXT PRIMARY KEY, valeur TEXT NOT NULL, updated_at TEXT NOT NULL DEFAULT (datetime('now')))`,
+  `CREATE TABLE IF NOT EXISTS apercus (slug TEXT PRIMARY KEY, nom TEXT NOT NULL, campagne TEXT NOT NULL DEFAULT 'email',
+    clics INTEGER NOT NULL DEFAULT 0, premier_clic TEXT, dernier_clic TEXT)`,
   `CREATE TABLE IF NOT EXISTS stats (jour TEXT NOT NULL, evt TEXT NOT NULL, cle TEXT NOT NULL DEFAULT '', source TEXT NOT NULL DEFAULT 'direct',
     n INTEGER NOT NULL DEFAULT 0, valeur REAL NOT NULL DEFAULT 0, PRIMARY KEY (jour, evt, cle, source))`,
 ];

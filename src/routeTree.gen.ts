@@ -43,6 +43,7 @@ import { Route as BatRefRouteImport } from './routes/bat.$ref'
 import { Route as ApiStatsRouteImport } from './routes/api/stats'
 import { Route as ApiLogosRouteImport } from './routes/api/logos'
 import { Route as ApiDesinscriptionRouteImport } from './routes/api/desinscription'
+import { Route as ApercuSlugRouteImport } from './routes/apercu.$slug'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
 import { Route as ApiStripeEtatRouteImport } from './routes/api/stripe.etat'
 import { Route as ApiLogosIdRouteImport } from './routes/api/logos.$id'
@@ -226,6 +227,11 @@ const ApiDesinscriptionRoute = ApiDesinscriptionRouteImport.update({
   path: '/api/desinscription',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApercuSlugRoute = ApercuSlugRouteImport.update({
+  id: '/apercu/$slug',
+  path: '/apercu/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
   id: '/api/stripe/webhook',
   path: '/api/stripe/webhook',
@@ -270,6 +276,7 @@ export interface FileRoutesByFullPath {
   '/tampon-restaurant-cafe': typeof TamponRestaurantCafeRoute
   '/tampon-sac-kraft': typeof TamponSacKraftRoute
   '/tampon-tote-bag-vetement': typeof TamponToteBagVetementRoute
+  '/apercu/$slug': typeof ApercuSlugRoute
   '/api/desinscription': typeof ApiDesinscriptionRoute
   '/api/logos': typeof ApiLogosRouteWithChildren
   '/api/stats': typeof ApiStatsRoute
@@ -309,6 +316,7 @@ export interface FileRoutesByTo {
   '/tampon-restaurant-cafe': typeof TamponRestaurantCafeRoute
   '/tampon-sac-kraft': typeof TamponSacKraftRoute
   '/tampon-tote-bag-vetement': typeof TamponToteBagVetementRoute
+  '/apercu/$slug': typeof ApercuSlugRoute
   '/api/desinscription': typeof ApiDesinscriptionRoute
   '/api/logos': typeof ApiLogosRouteWithChildren
   '/api/stats': typeof ApiStatsRoute
@@ -349,6 +357,7 @@ export interface FileRoutesById {
   '/tampon-restaurant-cafe': typeof TamponRestaurantCafeRoute
   '/tampon-sac-kraft': typeof TamponSacKraftRoute
   '/tampon-tote-bag-vetement': typeof TamponToteBagVetementRoute
+  '/apercu/$slug': typeof ApercuSlugRoute
   '/api/desinscription': typeof ApiDesinscriptionRoute
   '/api/logos': typeof ApiLogosRouteWithChildren
   '/api/stats': typeof ApiStatsRoute
@@ -390,6 +399,7 @@ export interface FileRouteTypes {
     | '/tampon-restaurant-cafe'
     | '/tampon-sac-kraft'
     | '/tampon-tote-bag-vetement'
+    | '/apercu/$slug'
     | '/api/desinscription'
     | '/api/logos'
     | '/api/stats'
@@ -429,6 +439,7 @@ export interface FileRouteTypes {
     | '/tampon-restaurant-cafe'
     | '/tampon-sac-kraft'
     | '/tampon-tote-bag-vetement'
+    | '/apercu/$slug'
     | '/api/desinscription'
     | '/api/logos'
     | '/api/stats'
@@ -468,6 +479,7 @@ export interface FileRouteTypes {
     | '/tampon-restaurant-cafe'
     | '/tampon-sac-kraft'
     | '/tampon-tote-bag-vetement'
+    | '/apercu/$slug'
     | '/api/desinscription'
     | '/api/logos'
     | '/api/stats'
@@ -508,6 +520,7 @@ export interface RootRouteChildren {
   TamponRestaurantCafeRoute: typeof TamponRestaurantCafeRoute
   TamponSacKraftRoute: typeof TamponSacKraftRoute
   TamponToteBagVetementRoute: typeof TamponToteBagVetementRoute
+  ApercuSlugRoute: typeof ApercuSlugRoute
   ApiDesinscriptionRoute: typeof ApiDesinscriptionRoute
   ApiLogosRoute: typeof ApiLogosRouteWithChildren
   ApiStatsRoute: typeof ApiStatsRoute
@@ -759,6 +772,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiDesinscriptionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/apercu/$slug': {
+      id: '/apercu/$slug'
+      path: '/apercu/$slug'
+      fullPath: '/apercu/$slug'
+      preLoaderRoute: typeof ApercuSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/stripe/webhook': {
       id: '/api/stripe/webhook'
       path: '/api/stripe/webhook'
@@ -823,6 +843,7 @@ const rootRouteChildren: RootRouteChildren = {
   TamponRestaurantCafeRoute: TamponRestaurantCafeRoute,
   TamponSacKraftRoute: TamponSacKraftRoute,
   TamponToteBagVetementRoute: TamponToteBagVetementRoute,
+  ApercuSlugRoute: ApercuSlugRoute,
   ApiDesinscriptionRoute: ApiDesinscriptionRoute,
   ApiLogosRoute: ApiLogosRouteWithChildren,
   ApiStatsRoute: ApiStatsRoute,
