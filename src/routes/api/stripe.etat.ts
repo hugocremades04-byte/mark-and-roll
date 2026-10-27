@@ -4,6 +4,7 @@ import { bindings } from '@/lib/bindings.server';
 import { cfgDefaut, totalLigne, totauxCommande, type Ligne } from '@/lib/catalogue';
 import { emailBat, emailBienvenue, emailPhoto, emailRelancePaiement, emailsNouvelleCommande, inscriptionNewsletter } from '@/lib/serveur/emails.server';
 import site from '@/site.json';
+import { db } from '@/lib/serveur/commandes.server';
 
 /* Diagnostic privé de la connexion Stripe : type de clé et réponses de Stripe, jamais la clé.
    Accessible uniquement avec le jeton dont l'empreinte SHA-256 figure ci-dessous. */
@@ -23,6 +24,25 @@ export const Route = createFileRoute('/api/stripe/etat')({
         if (t.length > 100 || (await sha256(t)) !== EMPREINTE) return new Response('Introuvable', { status: 404 });
         if (new URL(request.url).searchParams.get('test') === 'emails') return Response.json(await testEmails(), { headers: { 'Cache-Control': 'no-store' } });
         return Response.json(await etatStripe(), { headers: { 'Cache-Control': 'no-store' } });
+      },
+      /** Import de la liste de prospection (jeton requis) : { apercus: [...], prospection: [...] }. */
+      POST: async ({ request }) => {
+        const t = new URL(request.url).searchParams.get('t') || '';
+        if (t.length > 100 || (await sha256(t)) !== EMPREINTE) return new Response('Introuvable', { status: 404 });
+        const d = (await request.json().catch(() => null)) as { apercus?: Record<string, string>[]; prospection?: Record<string, string | number | null>[] } | null;
+        if (!d) return Response.json({ ok: false }, { status: 400 });
+        const D = await db();
+        await D.prepare(`CREATE TABLE IF NOT EXISTS prospection (numero INTEGER PRIMARY KEY, marque TEXT NOT NULL, type TEXT NOT NULL DEFAULT 'marque', ville TEXT, email TEXT, slug TEXT, priorite INTEGER NOT NULL DEFAULT 3, sujet TEXT, corps_texte TEXT, corps_html TEXT, statut TEXT NOT NULL DEFAULT 'à envoyer', envoye_le TEXT, thread_id TEXT, message_id TEXT, relance_le TEXT, reponse_le TEXT, notes TEXT)`).run();
+        const q = [
+          ...(d.apercus || []).map((a) => D.prepare('INSERT OR REPLACE INTO apercus (slug, nom, campagne) VALUES (?, ?, ?)').bind(a.slug, a.nom, a.campagne || 'email')),
+          ...(d.prospection || []).map((r) => D.prepare(`INSERT INTO prospection (numero, marque, type, ville, email, slug, priorite, sujet, corps_texte, statut, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(numero) DO UPDATE SET marque = excluded.marque, type = excluded.type, ville = excluded.ville, email = excluded.email, slug = excluded.slug, priorite = excluded.priorite,
+              sujet = excluded.sujet, corps_texte = excluded.corps_texte, notes = excluded.notes,
+              statut = CASE WHEN prospection.envoye_le IS NULL THEN excluded.statut ELSE prospection.statut END`)
+            .bind(r.numero, r.marque, r.type || 'marque', r.ville ?? null, r.email ?? null, r.slug ?? null, r.priorite ?? 3, r.sujet ?? null, r.corps_texte ?? null, r.statut || 'à envoyer', r.notes ?? null)),
+        ];
+        for (let i = 0; i < q.length; i += 50) await D.batch(q.slice(i, i + 50));
+        return Response.json({ ok: true, apercus: d.apercus?.length || 0, prospection: d.prospection?.length || 0 });
       },
     },
   },
