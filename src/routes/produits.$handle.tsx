@@ -251,6 +251,7 @@ function Fiche({ h }: { h: string }) {
           <div className="garanties"><ul>
             {pc && <li><img src="/img/icones/bat.png" alt="" width={22} height={22} /><span><strong>BAT gratuit sous 24 h</strong>, retouches illimitées avant gravure</span></li>}
             <li><img src="/img/icones/livraison.png" alt="" width={22} height={22} /><span><strong>Livraison offerte dès 45 €</strong>, 3,90 € sinon</span></li>
+            {pc && <li><img src="/img/icones/bat.png" alt="" width={22} height={22} /><span><strong>Gravure conforme au BAT</strong>, sinon roue refaite sans frais</span></li>}
             <li><img src="/img/icones/securite.png" alt="" width={22} height={22} /><span><strong>Paiement sécurisé</strong>, fabriqué en France</span></li>
           </ul><Paiements /></div>
 

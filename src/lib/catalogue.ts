@@ -149,8 +149,8 @@ export const P: Record<string, Produit> = {
     type: 'config', gamme: 'std', nom: 'Kit Rouleau personnalisé', court: 'Support, roue gravée à votre marque et marqueur rempli.',
     seo: { titre: 'Tampon rouleau personnalisé logo pour colis', desc: 'Kit tampon rouleau gravé à votre logo ou texte : support, roue et marqueur rempli. Votre marque sur vos cartons et colis en un passage. BAT gratuit.' },
     roues: [null], supports: 1, marqueurs: true, encreur: false, roueSup: true, prix: { S: 39, M: 49, L: 59 },
-    images: ['kit-packshot', 'kit-action', 'hero', 'kit-contenu', 'roue-detail', 'carton-empreintes', 'roues-tailles'], cats: ['rouleaux', 'packaging'], badge: 'Le plus vendu',
-    points: ['Texte ou logo simple sur 13,5 mm de haut', 'Marqueur rempli inclus, prêt à rouler', 'Roues interchangeables sans outil'],
+    images: ['kit-packshot', 'kit-action', 'hero', 'kit-contenu', 'roue-detail', 'carton-empreintes', 'roues-tailles'], cats: ['rouleaux', 'packaging'], badge: 'Pour commencer',
+    points: ['Votre marque sur chaque carton en 2 secondes', 'Sans minimum de commande, sans imprimeur', 'Marqueur rempli inclus, prêt à rouler', 'Texte ou logo simple sur 13,5 mm de haut'],
     video: { src: '/video/heros-action.mp4', poster: 'heros-action' },
     inclut: ['1 support réglable en PETG', '1 roue gravée à votre texte ou logo', '1 marqueur 15 mm rempli de la couleur choisie', '1 vis M3 pour le serrage'],
   },
@@ -176,7 +176,7 @@ export const P: Record<string, Produit> = {
     seo: { titre: 'Pack Duo : 2 tampons rouleaux, logo et @instagram', desc: 'Deux roues gravées sur un support : votre logo et votre @instagram sur chaque colis. Tampon rouleau personnalisé, BAT gratuit pour chaque roue.' },
     roues: [null, null], supports: 1, marqueurs: true, encreur: false, roueSup: false, prix: { S: 59, M: 69, L: 79 },
     valeur: (t) => KIT[t] + PRIX_ROUE + PRIX_MARQUEUR.packaging,
-    images: ['pack-duo', 'kit-contenu', 'carton-empreintes'], cats: ['packs', 'packaging'], badge: 'Populaire',
+    images: ['pack-duo', 'kit-contenu', 'carton-empreintes'], cats: ['packs', 'packaging'], badge: 'Logo + @instagram',
     inclut: ['1 support réglable', '2 roues gravées', '2 marqueurs 15 mm'],
   },
   'pack-boutique': {
@@ -292,6 +292,7 @@ export const dansCollection = (cle: string) => ORDRE.filter((h) => cle === 'bout
 
 export const IMG = (n: string) => `/img/${n}.webp`;
 export const ALT: Record<string, string> = {
+  'impression-roue': "Une roue Mark & Roll imprimée en 3D couche par couche, les lettres MARK&ROLL apparaissent au fil de l'impression",
   'kit-packshot': 'Kit Rouleau : support noir, roue orange gravée et marqueur blanc',
   hero: 'Le rouleau imprime « ATELIER LUNA » en continu sur un carton kraft',
   'kit-contenu': 'Contenu du kit vu de dessus : support, roues, marqueur et vis',

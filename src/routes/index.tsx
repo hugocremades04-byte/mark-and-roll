@@ -1,7 +1,7 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { CarteProduit, CarteRouleau, Img, Preuves, SectionTete, VideoBoucle } from '@/components/boutique/Elements';
-import { IcoChevron, IcoFleche } from '@/components/boutique/Icones';
+import { IcoChevron, IcoFleche, IcoOk } from '@/components/boutique/Icones';
 import { ALT, FAQ, IMG, dansCollection } from '@/lib/catalogue';
 import site from '@/site.json';
 import { LD_MARQUE, faqLd, seo } from '@/lib/seo';
@@ -28,6 +28,12 @@ const CHAPITRES = [
   { t: 0, titre: 'Trois pièces, zéro réglage', texte: 'La roue gravée se clipse sur le support, le marqueur l\'encre en continu.' },
   { t: 5, titre: 'Vous roulez, c\'est imprimé', texte: 'Une pression légère : le motif se répète sans raccord sur toute la longueur.' },
   { t: 10, titre: 'Chaque colis porte votre marque', texte: 'Deux secondes par colis, sans étiquette ni imprimante.' },
+];
+const FABRIQUE: [string, string][] = [
+  ["Rien n'est gravé sans votre accord. ", 'BAT gratuit sous 24 h, retouches illimitées.'],
+  ['Gravure conforme au BAT ou roue refaite. ', 'Sans frais, si la roue reçue ne correspond pas au BAT validé.'],
+  ['Expédié sous 7 jours ouvrés. ', 'Après validation du BAT, en point relais ou à domicile.'],
+  ['Paiement sécurisé par Stripe. ', 'Carte, Apple Pay ou Google Pay.'],
 ];
 const RECHARGES = ['recharge', 'marqueur', 'encre-tampon', 'roue-prete', 'encre-textile', 'totes'];
 const USAGES = [
@@ -95,8 +101,8 @@ function Accueil() {
     <>
       <section className="wrap heros3" aria-labelledby="h-heros">
         <div className="heros3-txt">
-          <h1 id="h-heros">Votre logo sur <em>chaque colis</em>.</h1>
-          <p className="chapeau">Un tampon rouleau gravé à votre marque : un passage, et votre logo s'imprime en continu sur vos cartons, colis, sachets et tote bags.</p>
+          <h1 id="h-heros">Votre logo sur <em>chaque colis</em>, en un passage.</h1>
+          <p className="chapeau">Vos clients ouvrent un colis qui a l'air d'une vraie marque. Sans imprimeur et sans minimum de 500 cartons : un rouleau gravé à votre nom, dès 39&nbsp;€.</p>
           <div className="heros3-cta" ref={ctaRef}>
             <CtaHeros />
             <Link className="lien-fleche" to="/collections/$cle" params={{ cle: 'boutique' }}>Voir tous les produits<IcoFleche /></Link>
@@ -112,6 +118,26 @@ function Accueil() {
         <SectionTete id="h-rouleaux" titre="Choisissez votre rouleau" lien={{ to: '/collections/$cle', params: { cle: 'rouleaux' } }} libLien="Comparer les tailles" />
         <div className="rouleaux-grille">
           {dansCollection('rouleaux').map((h) => <CarteRouleau key={h} h={h} img={PHOTO_ROULEAU[h]} />)}
+        </div>
+      </section>
+
+      <section className="wrap section-bas" aria-labelledby="h-fabrique">
+        <div className="fabrique">
+          <figure className="fabrique-video">
+            <VideoBoucle src="/video/impression-roue.mp4" poster="impression-roue" label={ALT['impression-roue']} />
+            <figcaption>Rendu réalisé à partir du fichier d'impression réel d'une roue Ø60.</figcaption>
+          </figure>
+          <div className="fabrique-txt">
+            <h2 id="h-fabrique">Votre roue, imprimée à votre nom.</h2>
+            <p className="sous-titre">Rien n'est fabriqué d'avance : chaque roue est imprimée à la commande en France, couche par couche, à partir du BAT que vous avez validé.</p>
+            <ul className="fabrique-points">
+              {FABRIQUE.map(([t, d]) => <li key={t}><IcoOk /><span><strong>{t}</strong>{d}</span></li>)}
+            </ul>
+            <blockquote className="fabrique-mot">
+              <p>J'ai lancé Mark &amp; Roll pour que les petites marques signent leurs colis sans passer par un imprimeur. Chaque BAT est préparé et vérifié à la main avant la gravure.</p>
+              <footer>Hugo, fondateur · <a href={`mailto:${site.contact}`}>{site.contact}</a></footer>
+            </blockquote>
+          </div>
         </div>
       </section>
 

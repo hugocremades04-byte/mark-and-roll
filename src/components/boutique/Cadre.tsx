@@ -4,7 +4,7 @@ import { inscrireNews } from '@/lib/api/boutique.functions';
 import { useBoutique, usePanneau, usePiegeFocus } from '@/lib/boutique';
 import { FRANCO, IMG, ORDRE, P, cfgDefaut, estLarge, eur, prixMin, rouesActives, sousTotal, type CfgSimple, type Ligne } from '@/lib/catalogue';
 import { LignesPanier, Paiements, PanierVide } from './Elements';
-import { IcoCamion, IcoColis, IcoCroix, IcoDroite, IcoLoupe, IcoMenu, IcoOk, IcoPanier } from './Icones';
+import { IcoCamion, IcoCroix, IcoDroite, IcoLoupe, IcoMenu, IcoOk, IcoPanier } from './Icones';
 import site from '@/site.json';
 import { PAGES_SEO } from '@/lib/pages-seo';
 
@@ -22,9 +22,9 @@ export function Bandeau() {
   return (
     <div className="bandeau">
       <div className="wrap">
+        <span><IcoOk epais={2} />Lancement : −15&nbsp;% sur votre premier kit avec le code PREMIERS15</span>
         <span><IcoCamion epais={2} />Livraison offerte dès 45&nbsp;€</span>
         <span><IcoOk epais={2} />BAT gratuit avant chaque gravure</span>
-        <span><IcoColis epais={2} />Fabriqué à la commande en France</span>
       </div>
     </div>
   );
